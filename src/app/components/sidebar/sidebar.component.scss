@@ -1,0 +1,43 @@
+@import "../../../styles.scss";
+@import "../../../color.scss";
+@import "../../../font.scss";
+@import "../../../icon.scss";
+
+:host {
+  .sidebar-container {
+    position: fixed;
+    top: 50px;
+    width: 200px;
+    height: calc(100vh - 50px);
+    background-color: $color-green-0;
+    .sidebar-trigger {
+      cursor: pointer;
+      padding: 14px 20px;
+      .trigger-icon {
+        height: 20px;
+      }
+    }
+    .sidebar-list {
+      .sidebar-item {
+        height: 50px;
+        color: $color-white;
+        cursor: pointer;
+        .icon {
+          margin-left: 12px;
+        }
+        .content {
+          margin-left: 12px;
+          font-weight: $font-weight-medium;
+        }
+        &:hover {
+          background-color: $color-white;
+          color: $color-green-0;
+        }
+        &.actived {
+          background-color: $color-white;
+          color: $color-green-0;
+        }
+      }
+    }
+  }
+}

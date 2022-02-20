@@ -1,0 +1,30 @@
+@import "../../../styles.scss";
+@import "../../../icon.scss";
+@import "../../../font.scss";
+@import "../../../color";
+
+:host {
+  .searchbox-container {
+    position: relative;
+    .ic-search-16 {
+      position: absolute;
+      left: 8px;
+    }
+  }
+
+  .textbox {
+    height: 32px;
+    padding: 4px 12px;
+    outline: none;
+    border: 1px solid $fds-gray-30;
+    border-radius: 4px;
+    font-size: 13px;
+    &.text {
+      margin-left: 12px;
+    }
+    &.search {
+      border-radius: 20px;
+      padding: 4px 30px;
+    }
+  }
+}

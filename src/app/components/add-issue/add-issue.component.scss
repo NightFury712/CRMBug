@@ -1,0 +1,13 @@
+@import "../../../styles.scss";
+@import "../../../color.scss";
+@import "../../../font.scss";
+
+:host {
+  .add-issue-container {
+    position: absolute;
+    top: 50px;
+    left: 200px;
+    width: calc(100% - 200px);
+    height: calc(100vh - 50px);
+  }
+}

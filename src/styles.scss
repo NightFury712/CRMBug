@@ -1,1 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~font-awesome/scss/font-awesome.scss';
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.bt-flex {
+  display: flex !important;
+}
+
+.bt-flex-row {
+  flex-direction: row;
+}
+
+.bt-flex-column {
+  flex-direction: column;
+}
+
+.bt-justify-content-start {
+  justify-content: flex-start !important;
+}
+
+.bt-justify-content-center {
+  justify-content: center !important;
+}
+
+.bt-justify-content-between {
+  justify-content: space-between !important;
+}
+
+.bt-justify-content-end {
+  justify-content: flex-end !important;
+}
+
+.bt-align-items-start {
+  align-items: flex-start !important;
+}
+
+.bt-align-items-center {
+  align-items: center !important;
+}
+
+.bt-align-items-end {
+  align-items: flex-end !important;
+}
+
+.bt-align-self-center {
+  align-self: center;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
