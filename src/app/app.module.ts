@@ -9,6 +9,7 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
 import { BaseTextboxComponent } from './base/base-textbox/base-textbox.component';
 import { ViewIssueComponent } from './components/view-issue/view-issue.component';
 import { ChartComponent } from './components/chart/chart.component';
+import { SharedComponentModule } from './components/shared-component.module';
 
 @NgModule({
   declarations: [
@@ -17,12 +18,11 @@ import { ChartComponent } from './components/chart/chart.component';
     PageHeaderComponent,
     ViewIssueComponent,
     ChartComponent,
-    BaseButtonComponent,
-    BaseTextboxComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedComponentModule
   ],
   providers: [],
   bootstrap: [AppComponent],
