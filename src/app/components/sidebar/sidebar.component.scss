@@ -7,6 +7,7 @@
   .sidebar-container {
     position: fixed;
     top: 50px;
+    left: 0;
     width: 200px;
     height: calc(100vh - 50px);
     background-color: $color-green-0;
@@ -30,11 +31,11 @@
           font-weight: $font-weight-medium;
         }
         &:hover {
-          background-color: $color-white;
+          background-color: $fds-gray-00;
           color: $color-green-0;
         }
         &.actived {
-          background-color: $color-white;
+          background-color: $fds-gray-00;
           color: $color-green-0;
         }
       }

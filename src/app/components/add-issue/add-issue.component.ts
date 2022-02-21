@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TypeControl } from 'src/app/enumaration/type-control.enum';
 
 @Component({
   selector: 'app-add-issue',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-issue.component.scss']
 })
 export class AddIssueComponent implements OnInit {
-
+  typeControl = TypeControl;
+  
   constructor() { }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -7,30 +7,25 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BaseButtonComponent } from './base/base-button/base-button.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { BaseTextboxComponent } from './base/base-textbox/base-textbox.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { AddIssueComponent } from './components/add-issue/add-issue.component';
 import { ViewIssueComponent } from './components/view-issue/view-issue.component';
-import { ProjectComponent } from './components/project/project.component';
 import { ChartComponent } from './components/chart/chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    BaseButtonComponent,
     PageHeaderComponent,
-    BaseTextboxComponent,
-    SidebarComponent,
-    AddIssueComponent,
     ViewIssueComponent,
-    ProjectComponent,
-    ChartComponent
+    ChartComponent,
+    BaseButtonComponent,
+    BaseTextboxComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class AppModule { }

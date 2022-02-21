@@ -11,7 +11,12 @@
       left: 8px;
     }
   }
-
+  .textbox-container {
+    .title {
+      min-width: 150px;
+      max-width: 150px;
+    }
+  }
   .textbox {
     height: 32px;
     padding: 4px 12px;
@@ -25,6 +30,9 @@
     &.search {
       border-radius: 20px;
       padding: 4px 30px;
+    }
+    &:focus {
+      border-color: $default-color-green;
     }
   }
 }

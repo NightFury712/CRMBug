@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="typeControl.Textbox">
     <div class="textbox-container bt-flex bt-flex-row bt-align-items-center">
-      <div>{{text}}</div>
+      <div class="title">{{text}}</div>
       <input 
       type="text" class="textbox text w-full" placeholder="{{placeholder}}"
       >

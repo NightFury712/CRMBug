@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent
+  },
+  {
+    path: "project",
+    loadChildren: () => import("./components/project/project.module").then(m => m.ProjectModule)
   }
 ];
 
