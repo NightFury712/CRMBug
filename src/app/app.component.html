@@ -1,2 +1,21 @@
 <app-page-header></app-page-header>
-<router-outlet></router-outlet>
+<div class="project-container">
+	<app-sidebar></app-sidebar>
+	<div class="content-container">
+		<div class="project-header bt-flex">
+			<div class="header-title bt-flex bt-align-items-center w-1/2">
+				<div class="icon">
+					<i class="fa-solid fa-city"></i>
+				</div>
+				<div class="project-name">Project HHDANG</div>
+				<span class="project-key">(HHD_123)</span>
+			</div>
+			<div class="header-action bt-flex bt-align-items-center">
+				<base-button typeButton="primary" text="Invite Users" [height]="36" [width]="120">
+				</base-button>
+
+			</div>
+		</div>
+		<router-outlet></router-outlet>
+	</div>
+</div>

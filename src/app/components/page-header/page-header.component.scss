@@ -5,9 +5,23 @@
   .page-header {
     position: fixed;
     top: 0;
-    background-color: $fds-comment-background;
+    background-color: $color-green-1;
     height: 50px;
     width: 100%;
     box-shadow: 2px 2px 2px $fds-dark-mode-gray-35;
+    .nav-link {
+      height: 40px;
+      margin: 0 4px;
+      color: $color-black;
+      transition: 0.3;
+      cursor: pointer;
+      .text {
+        padding: 12px 8px;
+      }
+      &:hover {
+        color: $default-color-green;
+        background-color: $color-green-2;
+      }
+    }
   }
 }

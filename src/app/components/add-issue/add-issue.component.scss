@@ -4,10 +4,6 @@
 
 :host {
   .add-issue-container {
-    position: absolute;
-    left: 200px;
-    width: calc(100% - 200px);
-    height: calc(100vh - 50px);
     padding: 20px 20px 0 20px;
     .header {
       font-size: $font-title;

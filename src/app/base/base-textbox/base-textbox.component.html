@@ -1,9 +1,10 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="typeControl.Textbox">
     <div class="textbox-container bt-flex bt-flex-row bt-align-items-center">
-      <div class="title">{{text}}</div>
+      <div class="title" *ngIf="isLabel">{{text}}</div>
       <input 
-      type="text" class="textbox text w-full" placeholder="{{placeholder}}"
+        type="text" class="textbox text w-full" placeholder="{{placeholder}}" [(ngModel)]="value"
+        (input)="onInput()"
       >
     </div>
   </ng-container>
@@ -11,7 +12,7 @@
     <div class="searchbox-container bt-flex bt-flex-row bt-align-items-center">
       <div class="icon ic-search-16"></div>
       <input 
-        type="text" class="textbox search w-full" placeholder="{{placeholder}}"
+        type="text" class="textbox search w-full" placeholder="{{placeholder}}" [(ngModel)]="value"
       >
     </div>
   </ng-container>

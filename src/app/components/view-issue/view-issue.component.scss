@@ -1,0 +1,44 @@
+@import "../../../styles.scss";
+@import "../../../font.scss";
+@import "../../../color.scss";
+
+:host {
+    ::ng-deep {
+        .table-fixed-header {
+            .issues {
+                .action {
+                    base-button {
+                        margin-left: 8px;
+                    }
+                }
+            }
+        }
+    }
+    .issues-container {
+        padding: 20px 20px 0 20px;
+        max-width: calc(100% - 40px);
+        overflow: auto;
+    }
+    .table-fixed-header {
+        overflow: auto;
+        border-collapse: collapse;
+        .issues {
+            .action {
+                min-width: 200px;
+                max-width: 200px;
+            }
+        }
+        th, td {
+            text-align: center;
+            border: 1px solid $fds-gray-30;
+            padding: 4px 12px;
+            min-height: 50px;
+            height: 50px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+        tr:nth-child(even) {
+            background-color: $fds-gray-05;
+        }
+    }
+}

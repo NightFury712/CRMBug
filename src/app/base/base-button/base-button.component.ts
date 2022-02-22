@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'base-button',
@@ -17,9 +18,19 @@ export class BaseButtonComponent implements OnInit {
 
   @Input()
   height: number = 32;
+  
+  @Input()
+  iconCSS: string = '';
+
+  @Output()
+  btnClick = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  click(e: any) {
+    this.btnClick.emit(e);
   }
 
 }

@@ -3,5 +3,11 @@
     .project-container {
         position: relative;
         top: 50px;
+        .conten-container {
+            position: absolute;
+            left: 200px;
+            width: calc(100% - 200px);
+            height: calc(100vh - 50px);
+        }
     }
 }

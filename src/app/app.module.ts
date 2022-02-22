@@ -10,6 +10,8 @@ import { BaseTextboxComponent } from './base/base-textbox/base-textbox.component
 import { ViewIssueComponent } from './components/view-issue/view-issue.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { SharedComponentModule } from './components/shared-component.module';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { AddIssueComponent } from './components/add-issue/add-issue.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { SharedComponentModule } from './components/shared-component.module';
     PageHeaderComponent,
     ViewIssueComponent,
     ChartComponent,
+    SidebarComponent,
+    AddIssueComponent
   ],
   imports: [
     BrowserModule,
