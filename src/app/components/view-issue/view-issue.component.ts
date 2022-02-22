@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { EntityState } from 'src/app/enumaration/EnittyState.enum';
+import { EntityState } from 'src/app/enumaration/entity-state.enum';
 import { TypeControl } from 'src/app/enumaration/type-control.enum';
 declare const $: any;
 
