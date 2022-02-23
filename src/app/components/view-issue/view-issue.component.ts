@@ -21,6 +21,25 @@ export class ViewIssueComponent implements OnInit {
       State: EntityState.View
     }
   ];
+  
+  typeOfIssue =  [
+    {
+      value: 1,
+      valueText: "Task"
+    },
+    {
+      value: 2,
+      valueText: "Bug"
+    },
+    {
+      value: 3,
+      valueText: "Request"
+    },
+    {
+      value: 4,
+      valueText: "Orther"
+    },
+  ]
 
   entityState = EntityState;
 

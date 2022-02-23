@@ -16,6 +16,11 @@
             <tr *ngFor="let item of issues; let index = index">
                 <td>
                     <span *ngIf="item.State == entityState.View">{{item.Type}}</span>
+                    <base-combobox
+                        [datas]="typeOfIssue"
+                        [(value)]="typeOfIssue[0].value"
+                    >
+                    </base-combobox>
                     <base-textbox
                         [type]="typeControl.Textbox"
                         text=""

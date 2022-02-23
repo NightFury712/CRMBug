@@ -1,33 +1,30 @@
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ViewIssueComponent } from './components/view-issue/view-issue.component';
-import { AddIssueComponent } from './components/add-issue/add-issue.component';
-import { ChartComponent } from './components/chart/chart.component';
-import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  {path: "", redirectTo: "dashboard", pathMatch: "full"},
+  {
+    path: "", 
+    redirectTo: "dáhboard",
+    pathMatch: "full"
+  },
   {
     path: "dashboard",
     component: DashboardComponent
   },
   {
-    path: "home",
-    component: HomeComponent
+    path: "project",
+    loadChildren: () => import("./components/project/project.module").then(m => m.ProjectModule)
   },
   {
-    path: "add-issue",
-    component: AddIssueComponent
+    path: "customer",
+    loadChildren: () => import("./components/customer/customer.module").then(m => m.CustomerModule)
   },
   {
-    path: "view-issue",
-    component: ViewIssueComponent
-  },
-  {
-    path: "chart",
-    component: ChartComponent
-  },
+    path: "**",
+    component: DashboardComponent
+  }
+
 ];
 
 @NgModule({
