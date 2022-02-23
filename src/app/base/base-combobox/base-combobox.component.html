@@ -1,7 +1,7 @@
 <mat-form-field appearance="fill">
-  <mat-select [(value)]="value">
+  <mat-select [(value)]="value" (valueChange)="onChange()">
     <mat-option 
-      *ngFor="let item of datas" (onSelectionChange)="onSelectionChange()"
+      *ngFor="let item of datas" [value]="item.value"
     >
       {{item.valueText}}
     </mat-option>

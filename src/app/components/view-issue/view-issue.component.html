@@ -15,13 +15,14 @@
         <tbody class="issues">
             <tr *ngFor="let item of issues; let index = index">
                 <td>
-                    <span *ngIf="item.State == entityState.View">{{item.Type}}</span>
+                    <span *ngIf="item.State == entityState.View">{{item.TypeIDText}}</span>
                     <base-combobox
                         [datas]="typeOfIssue"
-                        [(value)]="typeOfIssue[0].value"
+                        [(value)]="item.TypeID"
+                        *ngIf="item.State == entityState.Edit"
                     >
                     </base-combobox>
-                    <base-textbox
+                    <!-- <base-textbox
                         [type]="typeControl.Textbox"
                         text=""
                         [(value)]="item.Type"
@@ -29,7 +30,7 @@
                         placeholder=""
                         *ngIf="item.State == entityState.Edit"
                     >
-                    </base-textbox>
+                    </base-textbox> -->
                 </td>
                 <td>
                     <span *ngIf="item.State == entityState.View">{{item.Subject}}</span>
@@ -44,8 +45,14 @@
                     </base-textbox>
                 </td>
                 <td>
-                    <span *ngIf="item.State == entityState.View">{{item.Priority}}</span>
-                    <base-textbox
+                    <span *ngIf="item.State == entityState.View">{{item.PriorityIDText}}</span>
+                    <base-combobox
+                        [datas]="priorities"
+                        [(value)]="item.PriorityID"
+                        *ngIf="item.State == entityState.Edit"
+                    >
+                    </base-combobox>
+                    <!-- <base-textbox
                         [type]="typeControl.Textbox"
                         text=""
                         [(value)]="item.Priority"
@@ -53,11 +60,17 @@
                         placeholder=""
                         *ngIf="item.State == entityState.Edit"
                     >
-                    </base-textbox>
+                    </base-textbox> -->
                 </td>
                 <td>
-                    <span *ngIf="item.State == entityState.View">{{item.Status}}</span>
-                    <base-textbox
+                    <span *ngIf="item.State == entityState.View">{{item.StatusIDText}}</span>
+                    <base-combobox
+                        [datas]="issueState"
+                        [(value)]="item.StatusID"
+                        *ngIf="item.State == entityState.Edit"
+                    >
+                    </base-combobox>
+                    <!-- <base-textbox
                         [type]="typeControl.Textbox"
                         text=""
                         [(value)]="item.Status"
@@ -65,7 +78,7 @@
                         placeholder=""
                         *ngIf="item.State == entityState.Edit"
                     >
-                    </base-textbox>
+                    </base-textbox> -->
                 </td>
                 <td>
                     <span *ngIf="item.State == entityState.View">{{item.AssignedTo}}</span>

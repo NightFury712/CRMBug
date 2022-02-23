@@ -4,10 +4,16 @@ import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@ang
 @Component({
   selector: 'base-combobox',
   templateUrl: './base-combobox.component.html',
-  styleUrls: ['./base-combobox.component.scss']
+  styleUrls: ['./base-combobox.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => BaseComboboxComponent),
+      multi: true
+    }
+  ]
 })
-export class BaseComboboxComponent implements OnInit {
-  selected = 'option2';
+export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
   @Input()
   datas: any[] = [];
   
@@ -22,8 +28,21 @@ export class BaseComboboxComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSelectionChange() {
-    console.log(this.value)
+  writeValue(obj: any) {
+    this.value = obj;
+    this.change(obj);
+  }
+
+  registerOnChange(fn: any) {
+  }
+
+  registerOnTouched(fn: any) {
+  }
+
+  setDisabledState(isDisabled: boolean) {
+  }
+
+  onChange() {
     this.valueChange.emit(this.value);
   }
 }
