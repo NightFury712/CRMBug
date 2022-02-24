@@ -102,7 +102,8 @@ export class ViewIssueComponent implements OnInit {
           {
             return {
               ...item,
-              State: EntityState.View
+              State: EntityState.View,
+              EntityState: EntityState.Edit
             }
           });
       } else {
@@ -124,7 +125,8 @@ export class ViewIssueComponent implements OnInit {
         AssignedTo: "",
         FoundInBuild: "",
         IntergratedBuild: "",
-        State: EntityState.Edit
+        State: EntityState.Add,
+        EntityState: EntityState.Add
       }
     )
   }
@@ -132,6 +134,7 @@ export class ViewIssueComponent implements OnInit {
   clickBtnEdit(item: any, index: number) {
     this.oldData = JSON.parse(JSON.stringify(item));
     item.State = EntityState.Edit;
+    item.EntityState = EntityState.Edit;
     if(this.isEditing) {
       const oldIndex = this.issues.indexOf(this.currentData);
       this.issues[oldIndex].State = EntityState.View;
@@ -168,6 +171,9 @@ export class ViewIssueComponent implements OnInit {
   deleteIssue(item: any, index: number) {
     this.issues.splice(index, 1);
     this.isEditing = false;
+    this.service.delete(item.ID).subscribe(resp => {
+      console.log(resp);
+    })
   }
 
   mappingData(item: any) {

@@ -19,7 +19,7 @@
                     <base-combobox
                         [datas]="typeOfIssue"
                         [(value)]="item.TypeID"
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-combobox>
                     <!-- <base-textbox
@@ -40,7 +40,7 @@
                         [(value)]="item.Subject"
                         [isLabel]="false"
                         placeholder=""
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-textbox>
                 </td>
@@ -49,7 +49,7 @@
                     <base-combobox
                         [datas]="priorities"
                         [(value)]="item.PriorityID"
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-combobox>
                     <!-- <base-textbox
@@ -67,7 +67,7 @@
                     <base-combobox
                         [datas]="issueState"
                         [(value)]="item.StatusID"
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-combobox>
                     <!-- <base-textbox
@@ -88,7 +88,7 @@
                         [(value)]="item.AssignedTo"
                         [isLabel]="false"
                         placeholder=""
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-textbox>
                 </td>
@@ -100,7 +100,7 @@
                         [(value)]="item.FoundInBuild"
                         [isLabel]="false"
                         placeholder=""
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-textbox>
                 </td>
@@ -112,7 +112,7 @@
                         [(value)]="item.IntergratedBuild"
                         [isLabel]="false"
                         placeholder=""
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-textbox>
                 </td>
@@ -132,7 +132,7 @@
                         typeButton="primary"
                         [width]="36"
                         (btnClick)="saveIssue(item, index)"
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-button>
                     <base-button
@@ -150,7 +150,7 @@
                         typeButton="secondary"
                         [width]="36"
                         (btnClick)="cancelEdit(item, index)"
-                        *ngIf="item.State == entityState.Edit"
+                        *ngIf="item.State != entityState.View"
                     >
                     </base-button>
                 </td>

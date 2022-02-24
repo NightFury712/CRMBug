@@ -1,6 +1,8 @@
 export const EntityState = {
     // Xem
-    View: 1,
+    View: 0,
+    // thêm
+    Add: 1,
     // Sửa
     Edit: 2,
     // Xóa

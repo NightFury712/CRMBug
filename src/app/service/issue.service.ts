@@ -16,4 +16,8 @@ export class IssueService {
   addIssue(issue: any) {
     return this.http.post<any>(this.url, issue);
   }
+
+  delete(issueID: number) {
+    return this.http.delete<any>(`this.url/${issueID}`);
+  }
 }
