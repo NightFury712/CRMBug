@@ -43,3 +43,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+/.vs
+*.pdb
+*.cache
+*.txt
+*.nuget
+/bin
