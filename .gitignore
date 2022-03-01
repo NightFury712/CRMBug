@@ -49,4 +49,11 @@ Thumbs.db
 *.cache
 *.txt
 *.nuget
-/bin
+
+*node_modules
+
+*.vs/
+*bin/
+*obj/
+*.json
+
