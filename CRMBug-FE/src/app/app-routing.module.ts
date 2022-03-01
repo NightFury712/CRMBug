@@ -4,31 +4,36 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: "", 
-    redirectTo: "dáhboard",
-    pathMatch: "full"
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
   },
   {
-    path: "dashboard",
-    component: DashboardComponent
+    path: 'dashboard',
+    component: DashboardComponent,
   },
   {
-    path: "project",
-    loadChildren: () => import("./components/project/project.module").then(m => m.ProjectModule)
+    path: 'project',
+    loadChildren: () =>
+      import('./components/project/project.module').then(
+        (m) => m.ProjectModule
+      ),
   },
   {
-    path: "customer",
-    loadChildren: () => import("./components/customer/customer.module").then(m => m.CustomerModule)
+    path: 'customer',
+    loadChildren: () =>
+      import('./components/customer/customer.module').then(
+        (m) => m.CustomerModule
+      ),
   },
   {
-    path: "**",
-    component: DashboardComponent
-  }
-
+    path: '**',
+    component: DashboardComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

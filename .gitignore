@@ -69,3 +69,11 @@ CRMBug-BE/BugTracking/obj/
 CRMBug-BE/BugTracking/bin/
 CRMBug-BE/Infarstructure/obj/
 CRMBug-BE/Infarstructure/bin/
+
+*node_modules
+
+*.vs/
+*bin/
+*obj/
+*.json
+
