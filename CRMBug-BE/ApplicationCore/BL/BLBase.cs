@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,6 +63,22 @@ namespace ApplicationCore.BL
             }
             return serviceResult;
         }
+        public ServiceResult Delete(int entityID)
+        {
+            var rowAffects = DLBase.Delete(entityID);
+            if (rowAffects >= 1)
+            {
+                serviceResult.Code = Code.Created;
+                serviceResult.Data = rowAffects;
+            }
+            else
+            {
+                serviceResult.Code = Code.Exception;
+                serviceResult.Data = rowAffects;
+            }
+            return serviceResult;
+        }
+
         #endregion
 
     }

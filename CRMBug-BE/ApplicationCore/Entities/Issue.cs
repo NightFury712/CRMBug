@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,11 +12,11 @@ namespace ApplicationCore.Entities
     /// Thông tin vấn đề
     /// </summary>
     /// Author: HHDang 23.2.2022
+    [TableName("issue")]
     public class Issue : BaseEntity
     {
         #region Properties
         public string ID { get; set; }
-
         [TableColumn]
         public int TypeID { get; set; }
         [TableColumn]

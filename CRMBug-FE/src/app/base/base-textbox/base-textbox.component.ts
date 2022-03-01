@@ -1,4 +1,4 @@
-import { TypeControl } from './../../enumaration/type-control.enum';
+import { TypeControl } from './../../enumeration/type-control.enum';
 import { Component, forwardRef, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EventEmitter } from '@angular/core';

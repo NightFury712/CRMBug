@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -101,6 +101,15 @@ namespace Infarstructure.Base
             }
             return parameters;
         }
+
+        public int Delete(int entityID)
+        {
+            string query = $"DELETE FROM issue WHERE ID = @ID";
+            _dbConnection.Open();
+            int rowAffects = _dbConnection.Execute(query, new { ID = entityID }, commandType: CommandType.Text);
+            return rowAffects;
+        }
+        
         /// <summary>
         /// Đóng kết nối đến database
         /// </summary>

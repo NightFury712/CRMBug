@@ -8,7 +8,7 @@
 /bazel-out
 
 # dependencies
-/node_modules
+CRMBug-FE/node_modules/
 
 # profiling files
 chrome-profiler-events*.json
@@ -23,12 +23,12 @@ chrome-profiler-events*.json
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+CRMBug-FE/.vscode/*
+!CRMBug-FE/.vscode/settings.json
+!CRMBug-FE/.vscode/tasks.json
+!CRMBug-FE/.vscode/launch.json
+!CRMBug-FE/.vscode/extensions.json
+CRMBug-FE/.history/*
 
 # misc
 /.sass-cache
@@ -49,4 +49,23 @@ Thumbs.db
 *.cache
 *.txt
 *.nuget
-/bin
+*.csproj
+*.suo
+*.dll
+*.json
+*.razor.json
+*.dtbcache.v2
+*.runtimeconfig
+
+### DotnetCore ###
+*.cache
+*.dll
+*.exe
+*.pdb
+
+CRMBug-BE/ApplicationCore/obj/
+CRMBug-BE/ApplicationCore/bin/
+CRMBug-BE/BugTracking/obj/
+CRMBug-BE/BugTracking/bin/
+CRMBug-BE/Infarstructure/obj/
+CRMBug-BE/Infarstructure/bin/

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,6 +86,28 @@ namespace BugTracking.API.Base
             }
         }
 
-        #endregion
-    }
+        [HttpDelete("{entityID}")]
+        public IActionResult Delete(int entityID)
+        {
+            try
+            {
+                _serviceResult = _baseService.Delete(entityID);
+
+                if (_serviceResult.Code == Code.Ok)
+                {
+                    return Ok(_serviceResult);
+                }
+                else
+                {
+                    return Ok(_serviceResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+    #endregion
+  }
 }

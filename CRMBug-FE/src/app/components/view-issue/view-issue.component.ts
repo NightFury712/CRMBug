@@ -1,7 +1,7 @@
-import { IssueService } from './../../service/issue.service';
+import { IssueService } from '../../service/issue/issue.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { EntityState } from 'src/app/enumaration/entity-state.enum';
-import { TypeControl } from 'src/app/enumaration/type-control.enum';
+import { EntityState } from 'src/app/enumeration/entity-state.enum';
+import { TypeControl } from 'src/app/enumeration/type-control.enum';
 declare const $: any;
 
 @Component({
@@ -113,22 +113,23 @@ export class ViewIssueComponent implements OnInit {
   }
 
   addIssue(e: any) {
-    this.issues.push(
-      {
-        TypeID: 0,
-        TypeIDText: "Task",
-        Subject: "",
-        PriorityID: 0,
-        PriorityIDText: "Low",
-        StatusID: 0,
-        StatusIDText: "New",
-        AssignedTo: "",
-        FoundInBuild: "",
-        IntergratedBuild: "",
-        State: EntityState.Add,
-        EntityState: EntityState.Add
-      }
-    )
+    let newIssue = {
+      TypeID: 0,
+      TypeIDText: "Task",
+      Subject: "",
+      PriorityID: 0,
+      PriorityIDText: "Low",
+      StatusID: 0,
+      StatusIDText: "New",
+      AssignedTo: "",
+      FoundInBuild: "",
+      IntergratedBuild: "",
+      State: EntityState.Add,
+      EntityState: EntityState.Add
+    }
+    this.issues.push(newIssue);
+    this.currentData = newIssue;
+    this.isEditing = true;
   }
 
   clickBtnEdit(item: any, index: number) {
@@ -151,9 +152,13 @@ export class ViewIssueComponent implements OnInit {
   }
 
   cancelEdit(item: any, index: number) {
+    this.isEditing = false;
+    if(item.State == EntityState.Add) {
+      this.issues.splice(index, 1);
+      return;
+    }
     this.issues[index] = this.oldData
     item.State = EntityState.View;
-    this.isEditing = false;
   }
   
   saveIssue(item: any, index: number) {

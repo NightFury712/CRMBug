@@ -7,12 +7,8 @@ using ApplicationCore.Entities;
 
 namespace ApplicationCore.Interfaces.BL
 {
-    public interface IBLBase<T>
-    {
-        IEnumerable<T> GetEntities();
-
-        ServiceResult Save(T entity);
-
-        ServiceResult Delete(int entityID);
-    }
+  public interface IBLEmployee : IBLBase<Employee>
+  {
+    
+  }
 }

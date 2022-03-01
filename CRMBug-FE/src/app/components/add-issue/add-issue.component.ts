@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TypeControl } from 'src/app/enumaration/type-control.enum';
+import { TypeControl } from 'src/app/enumeration/type-control.enum';
 
 @Component({
   selector: 'app-add-issue',

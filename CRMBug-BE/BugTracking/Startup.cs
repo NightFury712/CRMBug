@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,65 +19,69 @@ using Microsoft.OpenApi.Models;
 
 namespace BugTracking
 {
-    public class Startup
+  public class Startup
+  {
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
-
-            services.AddControllers();
-            services.AddControllers().AddJsonOptions(jsonOptions =>
-            {
-                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BugTracking", Version = "v1" });
-            });
-            // Thực hiện DI cho base
-            services.AddScoped(typeof(IBLBase<>), typeof(BLBase<>));
-            services.AddScoped(typeof(IDLBase<>), typeof(DLBase<>));
-
-            // Thực hiện DI cho issue
-            services.AddScoped<IBLIssue, BLIssue>();
-            services.AddScoped<IDLIssue, DLIssue>();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BugTracking v1"));
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseCors("ApiCorsPolicy");
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+      Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+      {
+        builder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader();
+      }));
+
+      services.AddControllers();
+      services.AddControllers().AddJsonOptions(jsonOptions =>
+      {
+        jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+      });
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "BugTracking", Version = "v1" });
+      });
+      // Thực hiện DI cho base
+      services.AddScoped(typeof(IBLBase<>), typeof(BLBase<>));
+      services.AddScoped(typeof(IDLBase<>), typeof(DLBase<>));
+
+      // Thực hiện DI cho issue
+      services.AddScoped<IBLIssue, BLIssue>();
+      services.AddScoped<IDLIssue, DLIssue>();
+
+      // Thực hiện DI cho employee
+      services.AddScoped<IBLEmployee, BLEmployee>();
+      services.AddScoped<IDLEmployee, IDLEmployee>();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+        app.UseSwagger();
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BugTracking v1"));
+      }
+
+      app.UseHttpsRedirection();
+
+      app.UseRouting();
+
+      app.UseCors("ApiCorsPolicy");
+
+      app.UseAuthorization();
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllers();
+      });
+    }
+  }
 }

@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApplicationCore.Entities;
 
 namespace ApplicationCore.Interfaces.DL
 {
-    public interface IDLBase<T>
-    {
-        IEnumerable<T> GetEntities();
+  public interface IDLEmployee : IDLBase<Employee>
+  {
 
-        int Save(T entity);
-
-        int Delete(int entityID);
-     }
+  }
 }
