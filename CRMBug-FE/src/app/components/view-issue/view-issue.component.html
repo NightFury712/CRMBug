@@ -1,28 +1,38 @@
+<div class="toolbar bt-flex bt-justify-content-end">
+  <base-button
+    typeButton="primary"
+    text="Add issue"
+    (btnClick)="addIssue($event)"
+  >
+  </base-button>
+</div>
 <div class="issues-container bt-flex bt-flex-column">
-    <table class="table-fixed-header">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Subject</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Assigned to</th>
-                <th>Found in build</th>
-                <th>Intergrated build</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody class="issues">
-            <tr *ngFor="let item of issues; let index = index">
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.TypeIDText}}</span>
-                    <base-combobox
-                        [datas]="typeOfIssue"
-                        [(value)]="item.TypeID"
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-combobox>
-                    <!-- <base-textbox
+  <table class="table-fixed-header">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Subject</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Assigned to</th>
+        <th>Found in build</th>
+        <th>Intergrated build</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="issues">
+      <tr *ngFor="let item of issues; let index = index">
+        <td>
+          <span *ngIf="item.State == entityState.View">{{
+            item.TypeIDText
+          }}</span>
+          <base-combobox
+            [datas]="typeOfIssue"
+            [(value)]="item.TypeID"
+            *ngIf="item.State != entityState.View"
+          >
+          </base-combobox>
+          <!-- <base-textbox
                         [type]="typeControl.Textbox"
                         text=""
                         [(value)]="item.Type"
@@ -31,28 +41,30 @@
                         *ngIf="item.State == entityState.Edit"
                     >
                     </base-textbox> -->
-                </td>
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.Subject}}</span>
-                    <base-textbox
-                        [type]="typeControl.Textbox"
-                        text=""
-                        [(value)]="item.Subject"
-                        [isLabel]="false"
-                        placeholder=""
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-textbox>
-                </td>
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.PriorityIDText}}</span>
-                    <base-combobox
-                        [datas]="priorities"
-                        [(value)]="item.PriorityID"
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-combobox>
-                    <!-- <base-textbox
+        </td>
+        <td>
+          <span *ngIf="item.State == entityState.View">{{ item.Subject }}</span>
+          <base-textbox
+            [type]="typeControl.Textbox"
+            text=""
+            [(value)]="item.Subject"
+            [isLabel]="false"
+            placeholder=""
+            *ngIf="item.State != entityState.View"
+          >
+          </base-textbox>
+        </td>
+        <td>
+          <span *ngIf="item.State == entityState.View">{{
+            item.PriorityIDText
+          }}</span>
+          <base-combobox
+            [datas]="priorities"
+            [(value)]="item.PriorityID"
+            *ngIf="item.State != entityState.View"
+          >
+          </base-combobox>
+          <!-- <base-textbox
                         [type]="typeControl.Textbox"
                         text=""
                         [(value)]="item.Priority"
@@ -61,16 +73,18 @@
                         *ngIf="item.State == entityState.Edit"
                     >
                     </base-textbox> -->
-                </td>
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.StatusIDText}}</span>
-                    <base-combobox
-                        [datas]="issueState"
-                        [(value)]="item.StatusID"
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-combobox>
-                    <!-- <base-textbox
+        </td>
+        <td>
+          <span *ngIf="item.State == entityState.View">{{
+            item.StatusIDText
+          }}</span>
+          <base-combobox
+            [datas]="issueState"
+            [(value)]="item.StatusID"
+            *ngIf="item.State != entityState.View"
+          >
+          </base-combobox>
+          <!-- <base-textbox
                         [type]="typeControl.Textbox"
                         text=""
                         [(value)]="item.Status"
@@ -79,88 +93,88 @@
                         *ngIf="item.State == entityState.Edit"
                     >
                     </base-textbox> -->
-                </td>
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.AssignedTo}}</span>
-                    <base-textbox
-                        [type]="typeControl.Textbox"
-                        text=""
-                        [(value)]="item.AssignedTo"
-                        [isLabel]="false"
-                        placeholder=""
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-textbox>
-                </td>
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.FoundInBuild}}</span>
-                    <base-textbox
-                        [type]="typeControl.Textbox"
-                        text=""
-                        [(value)]="item.FoundInBuild"
-                        [isLabel]="false"
-                        placeholder=""
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-textbox>
-                </td>
-                <td>
-                    <span *ngIf="item.State == entityState.View">{{item.IntergratedBuild}}</span>
-                    <base-textbox
-                        [type]="typeControl.Textbox"
-                        text=""
-                        [(value)]="item.IntergratedBuild"
-                        [isLabel]="false"
-                        placeholder=""
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-textbox>
-                </td>
-                <td class="action">
-                    <base-button
-                        iconCSS="fa-solid fa-pencil"
-                        text=""
-                        typeButton="secondary"
-                        [width]="36"
-                        (btnClick)="clickBtnEdit(item, index)"
-                        *ngIf="item.State == entityState.View"
-                    >
-                    </base-button>
-                    <base-button
-                        iconCSS="fa-solid fa-check"
-                        text=""
-                        typeButton="primary"
-                        [width]="36"
-                        (btnClick)="saveIssue(item, index)"
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-button>
-                    <base-button
-                        iconCSS="fa-solid fa-trash"
-                        text=""
-                        typeButton="danger"
-                        [width]="36"
-                        (btnClick)="deleteIssue(item, index)"
-                        *ngIf="item.State == entityState.Edit"
-                    >
-                    </base-button>
-                    <base-button
-                        iconCSS="fa-solid fa-xmark"
-                        text=""
-                        typeButton="secondary"
-                        [width]="36"
-                        (btnClick)="cancelEdit(item, index)"
-                        *ngIf="item.State != entityState.View"
-                    >
-                    </base-button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <base-button
-        typeButton="primary"
-        text="Add issue"
-        (btnClick)="addIssue($event)"
-    >
-    </base-button>
+        </td>
+        <td>
+          <span *ngIf="item.State == entityState.View">{{
+            item.AssignedTo
+          }}</span>
+          <base-textbox
+            [type]="typeControl.Textbox"
+            text=""
+            [(value)]="item.AssignedTo"
+            [isLabel]="false"
+            placeholder=""
+            *ngIf="item.State != entityState.View"
+          >
+          </base-textbox>
+        </td>
+        <td>
+          <span *ngIf="item.State == entityState.View">{{
+            item.FoundInBuild
+          }}</span>
+          <base-textbox
+            [type]="typeControl.Textbox"
+            text=""
+            [(value)]="item.FoundInBuild"
+            [isLabel]="false"
+            placeholder=""
+            *ngIf="item.State != entityState.View"
+          >
+          </base-textbox>
+        </td>
+        <td>
+          <span *ngIf="item.State == entityState.View">{{
+            item.IntergratedBuild
+          }}</span>
+          <base-textbox
+            [type]="typeControl.Textbox"
+            text=""
+            [(value)]="item.IntergratedBuild"
+            [isLabel]="false"
+            placeholder=""
+            *ngIf="item.State != entityState.View"
+          >
+          </base-textbox>
+        </td>
+        <td class="action">
+          <base-button
+            iconCSS="fa-solid fa-pencil"
+            text=""
+            typeButton="secondary"
+            [width]="36"
+            (btnClick)="clickBtnEdit(item, index)"
+            *ngIf="item.State == entityState.View"
+          >
+          </base-button>
+          <base-button
+            iconCSS="fa-solid fa-check"
+            text=""
+            typeButton="primary"
+            [width]="36"
+            (btnClick)="saveIssue(item, index)"
+            *ngIf="item.State != entityState.View"
+          >
+          </base-button>
+          <base-button
+            iconCSS="fa-solid fa-trash"
+            text=""
+            typeButton="danger"
+            [width]="36"
+            (btnClick)="deleteIssue(item, index)"
+            *ngIf="item.State == entityState.Edit"
+          >
+          </base-button>
+          <base-button
+            iconCSS="fa-solid fa-xmark"
+            text=""
+            typeButton="secondary"
+            [width]="36"
+            (btnClick)="cancelEdit(item, index)"
+            *ngIf="item.State != entityState.View"
+          >
+          </base-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

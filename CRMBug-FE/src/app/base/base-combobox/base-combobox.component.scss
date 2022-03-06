@@ -5,12 +5,22 @@
     .mat-form-field {
       display: block;
       .mat-form-field-wrapper {
+        padding: 0;
         .mat-form-field-flex {
-          background-color: $fds-gray-05;
+          padding: 0 10px;
+          background-color: $color-white;
+          border: 1px solid $color-grey-20;
+          border-radius: 4px;
+          align-items: center;
+          height: 32px;
+          .mat-select-value {
+            font-size: 13px;
+          }
           .mat-select-min-line {
             color: $color-black;
           }
           .mat-select-arrow-wrapper {
+            transform: none;
             .mat-select-arrow {
               color: $default-color-green;
             }
@@ -19,7 +29,12 @@
       }
     }
     .mat-form-field-appearance-fill {
+      .mat-form-field-infix {
+        padding: 0;
+        border: none;
+      }
       .mat-form-field-underline {
+        display: none;
         &::before {
           background-color: $default-color-green !important;
         }
@@ -27,6 +42,26 @@
     }
     .mat-form-field-ripple {
       background-color: $default-color-green !important;
+    }
+  }
+}
+
+::ng-deep {
+  .cdk-overlay-container {
+    .mat-select-panel-wrap {
+      .mat-select-panel {
+        background-color: $color-white !important;
+        .mat-option {
+          &:hover {
+            background-color: $color-grey-05;
+          }
+          &.mat-active {
+            background-color: $color-green-primary !important;
+            color: $color-white;
+          }
+          color: $color-black;
+        }
+      }
     }
   }
 }
