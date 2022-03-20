@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class IssueService extends BaseService {
-  constructor(private http: HttpClient) {
-    super();
+  constructor(http: HttpClient) {
+    super(http);
     this.controller = `${this.controller}/Issue`
   }
 

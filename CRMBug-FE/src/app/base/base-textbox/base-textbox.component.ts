@@ -29,7 +29,13 @@ export class BaseTextboxComponent implements OnInit, ControlValueAccessor  {
   value: string = "";
 
   @Input()
+  titleWidth: number = 150;
+
+  @Input()
   isLabel: boolean = true;
+
+  @Input()
+  required: boolean = false;
 
   @Output()
   valueChange = new EventEmitter();

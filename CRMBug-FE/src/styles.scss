@@ -10,6 +10,36 @@ body {
   background-color: $bg-page;
 }
 
+.bt-dialog {
+  .mat-dialog-container {
+    background-color: $color-white;
+    color: $color-black;
+    padding: 0;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: #888;
+  width: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .bt-flex {
   display: flex !important;
 }

@@ -1,7 +1,10 @@
+import { PopupEditIssueComponent } from './../popup/popup-edit-issue/popup-edit-issue.component';
+import { MatDialog } from '@angular/material/dialog';
 import { IssueService } from '../../service/issue/issue.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EntityState } from 'src/app/enumeration/entity-state.enum';
 import { TypeControl } from 'src/app/enumeration/type-control.enum';
+import { ConfigDialog } from 'src/app/modules/config-dialog';
 declare const $: any;
 
 @Component({
@@ -93,43 +96,51 @@ export class ViewIssueComponent implements OnInit {
 
   currentData: any = {};
 
-  constructor(private service: IssueService) { }
+  constructor(
+      private service: IssueService,
+      private dialog: MatDialog
+    ) { }
 
   ngOnInit() {
-    this.service.getIssues().subscribe(resp => {
-      if(resp && resp.Success) {
-        this.issues = resp.Data.map((item: any) =>  
-          {
-            return {
-              ...item,
-              State: EntityState.View,
-              EntityState: EntityState.Edit
-            }
-          });
-      } else {
-        console.log(resp)
-      }
-    });
+    // this.service.getIssues().subscribe(resp => {
+    //   if(resp && resp.Success) {
+    //     this.issues = resp.Data.map((item: any) =>  
+    //       {
+    //         return {
+    //           ...item,
+    //           State: EntityState.View,
+    //           EntityState: EntityState.Edit
+    //         }
+    //       });
+    //   } else {
+    //     console.log(resp)
+    //   }
+    // });
   }
 
   addIssue(e: any) {
-    let newIssue = {
-      TypeID: 0,
-      TypeIDText: "Task",
-      Subject: "",
-      PriorityID: 0,
-      PriorityIDText: "Low",
-      StatusID: 0,
-      StatusIDText: "New",
-      AssignedTo: "",
-      FoundInBuild: "",
-      IntergratedBuild: "",
-      State: EntityState.Add,
-      EntityState: EntityState.Add
-    }
-    this.issues.push(newIssue);
-    this.currentData = newIssue;
-    this.isEditing = true;
+    // let newIssue = {
+    //   TypeID: 0,
+    //   TypeIDText: "Task",
+    //   Subject: "",
+    //   PriorityID: 0,
+    //   PriorityIDText: "Low",
+    //   StatusID: 0,
+    //   StatusIDText: "New",
+    //   AssignedTo: "",
+    //   FoundInBuild: "",
+    //   IntergratedBuild: "",
+    //   State: EntityState.Add,
+    //   EntityState: EntityState.Add
+    // }
+    // this.issues.push(newIssue);
+    // this.currentData = newIssue;
+    // this.isEditing = true;
+    const config = new ConfigDialog('800px');
+    const dialogRef = this.dialog.open(PopupEditIssueComponent, config);
+    dialogRef.afterClosed().subscribe(resp => {
+      console.log(resp);
+    })
   }
 
   clickBtnEdit(item: any, index: number) {

@@ -6,18 +6,22 @@ import { BaseButtonComponent } from "../base/base-button/base-button.component";
 import { BaseTextboxComponent } from "../base/base-textbox/base-textbox.component";
 import { MatSelectModule } from '@angular/material/select'
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PopupEditIssueComponent } from './popup/popup-edit-issue/popup-edit-issue.component';
+import { MatDialogModule } from '@angular/material/dialog'
 
 @NgModule({
 	declarations: [
 		BaseButtonComponent,
 		BaseTextboxComponent,
-		BaseComboboxComponent
+		BaseComboboxComponent,
+  	PopupEditIssueComponent
 	],
 	imports: [
 		BrowserModule,
 		FormsModule,
 		MatSelectModule,
-		MatFormFieldModule
+		MatFormFieldModule,
+		MatDialogModule
 	],
 	exports: [
 		BaseButtonComponent,

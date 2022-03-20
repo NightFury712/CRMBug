@@ -1,0 +1,139 @@
+<div class="add-issue-container">
+  <div class="header">
+    Add Issue
+  </div>
+  <div class="content-container">
+    <div class="groupbox-item">
+      <div class="groupbox-title">
+        Details
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="field-left w-1/2">
+          <base-textbox
+            text="Type"
+            [type]="typeControl.Textbox"
+            [titleWidth]="120"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+        <div class="field-right w-1/2">
+          <base-textbox
+            text="Subject"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            [required]="true"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="field-left w-1/2">
+          <base-textbox
+            text="Priority"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+        <div class="field-right w-1/2">
+          <base-textbox
+            text="Caused from"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+      </div>
+      <div class="field w-full bt-flex bt-flex-column">
+        <div class="title">
+          Description
+        </div>
+        <textarea name="name" id="textarea" class="w-full" cols="30" rows="10"></textarea>
+      </div>
+    </div>
+    <div class="groupbox-item">
+      <div class="groupbox-title">
+        Status
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="field-left w-1/2">
+          <base-textbox
+            text="Status"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+        <div class="field-right w-1/2">
+          <base-textbox
+            text="Assigned to"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="field-left w-1/2">
+          <base-textbox
+            text="Solution Approved"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+        <div class="field-right w-1/2">
+        </div>
+      </div>
+    </div>
+    <div class="groupbox-item">
+      <div class="groupbox-title">
+        Build
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="field-left w-1/2">
+          <base-textbox
+            text="Found in build"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+        <div class="field-right w-1/2">
+          <base-textbox
+            text="Intergrated in build"
+            [titleWidth]="120"
+            [type]="typeControl.Textbox"
+            placeholder=""
+          >
+          </base-textbox>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="feature bt-flex bt-flex-row w-full bt-justify-content-end">
+    <div class="button-first">
+      <base-button
+        typeButton="secondary"
+        text="Save and Add"
+        [width]="120"
+      >
+      </base-button>
+    </div>
+    <div class="button-seconds">
+      <base-button
+        typeButton="primary"
+        text="Save"
+      >
+      </base-button>
+    </div>
+  </div>
+</div>

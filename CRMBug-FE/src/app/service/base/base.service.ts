@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { APIConfig } from 'src/app/api/config';
 
 @Injectable({
@@ -6,7 +8,13 @@ import { APIConfig } from 'src/app/api/config';
 })
 export class BaseService {
   controller: string = "";
-  constructor() {
+  constructor(
+    protected http: HttpClient
+  ) {
     this.controller = `${APIConfig.development}/api/v1`
+  }
+
+  getDatas(): Observable<any> {
+    return this.http.get<any>(this.controller);
   }
 }

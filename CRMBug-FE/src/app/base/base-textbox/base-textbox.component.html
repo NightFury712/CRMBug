@@ -1,10 +1,13 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="typeControl.Textbox">
     <div class="textbox-container bt-flex bt-flex-row bt-align-items-center">
-      <div class="title" *ngIf="isLabel">{{text}}</div>
+      <div class="title" *ngIf="isLabel" [ngStyle]="{'max-width.px': titleWidth, 'min-width.px': titleWidth}">
+        {{text}}
+        <span class="star" *ngIf="required">*</span>
+      </div>
       <input 
         type="text" class="textbox text w-full" placeholder="{{placeholder}}" [(ngModel)]="value"
-        (input)="onInput()"
+        (input)="onInput()" [required]="required"
       >
     </div>
   </ng-container>

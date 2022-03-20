@@ -13,8 +13,10 @@
   }
   .textbox-container {
     .title {
-      min-width: 150px;
-      max-width: 150px;
+      .star {
+        color: $fds-red-55;
+        padding-left: 3px;
+      }
     }
   }
   .textbox {
