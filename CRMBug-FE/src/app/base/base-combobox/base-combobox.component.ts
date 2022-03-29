@@ -20,6 +20,15 @@ export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
   @Input()
   value: any;
 
+  @Input()
+  isShowLabel: boolean = false;
+
+  @Input()
+  labelText: string = "";
+
+  @Input()
+  labelWidth: number = 120;
+
   @Output()
   valueChange = new EventEmitter();
   change = (data: any) => {};

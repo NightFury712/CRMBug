@@ -17,4 +17,9 @@ export class BaseService {
   getDatas(): Observable<any> {
     return this.http.get<any>(this.controller);
   }
+
+  getDictionary(): Observable<any> {
+    const url = `${this.controller}/Dictionary`;
+    return this.http.get<any>(url);
+  }
 }

@@ -102,20 +102,20 @@ export class ViewIssueComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    // this.service.getIssues().subscribe(resp => {
-    //   if(resp && resp.Success) {
-    //     this.issues = resp.Data.map((item: any) =>  
-    //       {
-    //         return {
-    //           ...item,
-    //           State: EntityState.View,
-    //           EntityState: EntityState.Edit
-    //         }
-    //       });
-    //   } else {
-    //     console.log(resp)
-    //   }
-    // });
+    this.service.getIssues().subscribe(resp => {
+      if(resp && resp.Success) {
+        this.issues = resp.Data.map((item: any) =>  
+          {
+            return {
+              ...item,
+              State: EntityState.View,
+              EntityState: EntityState.Edit
+            }
+          });
+      } else {
+        console.log(resp)
+      }
+    });
   }
 
   addIssue(e: any) {

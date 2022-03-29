@@ -9,13 +9,12 @@
       </div>
       <div class="field w-full bt-flex bt-flex-row">
         <div class="field-left w-1/2">
-          <base-textbox
-            text="Type"
-            [type]="typeControl.Textbox"
-            [titleWidth]="120"
-            placeholder=""
-          >
-          </base-textbox>
+          <base-combobox
+            [datas]="issueType"
+            [(value)]="inputData.TypeID"
+            [isShowLabel]="true"
+            labelText="Type"
+          ></base-combobox>
         </div>
         <div class="field-right w-1/2">
           <base-textbox
@@ -24,19 +23,26 @@
             [type]="typeControl.Textbox"
             [required]="true"
             placeholder=""
+            [(value)]="inputData.Subject"
           >
           </base-textbox>
         </div>
       </div>
       <div class="field w-full bt-flex bt-flex-row">
         <div class="field-left w-1/2">
-          <base-textbox
+          <base-combobox
+            [datas]="issuePriority"
+            [(value)]="inputData.PriorityID"
+            [isShowLabel]="true"
+            labelText="Priority"
+          ></base-combobox>
+          <!-- <base-textbox
             text="Priority"
             [titleWidth]="120"
             [type]="typeControl.Textbox"
             placeholder=""
           >
-          </base-textbox>
+          </base-textbox> -->
         </div>
         <div class="field-right w-1/2">
           <base-textbox
