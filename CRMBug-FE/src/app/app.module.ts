@@ -15,7 +15,8 @@ import { ViewIssueComponent } from './components/view-issue/view-issue.component
 import { ChartComponent } from './components/chart/chart.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { BaseDatepickerComponent } from './base/base-datepicker/base-datepicker.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http'
     AddIssueComponent,
     ViewIssueComponent,
     ChartComponent,
-    AddressComponent
+    AddressComponent,
+    BaseDatepickerComponent
   ],
   imports: [
     BrowserModule,

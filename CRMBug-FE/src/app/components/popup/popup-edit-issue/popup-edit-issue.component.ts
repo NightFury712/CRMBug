@@ -3,7 +3,7 @@ import { IssuePriority } from './../../../enumeration/issue-priority.enum';
 import { EntityState } from './../../../enumeration/entity-state.enum';
 import { IssueService } from './../../../service/issue/issue.service';
 import { EmployeeService } from './../../../service/employee/employee.service';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Input } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { TypeControl } from 'src/app/enumeration/type-control.enum';
 import { IssueType } from 'src/app/enumeration/issue-type.enum';
@@ -22,6 +22,7 @@ export class PopupEditIssueComponent implements OnInit {
   
   issueState: any = [];
 
+  @Input()
   inputData: any = {
     TypeID: IssueType.Task,
     TypeIDText: "Task",
@@ -33,7 +34,7 @@ export class PopupEditIssueComponent implements OnInit {
     AssignedTo: "",
     FoundInBuild: "",
     IntergratedBuild: "",
-    State: EntityState.View
+    State: EntityState.Add
   }
 
   constructor(
@@ -55,5 +56,30 @@ export class PopupEditIssueComponent implements OnInit {
       }
     })
   }
+  /**
+   * Thực hiện lưu dữ liệu
+   * Author: HHDANG 14.4.2022
+   */
+  saveData() {
+    this.issueService.addIssue(this.inputData).subscribe(
+      resp => {
+        console.log(resp);
+      }
+    )
+    this.dialogRef.close(true);
 
+  }
+  /**
+   * Thực hiện lưu và thêm
+   * Author: HHDANG 14.4.2022
+   */
+  saveAndAddData() {
+    
+  }
+  /**
+   * Đóng popup
+   */
+  close() {
+    this.dialogRef.close();
+  }
 }

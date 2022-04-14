@@ -32,7 +32,6 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: 3px;
   background: #888;
-  width: 4px;
 }
 
 /* Handle on hover */
@@ -82,6 +81,14 @@ body {
 
 .bt-align-self-center {
   align-self: center;
+}
+
+.bt-justify-self-center {
+  justify-self: center;
+}
+
+.bt-justify-self-end {
+  justify-self: flex-end;
 }
 
 .w-full {

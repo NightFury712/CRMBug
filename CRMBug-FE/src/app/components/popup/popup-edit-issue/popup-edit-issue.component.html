@@ -1,6 +1,11 @@
 <div class="add-issue-container">
-  <div class="header">
-    Add Issue
+  <div class="header bt-flex">
+    <div class="title">
+      Add Issue
+    </div>
+    <div class="close bt-flex bt-justify-self-end">
+      <i class="fa-solid fa-x" (click)="close()"></i>
+    </div>
   </div>
   <div class="content-container">
     <div class="groupbox-item">
@@ -125,21 +130,23 @@
       </div>
     </div>
   </div>
-  <div class="feature bt-flex bt-flex-row w-full bt-justify-content-end">
-    <div class="button-first">
-      <base-button
-        typeButton="secondary"
-        text="Save and Add"
-        [width]="120"
-      >
-      </base-button>
-    </div>
-    <div class="button-seconds">
-      <base-button
-        typeButton="primary"
-        text="Save"
-      >
-      </base-button>
-    </div>
+</div>
+<div class="feature bt-flex bt-flex-row w-full bt-justify-content-end">
+  <div class="button-first">
+    <base-button
+      typeButton="secondary"
+      text="Save and Add"
+      [width]="120"
+      (btnClick)="saveAndAddData()"
+    >
+    </base-button>
+  </div>
+  <div class="button-seconds">
+    <base-button
+      typeButton="primary"
+      text="Save"
+      (btnClick)="saveData()"
+    >
+    </base-button>
   </div>
 </div>

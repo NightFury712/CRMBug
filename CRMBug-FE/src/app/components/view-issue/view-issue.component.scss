@@ -18,10 +18,15 @@
     max-width: calc(100% - 40px);
     overflow: auto;
     margin: 20px 24px 0 30px;
+    /* width */
+    &::-webkit-scrollbar {
+      width: 4px;
+    } 
   }
   .table-fixed-header {
     overflow: auto;
     border-collapse: collapse;
+    
     .issues {
       .action {
         min-width: 200px;
