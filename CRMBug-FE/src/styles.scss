@@ -83,6 +83,10 @@ body {
   align-self: center;
 }
 
+.bt-align-self-end {
+  align-self: flex-end;
+}
+
 .bt-justify-self-center {
   justify-self: center;
 }
@@ -107,8 +111,17 @@ body {
   width: 25%;
 }
 
+.w-2\/5 {
+  width: 40%;
+}
+
+.w-3\/5 {
+  width: 60%;
+}
+
 .w-4\/5 {
   width: 80%;
 }
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
