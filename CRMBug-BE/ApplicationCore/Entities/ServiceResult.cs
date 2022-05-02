@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,21 +7,22 @@ using static ApplicationCore.Enumeration.Enumeration;
 
 namespace ApplicationCore.Entities
 {
-    public class ServiceResult
-    {
-        /// <summary>
-        /// Dữ liệu trả về
-        /// </summary>
-        public object Data { get; set; }
-        /// <summary>
-        /// Thông báo về kết quả
-        /// </summary>
-        public string Messenger { get; set; }
-        /// <summary>
-        /// Mã của kết quả
-        /// </summary>
-        public Code Code { get; set; }
+  public class ServiceResult
+  {
+    /// <summary>
+    /// Dữ liệu trả về
+    /// </summary>
+    public object Data { get; set; }
+    /// <summary>
+    /// Thông báo về kết quả
+    /// </summary>
+    public string Messenger { get; set; }
+    /// <summary>
+    /// Mã của kết quả
+    /// </summary>
+    public Code Code { get; set; }
 
-        public bool Success { get; set; }
-    }
+    public bool Success { get; set; }
+    public List<string> ValidateInfo { get; set; }
+  }
 }

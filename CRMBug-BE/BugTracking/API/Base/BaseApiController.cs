@@ -9,104 +9,125 @@ using static ApplicationCore.Enumeration.Enumeration;
 
 namespace BugTracking.API.Base
 {
-    [Route("api/v1/[controller]")]
-    [ApiController]
-    public class BaseApiController<T> : ControllerBase
+  [Route("api/v1/[controller]")]
+  [ApiController]
+  public class BaseApiController<T> : ControllerBase
+  {
+    #region Declare
+    private readonly IBLBase<T> _baseService;
+    protected ServiceResult _serviceResult;
+    string _entityName = string.Empty;
+    #endregion
+
+    #region Constructor
+    public BaseApiController(IBLBase<T> baseService)
     {
-        #region Declare
-        private readonly IBLBase<T> _baseService;
-        protected ServiceResult _serviceResult;
-        string _entityName = string.Empty;
-        #endregion
+      _baseService = baseService;
+      _entityName = typeof(BaseEntity).Name;
+      _serviceResult = new ServiceResult();
+    }
+    #endregion
 
-        #region Constructor
-        public BaseApiController(IBLBase<T> baseService)
+    #region API
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+      try
+      {
+        var datas = _baseService.GetEntities();
+        if (datas != null && datas.Count() > 0)
         {
-            _baseService = baseService;
-            _entityName = typeof(BaseEntity).Name;
-            _serviceResult = new ServiceResult();
-        }
-        #endregion
+          _serviceResult.Data = datas;
+          _serviceResult.Success = true;
+          return Ok(_serviceResult);
 
-        #region API
-        [HttpGet]
-        public IActionResult GetAll()
+        }
+        return NoContent();
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, ex);
+
+      }
+    }
+
+    /// <summary>
+    /// Thêm mới thực thể
+    /// </summary>
+    /// <param name="entity">Obj chứa thông tin thực thể thêm mới</param>
+    /// <returns>Thông điệp</returns>
+    /// Author: HHDang 23.2.2022
+    [HttpPost]
+    public IActionResult Post(T entity)
+    {
+      try
+      {
+        _serviceResult = _baseService.Save(entity);
+        if (_serviceResult.Code == Code.Created && (int)_serviceResult.Data > 0)
         {
-            try
-            {
-                var employees = _baseService.GetEntities();
-                if (employees != null)
-                {
-                    if (employees.Count() > 0)
-                    {
-                        _serviceResult.Data = employees;
-                        _serviceResult.Success = true;
-                        return Ok(_serviceResult);
-                    }
-                }
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-
-            }
+          return Created("Create successfully! ", _serviceResult);
         }
-
-        /// <summary>
-        /// Thêm mới thực thể
-        /// </summary>
-        /// <param name="entity">Obj chứa thông tin thực thể thêm mới</param>
-        /// <returns>Thông điệp</returns>
-        /// Author: HHDang 23.2.2022
-        [HttpPost]
-        public IActionResult Post(T entity)
+        else if (_serviceResult.Code == Code.NotValid)
         {
-            try
-            {
-                _serviceResult = _baseService.Save(entity);
-                if (_serviceResult.Code == Code.Created && (int)_serviceResult.Data > 0)
-                {
-                    return Created("Create successfully! ", _serviceResult);
-                }
-                else if (_serviceResult.Code == Code.NotValid)
-                {
-                    return Ok(_serviceResult);
-                }
-                else
-                {
-                    _serviceResult.Code = Code.Exception;
-                    return StatusCode(500, _serviceResult);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, ex);
-            }
+          return Ok(_serviceResult);
         }
-
-        [HttpDelete("{entityID}")]
-        public IActionResult Delete(int entityID)
+        else
         {
-            try
-            {
-                _serviceResult = _baseService.Delete(entityID);
-
-                if (_serviceResult.Code == Code.Ok)
-                {
-                    return Ok(_serviceResult);
-                }
-                else
-                {
-                    return Ok(_serviceResult);
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+          _serviceResult.Code = Code.Exception;
+          return StatusCode(500, _serviceResult);
         }
+      }
+      catch (Exception ex)
+      {
+
+        return StatusCode(500, ex);
+      }
+    }
+
+    [HttpDelete("{entityID}")]
+    public IActionResult Delete(int entityID)
+    {
+      try
+      {
+        _serviceResult = _baseService.Delete(entityID);
+
+        if (_serviceResult.Code == Code.Ok)
+        {
+          return Ok(_serviceResult);
+        }
+        else
+        {
+          return Ok(_serviceResult);
+        }
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, ex);
+      }
+    }
+
+    [HttpGet]
+    [Route("Dictionary")]
+    public IActionResult GetDictionaryByLayoutCode()
+    {
+      try
+      {
+        _serviceResult = _baseService.GetDictionaryByLayoutCode();
+
+        if (_serviceResult.Code == Code.Ok)
+        {
+          return Ok(_serviceResult);
+        }
+        else
+        {
+          return Ok(_serviceResult);
+        }
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, ex);
+      }
+    }
 
     #endregion
   }

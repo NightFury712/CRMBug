@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces.DL
 {
-    public interface IDLBase<T>
-    {
-        IEnumerable<T> GetEntities();
+  public interface IDLBase<T>
+  {
+    IEnumerable<T> GetEntities();
 
-        int Save(T entity);
+    int Save(T entity);
 
-        int Delete(int entityID);
-     }
+    int Delete(int entityID);
+
+    Dictionary<string, object> GetDictionaryByLayoutCode();
+  }
 }

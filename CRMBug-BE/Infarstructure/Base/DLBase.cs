@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System.ComponentModel.DataAnnotations.Schema;
 using MySqlX.XDevAPI.Relational;
+using Newtonsoft.Json;
+using Library;
+using static ApplicationCore.Enumeration.Enumeration;
 
 namespace Infarstructure.Base
 {
@@ -69,7 +72,23 @@ namespace Infarstructure.Base
       var parameters = MappingDbtype(entity);
       var properties = entity.GetType().GetProperties();
       var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name);
-      string query = $"INSERT INTO {_tableName} ({string.Join(",", propertyNames)}) VALUE ({string.Join(",", propertyNames.Select(item => $"@{item}"))})";
+      StringBuilder field = new StringBuilder("");
+      StringBuilder value = new StringBuilder("");
+      field.Append(string.Join(",", propertyNames));
+      value.Append(string.Join(",", propertyNames.Select(item => $"@{item}")));
+      switch(entity.EntityState)
+      {
+        case EntityState.Add:
+          field.Append(", CreatedDate, CreatedBy, ModifiedDate, ModifiedBy");
+          value.Append(", NOW(), \'Hoàng Hải Đăng\', NOW(), \'Hoàng Hải Đăng\'");
+          break;
+
+        case EntityState.Edit:
+          field.Append(", ModifiedDate, ModifiedBy");
+          value.Append(", NOW(), \'Hoàng Hải Đăng\'");
+          break;
+      }
+      string query = $"INSERT INTO {_tableName} ({field}) VALUE ({value})";
       // Thực thi commandText
       rowAffects = _dbConnection.Execute(query, parameters, commandType: CommandType.Text);
       // Trả về kết quả (Số bản ghi thêm mới được)
@@ -109,6 +128,26 @@ namespace Infarstructure.Base
       _dbConnection.Open();
       int rowAffects = _dbConnection.Execute(query, new { ID = entityID }, commandType: CommandType.Text);
       return rowAffects;
+    }
+
+    public Dictionary<string, object> GetDictionaryByLayoutCode()
+    {
+      Dictionary<string, object> datas = new Dictionary<string, object>();
+      List<List<Dictionary<string, object>>> listData = new List<List<Dictionary<string, object>>>();
+      string procedures = "Proc_GetDictionaryByFormLayout";
+      using (var rd = _dbConnection.ExecuteReader(procedures, new { v_LayoutCode = _tableName }, commandType: CommandType.StoredProcedure))
+      {
+        if(rd != null)
+        {
+          listData.Add(ExtensionMethod.ToListDictionary(rd));
+          while(rd.NextResult())
+          {
+            listData.Add(ExtensionMethod.ToListDictionary(rd));
+          }
+        }
+      }
+      datas.Add("Dictionary", listData);
+      return datas;
     }
 
     public string GetTableName<BEntity>()

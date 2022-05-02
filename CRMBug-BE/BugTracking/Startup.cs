@@ -8,6 +8,7 @@ using ApplicationCore.Interfaces.DL;
 using Infarstructure.Base;
 using Infarstructure.Employees;
 using Infarstructure.Issues;
+using Infarstructure.Projects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -59,6 +60,10 @@ namespace BugTracking
       // Thực hiện DI cho employee
       services.AddScoped<IBLEmployee, BLEmployee>();
       services.AddScoped<IDLEmployee, DLEmployee>();
+
+      // Thực hiện DI cho project
+      services.AddScoped<IBLProject, BLProject>();
+      services.AddScoped<IDLProject, DLProject>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

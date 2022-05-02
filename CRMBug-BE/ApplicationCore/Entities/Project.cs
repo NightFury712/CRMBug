@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ApplicationCore.Entities
+{
+  [TableName("project")]
+  public class Project : BaseEntity
+  {
+    /// <summary>
+    /// Khóa chính
+    /// </summary>
+    public int ID { get; set; }
+    /// <summary>
+    /// Tên dự án
+    /// </summary>
+    [TableColumn]
+    [Required]
+    [DisplayName("Project Name")]
+    public string ProjectName { get; set; }
+    /// <summary>
+    /// Mã dự án
+    /// </summary>
+    [TableColumn]
+    [Required]
+    [DisplayName("Project Code")]
+    public string ProjectCode { get; set; }
+
+  }
+}

@@ -7,14 +7,7 @@ using ApplicationCore.Entities;
 
 namespace ApplicationCore.Interfaces.BL
 {
-  public interface IBLBase<T>
+  public interface IBLProject : IBLBase<Project>
   {
-    IEnumerable<T> GetEntities();
-
-    ServiceResult Save(T entity);
-
-    ServiceResult Delete(int entityID);
-
-    ServiceResult GetDictionaryByLayoutCode();
   }
 }
