@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~font-awesome/scss/font-awesome.scss';
 @import '/src/color';
+@import '/src/font';
+
 * {
   box-sizing: border-box;
 }
@@ -8,6 +10,8 @@
 body {
   margin: 0;
   background-color: $bg-page;
+  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
 }
 
 .bt-dialog {
@@ -15,6 +19,17 @@ body {
     background-color: $color-white;
     color: $color-black;
     padding: 0;
+  }
+}
+
+.mat-tooltip-panel {
+  .mat-tooltip {
+    font-size: $font-size-base;
+    background-color: $color-black;
+    color: $color-white;
+  }
+  &.mat-tooltip-panel-above {
+    margin-bottom: 8px;
   }
 }
 
@@ -124,4 +139,3 @@ body {
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

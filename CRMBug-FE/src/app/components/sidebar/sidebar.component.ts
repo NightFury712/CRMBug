@@ -1,3 +1,4 @@
+import { DataService } from './../../service/data/data.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+  projectID: number = 0;
 
-  constructor() { }
+  constructor(
+    private dataSV: DataService
+  ) {
+
+  }
 
   ngOnInit(): void {
+    this.dataSV.projectID.subscribe((data) => {
+      if(data != 0) {
+        this.projectID = data;
+      }
+    })
   }
 
 }

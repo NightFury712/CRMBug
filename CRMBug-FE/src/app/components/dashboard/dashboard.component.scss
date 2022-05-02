@@ -1,0 +1,119 @@
+@import "../../../styles.scss";
+@import "../../../font.scss";
+@import "../../../color.scss";
+
+:host {
+  .dashboard-container {
+    margin-top: 50px;
+    padding: 0 32px;
+    .header {
+      padding-top: 30px;
+      height: 70px;
+      .title {
+        font-size: $font-largetitle;
+        font-weight: $font-weight-medium;
+      }
+    }
+    .main-content {
+      padding: 30px 60px 0 60px;
+      .project-container {
+        margin-right: 36px;
+        .project-header {
+          height: 40px;
+          margin-bottom: 12px;
+          .title {
+            font-size: $font-subtitle;
+            font-weight: $font-weight-bold;
+          }
+          .search {
+            width: 200px;
+          }
+          .add-project {
+            margin-left: 12px;
+            border-radius: 50%;
+            border: 1px solid $border-color;
+            width: 36px;
+            height: 36px;
+            background-color: $color-white;
+            transition: 0.22s;
+            cursor: pointer;
+            &:hover {
+              background-color: $color-hover-green;
+              i {
+                color: $color-white;
+              }
+            }
+            i {
+              font-size: $font-title;
+              color: $fds-dark-mode-gray-50;
+            }
+          }
+        }
+        .project-list {
+          border: 1px solid $border-color;
+          background-color: $color-white;
+          .project-item {
+            height: 58px;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: 0.22s;
+            position: relative;
+            &:hover {
+              background-color: $color-hover-green;
+              .info {
+                .name,
+                .key {
+                  color: $color-white;
+                }
+              }
+            }
+            &::before {
+              content: "";
+              position: absolute;
+              height: 1px;
+              width: calc(100% - 24px);
+              bottom: 0;
+              background-color: $border-color;
+            }
+            &:nth-last-child(1) {
+              &::before {
+                height: 0;
+              }
+            }
+            .avatar {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: $color-white;
+              i {
+                color: $fds-dark-mode-gray-50;
+                font-size: $font-title;
+              }
+            }
+            .info {
+              padding-left: 12px;
+              .name {
+                font-size: $font-body;
+                font-weight: $font-weight-medium;
+                padding-bottom: 2px;
+              }
+              .key {
+                font-size: $font-size-base;
+                color: $fds-dark-mode-gray-50;
+              }
+            }
+          }
+        }
+      }
+      .notification-container {
+        .notification-header {
+          margin-bottom: 12px;
+          .title {
+            font-size: $font-subtitle;
+            font-weight: $font-weight-bold;
+          }
+        }
+      }
+    }
+  }
+}

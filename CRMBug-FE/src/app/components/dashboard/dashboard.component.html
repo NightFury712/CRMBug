@@ -1,1 +1,60 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <div class="header bt-flex bt-justify-content-center">
+    <div class="icon"></div>
+    <div class="title">Bug Tracking System</div>
+  </div>
+  <div class="main-content bt-flex">
+    <div class="project-container w-1/2">
+      <div class="project-header bt-flex">
+        <div class="title w-2/5">
+          Projects
+        </div>
+        <div class="action w-3/5 bt-flex bt-justify-content-end bt-align-items-center">
+          <div class="search">
+            <base-textbox
+              [placeholder]="'Search project'"
+              [type]="typeControl.Search"
+            >
+            </base-textbox>
+          </div>
+          <div 
+            class="add-project bt-flex bt-align-items-center bt-justify-content-center"
+            matTooltip="Add Project"
+            [matTooltipPosition]="'above'"
+            (click)="addProject()"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </div>
+        </div>
+      </div>
+      <div class="project-list">
+        <div 
+          class="project-item bt-flex bt-align-items-center"
+          *ngFor="let item of projects"
+          (click)="openProject(item.ID)"
+        >
+          <div class="avatar bt-flex bt-align-items-center bt-justify-content-center">
+            <i class="fa-solid fa-city"></i>
+          </div>
+          <div class="info">
+            <div class="name">
+              {{ item.ProjectName }}
+            </div>
+            <div class="key">
+              {{ item.ProjectCode }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notification-container w-1/2">
+      <div class="notification-header">
+        <div class="title">
+          Recent Updates
+        </div>
+      </div>
+      <base-notification>
+      </base-notification>
+    </div>
+  </div>
+</div>

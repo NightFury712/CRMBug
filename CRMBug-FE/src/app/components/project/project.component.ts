@@ -1,3 +1,5 @@
+import { DataService } from './../../service/data/data.service';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
   }

@@ -16,7 +16,8 @@ import { ChartComponent } from './components/chart/chart.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { BaseDatepickerComponent } from './base/base-datepicker/base-datepicker.component'
+import { BaseDatepickerComponent } from './base/base-datepicker/base-datepicker.component';
+import { LoadingComponent } from './base/loading/loading.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,8 @@ import { BaseDatepickerComponent } from './base/base-datepicker/base-datepicker.
     ViewIssueComponent,
     ChartComponent,
     AddressComponent,
-    BaseDatepickerComponent
+    BaseDatepickerComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

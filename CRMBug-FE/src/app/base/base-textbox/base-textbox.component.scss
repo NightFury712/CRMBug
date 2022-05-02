@@ -18,6 +18,11 @@
         padding-left: 3px;
       }
     }
+    &.bt-flex-column {
+      .title {
+        margin-bottom: 8px;
+      }
+    }
   }
   .textbox {
     height: 32px;
@@ -26,9 +31,6 @@
     border: 1px solid $fds-gray-30;
     border-radius: 4px;
     font-size: 13px;
-    &.text {
-      margin-left: 12px;
-    }
     &.search {
       border-radius: 20px;
       padding: 4px 30px;

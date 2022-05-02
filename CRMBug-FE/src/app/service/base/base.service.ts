@@ -3,9 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { APIConfig } from 'src/app/api/config';
 
+export interface AppServerResponse<T> {
+  success: boolean,
+  data: T,
+  userMsg: string,
+  devMsg: string
+  errorCode: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class BaseService {
   controller: string = "";
   constructor(
@@ -16,6 +26,10 @@ export class BaseService {
 
   getDatas(): Observable<any> {
     return this.http.get<any>(this.controller);
+  }
+
+  saveData(data: any):  Observable<any> {
+    return this.http.post<any>(this.controller, data);
   }
 
   getDictionary(): Observable<any> {

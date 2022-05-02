@@ -12,19 +12,19 @@ const routes: Routes = [
     component: ProjectComponent,
     children: [
       {
-        path: "home",
+        path: "home/:projectID",
         component: HomeComponent
       },
       {
-        path: "add-issue",
+        path: "add-issue/:projectID",
         component: AddIssueComponent
       },
       {
-        path: "view-issue",
+        path: "view-issue/:projectID",
         component: ViewIssueComponent
       },
       {
-        path: "chart",
+        path: "chart/:projectID",
         component: ChartComponent
       },
     ]

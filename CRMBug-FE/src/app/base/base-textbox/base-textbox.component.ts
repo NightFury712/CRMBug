@@ -37,6 +37,12 @@ export class BaseTextboxComponent implements OnInit, ControlValueAccessor  {
   @Input()
   required: boolean = false;
 
+  @Input()
+  isHorizontal: boolean = true;
+
+  @Input()
+  maxLength: number = 255
+
   @Output()
   valueChange = new EventEmitter();
 
