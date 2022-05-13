@@ -88,6 +88,12 @@
             placeholder=""
           >
           </base-textbox>
+          <base-combobox
+            [datas]="issuePriority"
+            [(value)]="inputData.PriorityID"
+            [isShowLabel]="true"
+            labelText="Priority"
+          ></base-combobox>
         </div>
       </div>
       <div class="field w-full bt-flex bt-flex-row">

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Infarstructure.Base;
-using ApplicationCore.Entities;
+using Library.Entities;
 using ApplicationCore.Interfaces.DL;
 using Microsoft.Extensions.Configuration;
 

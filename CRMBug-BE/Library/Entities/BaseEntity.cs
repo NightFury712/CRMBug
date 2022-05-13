@@ -4,14 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using static ApplicationCore.Enumeration.Enumeration;
+using static Library.Enumeration.Enumeration;
 
-namespace ApplicationCore.Entities
+namespace Library.Entities
 {
   public class BaseEntity
   {
     #region Properties
+    /// <summary>
+    /// Trạng thái bản ghi (thêm, xóa, sửa)
+    /// </summary>
     public EntityState EntityState { get; set; } = EntityState.Add;
+    /// <summary>
+    /// Truy vấn
+    /// </summary>
+    public string Query { get; set; }
     /// <summary>
     /// Thời gian tạo
     /// </summary>

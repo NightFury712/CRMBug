@@ -16,9 +16,9 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSV.projectID.subscribe((data) => {
-      if(data != 0) {
-        this.projectID = data;
+    this.dataSV.project.subscribe((data: any) => {
+      if(data && data.ID) {
+        this.projectID = data.ID;
       }
     })
   }

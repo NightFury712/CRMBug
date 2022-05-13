@@ -1,3 +1,5 @@
+import { AuthGuard } from './guard/auth.guard';
+import { RegisterComponent } from './components/register/register.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
@@ -12,10 +14,15 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
     component: AuthComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
   {
     path: 'project',
@@ -23,6 +30,7 @@ const routes: Routes = [
       import('./components/project/project.module').then(
         (m) => m.ProjectModule
       ),
+      canActivate: [AuthGuard]
   },
   {
     path: 'customer',
@@ -30,10 +38,11 @@ const routes: Routes = [
       import('./components/customer/customer.module').then(
         (m) => m.CustomerModule
       ),
+      canActivate: [AuthGuard]
   },
   {
     path: '**',
-    component: DashboardComponent,
+    component: DashboardComponent
   },
 ];
 

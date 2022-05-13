@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.BL;
+using Library;
+using Library.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using static ApplicationCore.Enumeration.Enumeration;
+using static Library.Enumeration.Enumeration;
 
 namespace BugTracking.API.Base
 {
+  [EnableCors("MyPolicy")]
   [Route("api/v1/[controller]")]
   [ApiController]
   public class BaseApiController<T> : ControllerBase
@@ -30,6 +34,7 @@ namespace BugTracking.API.Base
 
     #region API
     [HttpGet]
+    [Authorize]
     public IActionResult GetAll()
     {
       try
@@ -46,8 +51,9 @@ namespace BugTracking.API.Base
       }
       catch (Exception ex)
       {
-        return StatusCode(500, ex);
-
+        _serviceResult.Success = false;
+        _serviceResult.Data = ex;
+        return StatusCode(500, _serviceResult);
       }
     }
 
@@ -58,6 +64,7 @@ namespace BugTracking.API.Base
     /// <returns>Thông điệp</returns>
     /// Author: HHDang 23.2.2022
     [HttpPost]
+    [Authorize]
     public IActionResult Post(T entity)
     {
       try
@@ -85,20 +92,14 @@ namespace BugTracking.API.Base
     }
 
     [HttpDelete("{entityID}")]
+    [Authorize]
     public IActionResult Delete(int entityID)
     {
       try
       {
         _serviceResult = _baseService.Delete(entityID);
-
-        if (_serviceResult.Code == Code.Ok)
-        {
-          return Ok(_serviceResult);
-        }
-        else
-        {
-          return Ok(_serviceResult);
-        }
+        return Ok(_serviceResult);
+        
       }
       catch (Exception ex)
       {
@@ -108,20 +109,14 @@ namespace BugTracking.API.Base
 
     [HttpGet]
     [Route("Dictionary")]
+    [Authorize]
     public IActionResult GetDictionaryByLayoutCode()
     {
       try
       {
         _serviceResult = _baseService.GetDictionaryByLayoutCode();
-
-        if (_serviceResult.Code == Code.Ok)
-        {
-          return Ok(_serviceResult);
-        }
-        else
-        {
-          return Ok(_serviceResult);
-        }
+        return Ok(_serviceResult);
+        
       }
       catch (Exception ex)
       {
@@ -129,6 +124,27 @@ namespace BugTracking.API.Base
       }
     }
 
+
+    [HttpPost]
+    [Route("Grid")]
+    [Authorize]
+    public IActionResult Grid(ParamGrid paramGrid)
+    {
+      try
+      {
+        var oWhere = BuildFilterClause.BuildFilter(paramGrid);
+        var columns = Utils.Base64Decode(paramGrid.Columns);
+        _serviceResult.Code = Code.Ok;
+        _serviceResult.Data = _baseService.Grid(oWhere, columns);
+
+        return Ok(_serviceResult);
+        
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, ex);
+      }
+    }
     #endregion
   }
 }

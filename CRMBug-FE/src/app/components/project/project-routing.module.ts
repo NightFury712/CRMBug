@@ -5,6 +5,7 @@ import { HomeComponent } from './../home/home.component';
 import { ProjectComponent } from './project.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,19 +14,23 @@ const routes: Routes = [
     children: [
       {
         path: "home/:projectID",
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: "add-issue/:projectID",
-        component: AddIssueComponent
+        component: AddIssueComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: "view-issue/:projectID",
-        component: ViewIssueComponent
+        component: ViewIssueComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: "chart/:projectID",
-        component: ChartComponent
+        component: ChartComponent,
+        canActivate: [AuthGuard]
       },
     ]
   }

@@ -3,7 +3,7 @@
     <div class="nav-link bt-flex bt-align-items-center" routerLink="/dashboard">
       <div class="text">DashBoard</div>
     </div>
-    <div class="nav-link bt-flex bt-align-items-center" routerLink="/project/home">
+    <div class="nav-link bt-flex bt-align-items-center">
       <div class="text">Project</div>
     </div>
     <div class="nav-link bt-flex bt-align-items-center">
@@ -14,7 +14,22 @@
     <base-textbox></base-textbox>  
   </div>
   <div class="bt-flex bt-align-items-center">
-    <div>Info</div>
-    <div>notify</div>
+    <div class="norify-container">
+
+    </div>
+    <div 
+      class="user-info bt-flex bt-align-items-center bt-justify-content-center w-full h-full"
+      [matMenuTriggerFor]="moreInfos"
+    >
+      <div class="text">
+        H
+      </div>
+    </div>
   </div>
 </div>
+
+<mat-menu #moreInfos="matMenu">
+  <div class="title">Hello, Hoang Hai Dang</div>
+  <button mat-menu-item (click)="updateUserSetting()">Personal Settings</button>
+  <button mat-menu-item>Reset Password</button>
+</mat-menu>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Entities
+namespace Library.Entities
 {
   [TableName("employee")]
   public class Employee : BaseEntity
@@ -14,11 +14,16 @@ namespace ApplicationCore.Entities
     [TableColumn]
     public string EmployeeID { get; set; }
     [TableColumn]
-    public string FullName { get; set; }
+    public string FirstName { get; set; }
     [TableColumn]
-    public string EmployeeCode { get; set; }
+    public string LastName { get; set; }
+    [TableColumn]
     public string Email { get; set; }
+    [TableColumn]
     public string PhoneNumber { get; set; }
+    public int Role { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
     #endregion
   }
 }

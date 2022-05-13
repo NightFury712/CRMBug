@@ -40,8 +40,8 @@ export class DashboardComponent implements OnInit {
     const dialogRef = this.dialog.open(PopupAddProjectComponent, config);
   }
 
-  openProject(projectID: number) {
-    this.router.navigate([`/project/home/${projectID}`]);
-    this.dataSV.projectID.next(projectID);
+  openProject(project: any) {
+    this.router.navigate([`/project/home/${project.ID}`]);
+    this.dataSV.project.next(project);
   }
 }

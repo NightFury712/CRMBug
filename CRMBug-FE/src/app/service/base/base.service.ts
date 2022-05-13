@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { APIConfig } from 'src/app/api/config';
@@ -18,22 +18,34 @@ export interface AppServerResponse<T> {
 
 export class BaseService {
   controller: string = "";
+
+  headers: any;
   constructor(
     protected http: HttpClient
   ) {
-    this.controller = `${APIConfig.development}/api/v1`
+    let accessToken = localStorage.getItem('AccessToken');
+    this.controller = `${APIConfig.development}/api/v1`;
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      'Authorization': "Bearer " + accessToken
+    });
   }
 
   getDatas(): Observable<any> {
-    return this.http.get<any>(this.controller);
+    return this.http.get<any>(this.controller, {headers: this.headers});
+  }
+
+  grid(param: any): Observable<any> {
+    const url = `${this.controller}/Grid`;
+    return this.http.post<any>(url,param , {headers: this.headers}, )
   }
 
   saveData(data: any):  Observable<any> {
-    return this.http.post<any>(this.controller, data);
+    return this.http.post<any>(this.controller,data , {headers: this.headers}, );
   }
 
   getDictionary(): Observable<any> {
     const url = `${this.controller}/Dictionary`;
-    return this.http.get<any>(url);
+    return this.http.get<any>(url, {headers: this.headers});
   }
 }

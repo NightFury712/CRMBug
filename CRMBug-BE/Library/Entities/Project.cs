@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.Entities;
 
-namespace ApplicationCore.Entities
+namespace Library.Entities
 {
   [TableName("project")]
   public class Project : BaseEntity

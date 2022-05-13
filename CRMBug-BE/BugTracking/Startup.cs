@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using ApplicationCore.Authentication.JWT.Generators;
 using ApplicationCore.BL;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
@@ -9,6 +11,7 @@ using Infarstructure.Base;
 using Infarstructure.Employees;
 using Infarstructure.Issues;
 using Infarstructure.Projects;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace BugTracking
@@ -33,12 +37,27 @@ namespace BugTracking
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+      services.AddCors(options => options.AddPolicy("MyPolicy", builder =>
       {
         builder.AllowAnyOrigin()
-                     .AllowAnyMethod()
-                     .AllowAnyHeader();
+               .AllowAnyMethod()
+               .AllowAnyHeader();
       }));
+
+      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+              options.TokenValidationParameters = new TokenValidationParameters
+              {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = Configuration["JwtConfig:Issuer"],
+                ValidAudience = Configuration["JwtConfig:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtConfig:AccessTokenSecret"]))
+              };
+            });
 
       services.AddControllers();
       services.AddControllers().AddJsonOptions(jsonOptions =>
@@ -49,6 +68,11 @@ namespace BugTracking
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "BugTracking", Version = "v1" });
       });
+
+      services.AddSingleton<AccessTokenGenerator>();
+      // Thực hiện DI cho auth
+      services.AddScoped<IBLAuth, BLAuth>();
+
       // Thực hiện DI cho base
       services.AddScoped(typeof(IBLBase<>), typeof(BLBase<>));
       services.AddScoped(typeof(IDLBase<>), typeof(DLBase<>));
@@ -82,6 +106,7 @@ namespace BugTracking
 
       app.UseCors("ApiCorsPolicy");
 
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>

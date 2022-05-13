@@ -1,0 +1,54 @@
+<div class="update-user-settings-container">
+  <div class="header bt-flex">
+    <div class="title">
+      Personal Settings
+    </div>
+    <div class="close bt-flex bt-justify-self-end">
+      <i class="fa-solid fa-x" (click)="close()"></i>
+    </div>
+  </div>
+  <div class="content-container">
+    <div class="groupbox-item">
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="w-3/5">
+          <base-textbox
+            text="Email"
+            [type]="typeControl.Textbox"
+            [required]="true"
+            placeholder=""
+            [isHorizontal]="false"
+            [maxLength]="255"
+            [(value)]="userData.Email"
+          >
+          </base-textbox>
+        </div>
+      </div>
+      <div class="groupbox-item">
+        <div class="field w-full bt-flex bt-flex-row">
+          <div class="w-3/5">
+            <base-textbox
+              text="Phone number"
+              [type]="typeControl.Textbox"
+              [required]="false"
+              placeholder=""
+              [isHorizontal]="false"
+              [maxLength]="255"
+              [(value)]="userData.Phone"
+            >
+            </base-textbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="feature bt-flex bt-flex-row w-full bt-justify-content-end">
+  <div class="button-seconds">
+    <base-button
+      typeButton="primary"
+      text="Save"
+      (btnClick)="saveData()"
+    >
+    </base-button>
+  </div>
+</div>

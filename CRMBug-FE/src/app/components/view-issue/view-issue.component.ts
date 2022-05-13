@@ -1,3 +1,7 @@
+import { Operator } from './../../enumeration/operator.enum';
+import { Addition } from './../../enumeration/addition.enum';
+import { ActivatedRoute } from '@angular/router';
+import { DataService } from './../../service/data/data.service';
 import { PopupEditIssueComponent } from './../popup/popup-edit-issue/popup-edit-issue.component';
 import { MatDialog } from '@angular/material/dialog';
 import { IssueService } from '../../service/issue/issue.service';
@@ -86,6 +90,20 @@ export class ViewIssueComponent implements OnInit {
     },
   ]
 
+  configPaging: any = {
+    Filters: [
+      {
+        FieldName: 'ProjectID',
+        Value: '0',
+        Addition: Addition.And,
+        Operator: Operator.Equal
+      }
+    ],
+    PageIndex: 0,
+    PageSize: 20,
+    Columns: btoa("ID ,TypeID ,TypeIDText ,Subject ,PriorityID ,PriorityIDText ,StatusID ,StatusIDText ,AssignedTo ,FoundInBuild ,IntergratedBuild ,CreatedBy ,CreatedDate ,ModifiedBy ,ModifiedDate ,AssignedUserID ,AssignedUserIDText ,ProjectID ,ProjectIDText")
+  }
+
   entityState = EntityState;
 
   oldData: any = {};
@@ -97,12 +115,17 @@ export class ViewIssueComponent implements OnInit {
   currentData: any = {};
 
   constructor(
-      private service: IssueService,
-      private dialog: MatDialog
-    ) { }
+      private issueSV: IssueService,
+      private dialog: MatDialog,
+      private activeRoute: ActivatedRoute
+    ) { 
+
+    }
 
   ngOnInit() {
-    this.service.getIssues().subscribe(resp => {
+    const projectID = this.activeRoute.snapshot.params.projectID;
+    this.configPaging.Filters[0].Value = projectID;
+    this.issueSV.grid(this.configPaging).subscribe(resp => {
       if(resp && resp.Success) {
         this.issues = resp.Data.map((item: any) =>  
           {
@@ -115,7 +138,22 @@ export class ViewIssueComponent implements OnInit {
       } else {
         console.log(resp)
       }
-    });
+    }) 
+    // this.issueSV.getDatas().subscribe(resp => {
+    //   if(resp && resp.Success) {
+    //     this.issues = resp.Data.map((item: any) =>  
+    //       {
+    //         return {
+    //           ...item,
+    //           State: EntityState.View,
+    //           EntityState: EntityState.Edit
+    //         }
+    //       });
+    //   } else {
+    //     console.log(resp)
+    //   }
+    // });
+    // this.issueSV.grid()
   }
 
   addIssue(e: any) {
@@ -152,7 +190,7 @@ export class ViewIssueComponent implements OnInit {
       this.issues[oldIndex].State = EntityState.View;
       this.mappingData(this.issues[oldIndex]);
       //Save data
-      this.service.addIssue(item).subscribe(
+      this.issueSV.addIssue(item).subscribe(
         resp => {
           console.log(resp);
         }
@@ -177,7 +215,7 @@ export class ViewIssueComponent implements OnInit {
     this.isEditing = false;
     this.mappingData(item);
     // Save data
-    this.service.addIssue(item).subscribe(
+    this.issueSV.addIssue(item).subscribe(
       resp => {
         console.log(resp);
       }
@@ -187,7 +225,7 @@ export class ViewIssueComponent implements OnInit {
   deleteIssue(item: any, index: number) {
     this.issues.splice(index, 1);
     this.isEditing = false;
-    this.service.delete(item.ID).subscribe(resp => {
+    this.issueSV.delete(item.ID).subscribe(resp => {
       console.log(resp);
     })
   }

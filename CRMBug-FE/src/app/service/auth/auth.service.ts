@@ -1,9 +1,11 @@
+import { DataService } from './../data/data.service';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import jwtDecode from "jwt-decode";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from 'rxjs/operators';
+import { APIConfig } from "src/app/api/config";
 import { User } from "../../models/user/user.model";
 import { AppServerResponse } from "../base/base.service";
 
@@ -25,13 +27,19 @@ interface AuthResponseData {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     //user hiện tại
-    user = new BehaviorSubject<any>(null);
+    // user = new BehaviorSubject<any>(null);
 
     private tokenExperationTimer: any;
 
-    private baseRoute = '/Auth';
+    private url = '';
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(
+        private http: HttpClient, 
+        private router: Router,
+        private dataSV: DataService
+    ) { 
+        this.url = `${APIConfig.development}/api/v1/Auth`
+    }
 
     /**
      * Đăng nhập
@@ -41,27 +49,22 @@ export class AuthService {
      */
     login(username: string, password: string) {
         return this.http
-            .post<AppServerResponse<AuthResponseData>>(
-                this.baseRoute + '/login',
+            .post<any>(
+                this.url + '/login',
                 {
                     username: username,
-                    password: password,
+                    password: btoa(password),
                 }
             )
             .pipe(
                 catchError(errorRes => {
                     return this.handleError(errorRes);
                 }),
-                tap(resData => {
-                    if (resData.success) {
+                tap(resp => {
+                    if (resp.Success) {
+                        console.log(resp.Data);
                         this.handleAuthentication(
-                            resData.data.user.email,
-                            resData.data.user.userId,
-                            resData.data.user.username,
-                            resData.data.user.employeeId,
-                            resData.data.user.avatar,
-                            resData.data.accessToken,
-                            resData.data.refreshToken,
+                            resp.Data.AccessToken
                         );
                     }
                 }),
@@ -91,33 +94,34 @@ export class AuthService {
             userData['username'],
             userData['employeeId'],
             userData['avatar'],
-            userData['_accessToken'],
-            new Date(userData['_accessTokenExpDate']),
-            userData['_refreshToken'],
-            new Date(userData['_refreshTokenExpDate'])
+            // userData['_accessToken'],
+            // new Date(userData['_accessTokenExpDate']),
+            // userData['_refreshToken'],
+            // new Date(userData['_refreshTokenExpDate'])
         )
 
         //Nếu token không hợp lệ thì thử refresh lại token
-        if (new Date().getTime() > loadedUser.accessTokenExpDate.getTime()
-            || !loadedUser.accessTokenExpDate
-            || !loadedUser.accessToken
-        ) {
-            this.refresh().subscribe(
-                resData => {
-                    console.log(resData);
-                }
-            );
-        } else {
-            if (loadedUser.accessToken) {
-                //gán user mới tạo
-                this.user.next(loadedUser);
+        // if (
+        //     new Date().getTime() > loadedUser.accessTokenExpDate.getTime() || 
+        //     !loadedUser.accessTokenExpDate || 
+        //     !loadedUser.accessToken
+        // ) {
+        //     this.refresh().subscribe(
+        //         resData => {
+        //             console.log(resData);
+        //         }
+        //     );
+        // } else {
+        //     if (loadedUser.accessToken) {
+        //         //gán user mới tạo
+        //         this.user.next(loadedUser);
 
-                const expirationDuration = loadedUser.accessTokenExpDate.getTime() - new Date().getTime()
+        //         const expirationDuration = loadedUser.accessTokenExpDate.getTime() - new Date().getTime()
 
-                //set thời gian để tự động refresh lại
-                this.autoRefresh(expirationDuration);
-            }
-        }
+        //         //set thời gian để tự động refresh lại
+        //         this.autoRefresh(expirationDuration);
+        //     }
+        // }
     }
 
     /**
@@ -136,7 +140,7 @@ export class AuthService {
         //Gọi api lấy access token mới
         return this.http
             .post<AppServerResponse<AuthResponseData>>(
-                this.baseRoute + '/refresh',
+                this.url + '/refresh',
                 {
                     refreshToken: rToken,
                 }
@@ -152,15 +156,15 @@ export class AuthService {
                         return;
                     }
 
-                    this.handleAuthentication(
-                        userData.email,
-                        userData.id,
-                        userData.username,
-                        userData.employeeId,
-                        userData.avatar,
-                        resData.data.accessToken,
-                        userData._refreshToken,
-                    );
+                    // this.handleAuthentication(
+                    //     userData.email,
+                    //     userData.id,
+                    //     userData.username,
+                    //     userData.employeeId,
+                    //     userData.avatar,
+                    //     resData.data.accessToken,
+                    //     userData._refreshToken,
+                    // );
 
                 })
             )
@@ -201,7 +205,7 @@ export class AuthService {
         //Gửi req lên server
         this.http
             .post<AppServerResponse<AuthResponseData>>(
-                this.baseRoute + '/logout',
+                this.url + '/logout',
                 {}
             )
             .pipe(
@@ -211,7 +215,7 @@ export class AuthService {
             ).subscribe();
 
         //Set lại người dùng về null    
-        this.user.next(null);
+        this.dataSV.user.next(null);
 
         //Xóa khỏi localStorage
         localStorage.removeItem('userData');
@@ -237,38 +241,41 @@ export class AuthService {
      * @param refreshToken 
      */
     private handleAuthentication(
-        email: string,
-        userId: string,
-        username: string,
-        employeeId: string,
-        avatar: string,
-        accessToken: string,
-        refreshToken: string
+        accessToken: string
     ) {
-        let decodedToken: any = jwtDecode(accessToken);
+        let userInfo: any = jwtDecode(accessToken);
 
-        let accessExpiresTime = +decodedToken['exp'] * 1000;
+        let accessExpiresTime = +userInfo['exp'] * 1000;
 
-        let decodedRefreshToken: any = jwtDecode(refreshToken);
+        // let decodedRefreshToken: any = jwtDecode(refreshToken);
 
-        let refreshExpiresTime = +decodedRefreshToken['exp'] * 1000;
+        // let refreshExpiresTime = +decodedRefreshToken['exp'] * 1000;
 
-        console.log(decodedToken);
-        console.log(decodedRefreshToken);
+        console.log(userInfo);
+        // console.log(decodedRefreshToken);
 
         const accessTokenExpDate = new Date(accessExpiresTime)
 
-        const refreshTokenExpDate = new Date(refreshExpiresTime)
+        // const refreshTokenExpDate = new Date(refreshExpiresTime)
 
         //Tạo user mới dựa trên thông tin ở trên
-        const user = new User(email, userId, username, employeeId, avatar, accessToken, accessTokenExpDate, refreshToken, refreshTokenExpDate);
+        const user = new User(
+            userInfo.Email, 
+            userInfo.ID,
+            userInfo.EmployeeID,
+            'avatar', 
+            accessToken, 
+            // accessTokenExpDate, 
+            // refreshToken, 
+            // refreshTokenExpDate
+        );
 
         //Set người dùng mới
-        this.user.next(user);
+        this.dataSV.user.next(user);
 
         //Lưu vào localStorage
         localStorage.setItem('userData', JSON.stringify(user));
-
+        localStorage.setItem('AccessToken', accessToken);
         //Set thời gian tự động refresh token
         this.autoRefresh(accessExpiresTime - new Date().getTime());
     }

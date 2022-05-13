@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BugTracking.API.Base;
 using Microsoft.AspNetCore.Mvc;
-using ApplicationCore.Entities;
+using Library.Entities;
 using ApplicationCore.Interfaces.BL;
 
 namespace BugTracking.API.Employees

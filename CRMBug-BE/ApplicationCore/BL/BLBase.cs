@@ -1,13 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
-using static ApplicationCore.Enumeration.Enumeration;
+using Library.Entities;
+using static Library.Enumeration.Enumeration;
 
 namespace ApplicationCore.BL
 {
@@ -52,6 +53,7 @@ namespace ApplicationCore.BL
       }
       if (isValid)
       {
+        this.BeforeSave(entity);
         var rowAffects = DLBase.Save(entity);
         if (rowAffects >= 1)
         {
@@ -103,6 +105,11 @@ namespace ApplicationCore.BL
       return serviceResult;
     }
 
+    public IEnumerable<T> Grid(string oWhere, string columns)
+    {
+      return this.DLBase.Grid(oWhere, columns);
+    }
+
     public bool Validate(T entity)
     {
       bool isValid = true;
@@ -137,6 +144,54 @@ namespace ApplicationCore.BL
     public bool ValidateCustom(T entity)
     {
       return true;
+    }
+
+    protected virtual void BeforeSave(T entity)
+    {
+
+      // Build câu truy vấn
+      entity.Query = this.CreateQuery(entity);
+    }
+
+    public string CreateQuery(T entity)
+    {
+      var properties = entity.GetType().GetProperties();
+      var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name);
+      string tableName = this.DLBase.GetTableName<T>();
+      string query = string.Empty;
+      switch (entity.EntityState)
+      {
+        case EntityState.Add:
+          query = this.CreateAddQuery(propertyNames, tableName);
+          break;
+        case EntityState.Edit:
+          query = this.CreateEditQuery(propertyNames, tableName);
+          break;
+      }
+      return query;
+    }
+
+    protected virtual string CreateAddQuery(IEnumerable<string> propertyNames, string tableName)
+    {
+      string query = string.Empty;
+      StringBuilder field = new StringBuilder("");
+      StringBuilder value = new StringBuilder("");
+      field.Append(string.Join(",", propertyNames));
+      value.Append(string.Join(",", propertyNames.Select(item => $"@{item}")));
+      field.Append(", CreatedDate, CreatedBy, ModifiedDate, ModifiedBy");
+      value.Append(", NOW(), \'Hoàng Hải Đăng\', NOW(), \'Hoàng Hải Đăng\'");
+      query = $"INSERT INTO {tableName} ({field}) VALUE ({value})";
+      return query;
+    }
+
+    protected virtual string CreateEditQuery(IEnumerable<string> propertyNames, string tableName)
+    {
+      string query = string.Empty;
+      StringBuilder queryUpdate =  new StringBuilder("");
+      queryUpdate.Append(string.Join(",", propertyNames.Select(field => $"{field} = @{field}")));
+      queryUpdate.Append(", ModifiedDate = NOW(), ModifiedBy = \'Hoàng Hải Đăng\'");
+      query = $"UPDATE {tableName} SET {queryUpdate} WHERE ID = @ID";
+      return query;
     }
     #endregion
 

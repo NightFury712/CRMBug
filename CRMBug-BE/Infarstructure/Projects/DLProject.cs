@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ApplicationCore.Entities;
+using Library.Entities;
 using ApplicationCore.Interfaces.DL;
 using Infarstructure.Base;
 using Microsoft.Extensions.Configuration;

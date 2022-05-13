@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.DL;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +12,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using MySqlX.XDevAPI.Relational;
 using Newtonsoft.Json;
 using Library;
-using static ApplicationCore.Enumeration.Enumeration;
+using System.Reflection;
+using Library.Entities;
+using static Library.Enumeration.Enumeration;
 
 namespace Infarstructure.Base
 {
@@ -56,7 +57,12 @@ namespace Infarstructure.Base
       {
         return null;
       }
-
+    }
+    public IEnumerable<T> Grid(string oWhere, string columns)
+    {
+      string query = $"SELECT {columns} FROM {_tableName} WHERE {oWhere}";
+      var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
+      return entities;
     }
     /// <summary>
     /// Thêm mới bản ghi
@@ -70,27 +76,8 @@ namespace Infarstructure.Base
       _dbConnection.Open();
       // Xử lý các kiểu dữ liệu (mapping dataType):
       var parameters = MappingDbtype(entity);
-      var properties = entity.GetType().GetProperties();
-      var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name);
-      StringBuilder field = new StringBuilder("");
-      StringBuilder value = new StringBuilder("");
-      field.Append(string.Join(",", propertyNames));
-      value.Append(string.Join(",", propertyNames.Select(item => $"@{item}")));
-      switch(entity.EntityState)
-      {
-        case EntityState.Add:
-          field.Append(", CreatedDate, CreatedBy, ModifiedDate, ModifiedBy");
-          value.Append(", NOW(), \'Hoàng Hải Đăng\', NOW(), \'Hoàng Hải Đăng\'");
-          break;
-
-        case EntityState.Edit:
-          field.Append(", ModifiedDate, ModifiedBy");
-          value.Append(", NOW(), \'Hoàng Hải Đăng\'");
-          break;
-      }
-      string query = $"INSERT INTO {_tableName} ({field}) VALUE ({value})";
       // Thực thi commandText
-      rowAffects = _dbConnection.Execute(query, parameters, commandType: CommandType.Text);
+      rowAffects = _dbConnection.Execute(entity.Query, parameters, commandType: CommandType.Text);
       // Trả về kết quả (Số bản ghi thêm mới được)
       return rowAffects;
     }
@@ -158,6 +145,29 @@ namespace Infarstructure.Base
         return tableName.Name;
       }
       return "";
+    }
+
+    public T GetEntityByProperty(T entity, PropertyInfo property, string columns = "*")
+    {
+      var propertyName = property.Name;
+      var propertyValue = property.GetValue(entity);
+      var keyValue = entity.GetType().GetProperty("ID").GetValue(entity);
+
+      var query = string.Empty;
+      switch(entity.EntityState)
+      {
+        case EntityState.Add:
+          query = $"SELECT {columns} FROM {_tableName} WHERE {propertyName} = '{propertyValue}'";
+          break;
+        case EntityState.Edit:
+          query = $"SELECT {columns} FROM {_tableName} WHERE {propertyName} = '{propertyValue}' AND ID <> '{keyValue}'";
+          break;
+        default:
+          return null;
+      }
+
+      var res = _dbConnection.QueryFirstOrDefault<T>(query, commandType: CommandType.Text);
+      return res;
     }
 
     /// <summary>

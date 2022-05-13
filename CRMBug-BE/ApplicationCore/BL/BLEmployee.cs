@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ApplicationCore.Entities;
+using ApplicationCore.Authentication.Hashers;
+using Library.Entities;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
+using Library;
 
 namespace ApplicationCore.BL
 {
@@ -20,6 +22,19 @@ namespace ApplicationCore.BL
     {
       DLEmployee = dlEmployee;
     }
+
+    protected override void BeforeSave(Employee entity)
+    {
+      var passwordDecode = Utils.Base64Decode(entity.Password);
+      entity.Password = Hasher.BcryptHash(passwordDecode);
+      base.BeforeSave(entity);
+    }
+    protected override string CreateAddQuery(IEnumerable<string> propertyNames, string tableName)
+    {
+      propertyNames.Append("PassWord");
+      return base.CreateAddQuery(propertyNames, tableName);
+    }
+
     #endregion
   }
 }

@@ -22,6 +22,8 @@ export class PopupEditIssueComponent implements OnInit {
   
   issueState: any = [];
 
+  employees: any = []
+
   @Input()
   inputData: any = {
     TypeID: IssueType.Task,
@@ -46,7 +48,9 @@ export class PopupEditIssueComponent implements OnInit {
 
   ngOnInit(): void {
     this.empService.getDatas().subscribe(resp => {
-      console.log(resp);
+      if(resp && resp.Success) {
+        this.employees = resp.Data;
+      }
     });
     this.issueService.getDictionary().subscribe(resp => {
       if(resp && resp.Data && resp.Data.Dictionary) {

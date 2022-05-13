@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ApplicationCore.Enumeration.Enumeration;
+using static Library.Enumeration.Enumeration;
 
-namespace ApplicationCore.Entities
+namespace Library.Entities
 {
   public class ServiceResult
   {
