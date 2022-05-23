@@ -75,7 +75,7 @@
         height: 150px;
         border-radius: 4px;
         border: 1px solid $color-grey-20;
-        min-width: 532px;
+        min-width: 412px;
         .graphbar-number {
           height: 40px;
           .line {
@@ -89,6 +89,8 @@
           }
         }
         .graphbar-info {
+          padding-bottom: 8px;
+          overflow: auto;
           .wrapper {
             min-width: 100px;
             display: flex;

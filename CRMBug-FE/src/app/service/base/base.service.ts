@@ -48,4 +48,9 @@ export class BaseService {
     const url = `${this.controller}/Dictionary`;
     return this.http.get<any>(url, {headers: this.headers});
   }
+
+  getDataByID(id: number): Observable<any> {
+    const url = `${this.controller}/${id}`;
+    return this.http.get<any>(url, {headers: this.headers});
+  }
 }

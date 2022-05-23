@@ -1,5 +1,5 @@
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedComponentModule } from './components/shared-component.module';
-import { AddressComponent } from './components/address/address.component';
 import { AddIssueComponent } from './components/add-issue/add-issue.component';
 import { ProjectComponent } from './components/project/project.component';
 import { CustomerComponent } from './components/customer/customer.component';
@@ -16,7 +16,6 @@ import { ChartComponent } from './components/chart/chart.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { BaseDatepickerComponent } from './base/base-datepicker/base-datepicker.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,20 +27,18 @@ import { BaseDatepickerComponent } from './base/base-datepicker/base-datepicker.
     SidebarComponent,
     AddIssueComponent,
     ViewIssueComponent,
-    ChartComponent,
-    AddressComponent,
-    BaseDatepickerComponent
+    ChartComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedComponentModule,
     BrowserAnimationsModule,
+    MatTooltipModule,
     HttpClientModule,
     MatMenuModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

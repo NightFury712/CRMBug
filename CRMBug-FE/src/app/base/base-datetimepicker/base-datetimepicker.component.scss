@@ -1,0 +1,57 @@
+@import "../../../color.scss";
+@import "../../../styles.scss";
+@import "../../../font.scss";
+@import "../../../icon.scss";
+
+:host {
+  ::ng-deep {
+    .mat-form-field {
+      display: block;
+      width: 100%;
+      .mat-form-field-wrapper {
+        padding: 0;
+        .mat-form-field-flex {
+          padding: 0 10px;
+          background-color: $color-white;
+          border: 1px solid $color-grey-20;
+          border-radius: 4px;
+          align-items: center;
+          height: 32px;
+          .mat-select-value {
+            font-size: 13px;
+          }
+          .mat-select-min-line {
+            color: $color-black;
+          }
+          .mat-select-arrow-wrapper {
+            transform: none;
+            .mat-select-arrow {
+              color: $default-color-green;
+            }
+          }
+          .mat-form-field-label-wrapper  {
+            display: none;
+          }
+        }
+        .mat-form-field-underline {
+          display: none;
+        }
+        .mat-form-field-suffix {
+          .mat-datepicker-toggle {
+            color: $color-black;
+            .mat-datepicker-toggle-default-icon {
+              width: 18px;
+              height: 18px;
+            }
+          }
+        }
+        .mat-form-field-infix {
+          padding: 0;
+          border: none;
+          flex: none;
+          width: fit-content;
+        }
+      }
+    }
+  }
+}

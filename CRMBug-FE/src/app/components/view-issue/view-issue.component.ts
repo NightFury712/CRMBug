@@ -33,62 +33,32 @@ export class ViewIssueComponent implements OnInit {
     // }
   ];
 
-  typeOfIssue =  [
+  pageSizeCbx = [
     {
-      value: 0,
-      valueText: "Task"
+      Value: 10,
+      Text: "10 records/page"
     },
     {
-      value: 1,
-      valueText: "Bug"
+      Value: 20,
+      Text: "20 records/page"
     },
     {
-      value: 2,
-      valueText: "Request"
+      Value: 50,
+      Text: "50 records/page"
     },
     {
-      value: 3,
-      valueText: "Orther"
-    },
-  ]
-
-  priorities = [
-    {
-      value: 0,
-      valueText: "Low"
-    },
-    {
-      value: 1,
-      valueText: "Normal"
-    },
-    {
-      value: 2,
-      valueText: "High"
+      Value: 100,
+      Text: "100 records/page"
     },
   ]
 
-  issueState = [
-    {
-      value: 0,
-      valueText: "New"
-    },
-    {
-      value: 1,
-      valueText: "Approved"
-    },
-    {
-      value: 2,
-      valueText: "Commited"
-    },
-    {
-      value: 3,
-      valueText: "Done"
-    },
-    {
-      value: 4,
-      valueText: "Removed"
-    },
-  ]
+  currentPage = 1;
+
+  totalRecord = 0;
+
+  fromRecord = 1;
+
+  toRecord = 1;
 
   configPaging: any = {
     Filters: [
@@ -114,31 +84,20 @@ export class ViewIssueComponent implements OnInit {
 
   currentData: any = {};
 
-  constructor(
-      private issueSV: IssueService,
-      private dialog: MatDialog,
-      private activeRoute: ActivatedRoute
-    ) { 
+  projectID: number = 0;
 
-    }
+  constructor(
+    private issueSV: IssueService,
+    private dialog: MatDialog,
+    private activeRoute: ActivatedRoute
+  ) { 
+
+  }
 
   ngOnInit() {
-    const projectID = this.activeRoute.snapshot.params.projectID;
-    this.configPaging.Filters[0].Value = projectID;
-    this.issueSV.grid(this.configPaging).subscribe(resp => {
-      if(resp && resp.Success) {
-        this.issues = resp.Data.map((item: any) =>  
-          {
-            return {
-              ...item,
-              State: EntityState.View,
-              EntityState: EntityState.Edit
-            }
-          });
-      } else {
-        console.log(resp)
-      }
-    }) 
+    this.projectID = this.activeRoute.snapshot.params.projectID;
+    this.configPaging.Filters[0].Value = this.projectID;
+    this.getDataPaging();
     // this.issueSV.getDatas().subscribe(resp => {
     //   if(resp && resp.Success) {
     //     this.issues = resp.Data.map((item: any) =>  
@@ -154,6 +113,24 @@ export class ViewIssueComponent implements OnInit {
     //   }
     // });
     // this.issueSV.grid()
+  }
+
+  getDataPaging() {
+    this.configPaging.PageIndex = (this.currentPage - 1) * this.configPaging.PageSize;
+    this.issueSV.grid(this.configPaging).subscribe(resp => {
+      if(resp && resp.Success) {
+        this.issues = resp.Data.map((item: any) =>  
+          {
+            return {
+              ...item,
+              State: EntityState.View,
+              EntityState: EntityState.Edit
+            }
+          });
+      } else {
+        console.log(resp)
+      }
+    }) 
   }
 
   addIssue(e: any) {
@@ -175,29 +152,33 @@ export class ViewIssueComponent implements OnInit {
     // this.currentData = newIssue;
     // this.isEditing = true;
     const config = new ConfigDialog('800px');
+    config.data = {
+      ProjectID: this.projectID
+    }
     const dialogRef = this.dialog.open(PopupEditIssueComponent, config);
     dialogRef.afterClosed().subscribe(resp => {
-      console.log(resp);
+      if(resp) {
+        this.getDataPaging()
+      }
     })
   }
 
   clickBtnEdit(item: any, index: number) {
-    this.oldData = JSON.parse(JSON.stringify(item));
-    item.State = EntityState.Edit;
-    item.EntityState = EntityState.Edit;
-    if(this.isEditing) {
-      const oldIndex = this.issues.indexOf(this.currentData);
-      this.issues[oldIndex].State = EntityState.View;
-      this.mappingData(this.issues[oldIndex]);
-      //Save data
-      this.issueSV.addIssue(item).subscribe(
-        resp => {
-          console.log(resp);
-        }
-      )
-    }
-    this.currentData = item;
-    this.isEditing = true;
+    // this.oldData = JSON.parse(JSON.stringify(item));
+    // item.State = EntityState.Edit;
+    // item.EntityState = EntityState.Edit;
+    // if(this.isEditing) {
+    //   const oldIndex = this.issues.indexOf(this.currentData);
+    //   this.issues[oldIndex].State = EntityState.View;
+    //   //Save data
+    //   this.issueSV.addIssue(item).subscribe(
+    //     resp => {
+    //       console.log(resp);
+    //     }
+    //   )
+    // }
+    // this.currentData = item;
+    // this.isEditing = true;
   }
 
   cancelEdit(item: any, index: number) {
@@ -211,15 +192,32 @@ export class ViewIssueComponent implements OnInit {
   }
   
   saveIssue(item: any, index: number) {
-    item.State = EntityState.View
-    this.isEditing = false;
-    this.mappingData(item);
-    // Save data
-    this.issueSV.addIssue(item).subscribe(
-      resp => {
-        console.log(resp);
+    // item.State = EntityState.View
+    // this.isEditing = false;
+    // this.mappingData(item);
+    // // Save data
+    // this.issueSV.addIssue(item).subscribe(
+    //   resp => {
+    //     console.log(resp);
+    //   }
+    // )
+  }
+
+  editIssue(issue: any) {
+    const config = new ConfigDialog('800px');
+    config.data = {
+      ProjectID: this.projectID,
+      Issue: {
+        ...issue,
+        State: EntityState.Edit
       }
-    )
+    }
+    const dialogRef = this.dialog.open(PopupEditIssueComponent, config);
+    dialogRef.afterClosed().subscribe(resp => {
+      if(resp) {
+        this.getDataPaging()
+      }
+    })
   }
 
   deleteIssue(item: any, index: number) {
@@ -230,9 +228,42 @@ export class ViewIssueComponent implements OnInit {
     })
   }
 
-  mappingData(item: any) {
-    item.TypeIDText = this.typeOfIssue.find(toi => toi.value == item.TypeID)?.valueText;
-    item.PriorityIDText = this.priorities.find(p => p.value == item.PriorityID)?.valueText;
-    item.StatusIDText = this.issueState.find(is => is.value == item.StatusID)?.valueText;
+  valueChangeCombo(e: any) {
+    if(e) {
+      switch(e.FieldName) {
+        case 'PageSize':
+          this.configPaging.PageSize = e.Value;
+          break;
+      }
+    }
+  }
+
+  calculateRecord() {
+    this.fromRecord = this.totalRecord > 0 ? (this.currentPage - 1) * this.configPaging.PageSize + 1 : 0;
+    this.toRecord = this.currentPage * this.configPaging.PageSize <  this.totalRecord ? this.currentPage * this.configPaging.PageSize : this.toRecord;
+  }
+
+  prevFirst() {
+    if(this.currentPage> 1) {
+      this.currentPage = 1
+    }
+  }
+
+  prevOne() {
+    if(this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextLast() {
+    if((this.currentPage + 1) * this.configPaging.PageSize > this.totalRecord) {
+      this.currentPage = this.totalRecord / this.configPaging.PageSize;
+    }
+  }
+
+  nextOne() {
+    if((this.currentPage + 1) * this.configPaging.PageSize > this.totalRecord) {
+      this.currentPage++;
+    }
   }
 }

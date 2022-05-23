@@ -1,3 +1,4 @@
+import { ProjectSettingsComponent } from './../project-settings/project-settings.component';
 import { AddIssueComponent } from './../add-issue/add-issue.component';
 import { ViewIssueComponent } from './../view-issue/view-issue.component';
 import { ChartComponent } from './../chart/chart.component';
@@ -15,22 +16,27 @@ const routes: Routes = [
       {
         path: "home/:projectID",
         component: HomeComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "add-issue/:projectID",
         component: AddIssueComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "view-issue/:projectID",
         component: ViewIssueComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "chart/:projectID",
         component: ChartComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
+      },
+      {
+        path: "settings/:projectID",
+        component: ProjectSettingsComponent,
+        // canActivate: [AuthGuard]
       },
     ]
   }

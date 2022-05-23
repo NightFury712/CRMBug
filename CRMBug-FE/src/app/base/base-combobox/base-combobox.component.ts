@@ -29,6 +29,12 @@ export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
   @Input()
   labelWidth: number = 120;
 
+  @Input()
+  fieldName: string = "";
+
+  @Input()
+  width: string = '100%';
+
   @Output()
   valueChange = new EventEmitter();
   change = (data: any) => {};
@@ -52,6 +58,14 @@ export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
   }
 
   onChange() {
-    this.valueChange.emit(this.value);
+    const me = this;
+    const data = me.datas.filter(x => x.Value == me.value )[0];
+    if(data) {
+      me.valueChange.emit({
+        Value: data.Value,
+        Text: data.Text,
+        FieldName: me.fieldName
+      });
+    }
   }
 }

@@ -16,9 +16,11 @@
         <div class="field-left w-1/2">
           <base-combobox
             [datas]="issueType"
-            [(value)]="inputData.TypeID"
+            [value]="dataSave.TypeID"
             [isShowLabel]="true"
             labelText="Type"
+            (valueChange)="valueChangeCombo($event)"
+            fieldName="TypeID"
           ></base-combobox>
         </div>
         <div class="field-right w-1/2">
@@ -28,7 +30,7 @@
             [type]="typeControl.Textbox"
             [required]="true"
             placeholder=""
-            [(value)]="inputData.Subject"
+            [(value)]="dataSave.Subject"
           >
           </base-textbox>
         </div>
@@ -37,9 +39,11 @@
         <div class="field-left w-1/2">
           <base-combobox
             [datas]="issuePriority"
-            [(value)]="inputData.PriorityID"
+            [value]="dataSave.PriorityID"
             [isShowLabel]="true"
             labelText="Priority"
+            (valueChange)="valueChangeCombo($event)"
+            fieldName="PriorityID"
           ></base-combobox>
           <!-- <base-textbox
             text="Priority"
@@ -72,27 +76,37 @@
       </div>
       <div class="field w-full bt-flex bt-flex-row">
         <div class="field-left w-1/2">
-          <base-textbox
+          <!-- <base-textbox
             text="Status"
             [titleWidth]="120"
             [type]="typeControl.Textbox"
             placeholder=""
           >
-          </base-textbox>
+          </base-textbox> -->
+          <base-combobox
+            [datas]="issueState"
+            [value]="dataSave.StatusID"
+            [isShowLabel]="true"
+            labelText="Status"
+            (valueChange)="valueChangeCombo($event)"
+            fieldName="StatusID"
+          ></base-combobox>
         </div>
         <div class="field-right w-1/2">
-          <base-textbox
+          <!-- <base-textbox
             text="Assigned to"
             [titleWidth]="120"
             [type]="typeControl.Textbox"
             placeholder=""
           >
-          </base-textbox>
+          </base-textbox> -->
           <base-combobox
-            [datas]="issuePriority"
-            [(value)]="inputData.PriorityID"
+            [datas]="employees"
+            [value]="dataSave.AssignedUserID"
             [isShowLabel]="true"
-            labelText="Priority"
+            labelText="Assigned to"
+            (valueChange)="valueChangeCombo($event)"
+            fieldName="AssignedUserID"
           ></base-combobox>
         </div>
       </div>

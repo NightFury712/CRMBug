@@ -9,5 +9,7 @@ export class DataService {
 
   //user hiện tại
   user = new BehaviorSubject<any>(null);
+
+  loading = new BehaviorSubject<boolean>(false);
   constructor() { }
 }

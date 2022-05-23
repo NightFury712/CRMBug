@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddressComponent } from './address.component';
+import { BaseDatetimepickerComponent } from './base-datetimepicker.component';
 
-describe('AddressComponent', () => {
-  let component: AddressComponent;
-  let fixture: ComponentFixture<AddressComponent>;
+describe('BaseDatetimepickerComponent', () => {
+  let component: BaseDatetimepickerComponent;
+  let fixture: ComponentFixture<BaseDatetimepickerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddressComponent ]
+      declarations: [ BaseDatetimepickerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddressComponent);
+    fixture = TestBed.createComponent(BaseDatetimepickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

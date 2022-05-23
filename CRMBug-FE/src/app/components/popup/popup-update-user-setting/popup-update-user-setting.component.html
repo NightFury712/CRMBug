@@ -10,11 +10,38 @@
   <div class="content-container">
     <div class="groupbox-item">
       <div class="field w-full bt-flex bt-flex-row">
-        <div class="w-3/5">
+        <div class="w-4/5">
+          <base-textbox
+            text="First Name"
+            [type]="typeControl.Textbox"
+            placeholder=""
+            [isHorizontal]="false"
+            [required]="true"
+            [maxLength]="100"
+            [(value)]="userData.FirstName"
+          >
+          </base-textbox>
+        </div>
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="w-4/5">
+          <base-textbox
+            text="Last Name"
+            [type]="typeControl.Textbox"
+            placeholder=""
+            [isHorizontal]="false"
+            [required]="true"
+            [maxLength]="100"
+            [(value)]="userData.LastName"
+          >
+          </base-textbox>
+        </div>
+      </div>
+      <div class="field w-full bt-flex bt-flex-row">
+        <div class="w-4/5">
           <base-textbox
             text="Email"
             [type]="typeControl.Textbox"
-            [required]="true"
             placeholder=""
             [isHorizontal]="false"
             [maxLength]="255"
@@ -25,14 +52,14 @@
       </div>
       <div class="groupbox-item">
         <div class="field w-full bt-flex bt-flex-row">
-          <div class="w-3/5">
+          <div class="w-4/5">
             <base-textbox
               text="Phone number"
               [type]="typeControl.Textbox"
               [required]="false"
               placeholder=""
               [isHorizontal]="false"
-              [maxLength]="255"
+              [maxLength]="50"
               [(value)]="userData.Phone"
             >
             </base-textbox>

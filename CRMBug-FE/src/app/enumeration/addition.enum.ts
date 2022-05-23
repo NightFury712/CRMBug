@@ -1,4 +1,4 @@
-export const Addition =  {
-  And : 1,
-  Or: 2
+export enum Addition {
+  And = 1,
+  Or = 2
 }

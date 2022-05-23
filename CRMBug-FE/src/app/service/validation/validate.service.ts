@@ -27,7 +27,9 @@ export class ValidateService {
       case "Username":
       case "Password":
       case "FirstName":
-      case "LastName":
+      case "Subject":
+      case "ProjectName":
+      case "ProjectCode":
         return this.validateRequired(value);
       case "Email":
         return this.validateEmail(value);

@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -30,19 +30,12 @@ const routes: Routes = [
       import('./components/project/project.module').then(
         (m) => m.ProjectModule
       ),
-      canActivate: [AuthGuard]
-  },
-  {
-    path: 'customer',
-    loadChildren: () =>
-      import('./components/customer/customer.module').then(
-        (m) => m.CustomerModule
-      ),
-      canActivate: [AuthGuard]
+      // canActivate: [AuthGuard]
   },
   {
     path: '**',
-    component: DashboardComponent
+    component: DashboardComponent,
+    // canActivate: [AuthGuard]
   },
 ];
 

@@ -8,12 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent implements OnInit {
+  projectName: string = '';
+
+  projectCode: string = '';
+
 
   constructor(
     private router: ActivatedRoute,
+    private dataSV: DataService
   ) { }
 
   ngOnInit(): void {
+    this.dataSV.project.subscribe((project: any) => {
+      this.projectName = project.ProjectName;
+      this.projectCode = project.ProjectCode
+    })
   }
 
 }

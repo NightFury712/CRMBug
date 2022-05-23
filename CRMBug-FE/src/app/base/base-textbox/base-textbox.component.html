@@ -2,7 +2,7 @@
   <ng-container *ngSwitchCase="typeControl.Textbox">
     <div 
       class="textbox-container bt-flex bt-flex-row w-full"
-      [ngClass]="{'bt-flex-row': isHorizontal, 'bt-flex-column': !isHorizontal}"
+      [ngClass]="{'bt-flex-row': isHorizontal, 'bt-flex-column': !isHorizontal, 'bt-align-items-center': isHorizontal}"
     >
       <div class="title" *ngIf="isLabel" [ngStyle]="{'max-width.px': titleWidth, 'min-width.px': titleWidth}">
         {{text}}

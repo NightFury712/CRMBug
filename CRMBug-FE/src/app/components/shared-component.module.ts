@@ -1,7 +1,8 @@
+import { BaseDatetimepickerComponent } from './../base/base-datetimepicker/base-datetimepicker.component';
 import { BaseNotificationComponent } from '../base/base-notification/base-notification.component';
 import { BaseComboboxComponent } from './../base/base-combobox/base-combobox.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BaseButtonComponent } from "../base/base-button/base-button.component";
 import { BaseTextboxComponent } from "../base/base-textbox/base-textbox.component";
@@ -17,6 +18,15 @@ import { RegisterComponent } from './register/register.component';
 import {MatInputModule} from '@angular/material/input';
 import { LoadingComponent } from '../base/loading/loading.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { ProjectSettingsComponent } from './project-settings/project-settings.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 @NgModule({
 	declarations: [
@@ -30,6 +40,8 @@ import { AppRoutingModule } from '../app-routing.module';
     PopupUpdateUserSettingComponent,
     RegisterComponent,
 		LoadingComponent,
+  	ProjectSettingsComponent,
+		BaseDatetimepickerComponent
 	],
 	imports: [
 		BrowserModule,
@@ -38,16 +50,26 @@ import { AppRoutingModule } from '../app-routing.module';
 		MatFormFieldModule,
 		MatTooltipModule,
 		MatDialogModule,
-		MatInputModule
+		MatInputModule,
+		MatTabsModule,
+		HttpClientModule,
+		BrowserAnimationsModule,
+		MatDatepickerModule,
+		NgxMatTimepickerModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		NgxMatDatetimePickerModule,
+		MatNativeDateModule,
+		NgxMatMomentModule
 	],
 	exports: [
 		BaseButtonComponent,
 		BaseTextboxComponent,
 		BaseComboboxComponent,
 		BaseNotificationComponent,
+		BaseDatetimepickerComponent,
 		LoadingComponent,
 		AppRoutingModule,
-	],
-	schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+	]
 })
 export class SharedComponentModule { }

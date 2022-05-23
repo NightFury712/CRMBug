@@ -1,4 +1,4 @@
-export const Operator = {
-  Equal: 1,
-  Like: 2
+export enum Operator {
+  Equal =1,
+  Like = 2
 }

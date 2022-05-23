@@ -14,40 +14,91 @@
       }
     }
   }
+  .back-ground {
+    width: 100%;
+    height: calc(100vh - 100px);
+    background-color: $color-white;
+  }
   .issues-container {
-    max-width: calc(100% - 40px);
-    overflow: auto;
-    margin: 20px 24px 0 30px;
-    /* width */
-    &::-webkit-scrollbar {
-      width: 4px;
-    } 
+    padding: 16px 16px 0 16px;
+    .toolbar {
+      height: 44px;
+    }
+    .content {
+      width: 100%;
+      height: calc(100vh - 276px);
+      overflow: auto;
+    }
   }
   .table-fixed-header {
     overflow: auto;
     border-collapse: collapse;
-    
-    .issues {
-      .action {
-        min-width: 200px;
-        max-width: 200px;
-      }
-    }
+    width: 100%;
     th,
     td {
       text-align: center;
-      border: 1px solid $fds-gray-30;
+      border-bottom: 1px solid $fds-gray-30;
       padding: 4px 12px;
       min-height: 50px;
-      height: 50px;
+      height: 32px;
       min-width: 200px;
       max-width: 200px;
+    }
+    td {
+      cursor: pointer;
     }
     tr:nth-child(even) {
       background-color: $fds-gray-05;
     }
   }
-  .toolbar {
-    padding: 20px 40px 0 20px;
+  .header {
+    padding: 20px 16px 0 20px;
+    .title {
+      font-size: $font-subtitle;
+      font-weight: $font-weight-medium;
+    }
+  }
+  .pagination {
+    height: 60px;
+    padding: 0 16px;
+    .total-record {
+      font-size: $font-body;
+      padding-left: 12px;
+      .number {
+        padding-left: 6px;
+        font-weight: $font-weight-medium;
+      }
+    }
+    .pager {
+      padding-right: 16px;
+      .page-size {
+        padding-right: 16px;
+      }
+      .prev-to-first, .prev-one, .next-to-last, .next-one {
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: 0.22s;
+        &:hover {
+          background-color: $color-grey-hover;
+        }
+        &.disable {
+          opacity: 0.3;
+          &:hover {
+            background: none;
+          }
+        }
+      }
+      .page-info {
+        padding: 0 4px;
+        .text {
+          padding: 0 6px;
+        }
+      }
+    }
   }
 }

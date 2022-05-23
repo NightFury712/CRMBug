@@ -24,8 +24,7 @@ export class PopupEditIssueComponent implements OnInit {
 
   employees: any = []
 
-  @Input()
-  inputData: any = {
+  dataSave: any = {
     TypeID: IssueType.Task,
     TypeIDText: "Task",
     Subject: "",
@@ -33,7 +32,7 @@ export class PopupEditIssueComponent implements OnInit {
     PriorityIDText: "Low",
     StatusID: IssueState.New,
     StatusIDText: "New",
-    AssignedTo: "",
+    AssignedUserID: "",
     FoundInBuild: "",
     IntergratedBuild: "",
     State: EntityState.Add
@@ -43,13 +42,20 @@ export class PopupEditIssueComponent implements OnInit {
       public dialogRef: MatDialogRef<PopupEditIssueComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       private empService: EmployeeService,
-      private issueService: IssueService,
-    ) { }
+      private issueService: IssueService
+    ) { 
+      this.dataSave["ProjectID"] = data["ProjectID"];
+    }
 
   ngOnInit(): void {
     this.empService.getDatas().subscribe(resp => {
       if(resp && resp.Success) {
-        this.employees = resp.Data;
+        this.employees = resp.Data.map((x: any) => {
+          return {
+            Value: x.ID,
+            Text: x.FullName
+          }
+        });
       }
     });
     this.issueService.getDictionary().subscribe(resp => {
@@ -65,13 +71,12 @@ export class PopupEditIssueComponent implements OnInit {
    * Author: HHDANG 14.4.2022
    */
   saveData() {
-    this.issueService.addIssue(this.inputData).subscribe(
+    this.issueService.saveData(this.dataSave).subscribe(
       resp => {
         console.log(resp);
+        this.dialogRef.close(true);
       }
     )
-    this.dialogRef.close(true);
-
   }
   /**
    * Thực hiện lưu và thêm
@@ -85,5 +90,11 @@ export class PopupEditIssueComponent implements OnInit {
    */
   close() {
     this.dialogRef.close();
+  }
+
+  valueChangeCombo(data: any) {
+    const fieldName = data.FieldName;
+    this.dataSave[fieldName] = data.Value;
+    this.dataSave[`${fieldName}Text`] = data.Text;
   }
 }

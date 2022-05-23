@@ -11,11 +11,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'BugTracking';
   isLogin = false;
+  isLoading = false;
   /**
    * Constructor
    */
   constructor(
-    private authSV : AuthService,
     private dataSV: DataService
   ) {
     this.dataSV.user.subscribe(user => {
@@ -23,6 +23,8 @@ export class AppComponent {
         this.isLogin = true;
       }
     })
-    
+    this.dataSV.loading.subscribe(loading => {
+      this.isLoading = loading;
+    })
   }
 }
