@@ -9,6 +9,6 @@ namespace ApplicationCore.Interfaces.BL
 {
   public interface IBLEmployee : IBLBase<Employee>
   {
-    
+    IEnumerable<Employee> GetEmployeeNotInProject(long projectID);
   }
 }

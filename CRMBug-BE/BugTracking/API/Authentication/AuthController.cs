@@ -43,13 +43,15 @@ namespace BugTracking.API.Authentication
       try
       {
         //Gọi service xác thực tài khoản
-        ServiceResult response = BLAuth.Authenticate(entity);
+        _serviceResult = BLAuth.Authenticate(entity);
 
-        return Ok(response);
+        return Ok(_serviceResult);
       }
       catch (Exception ex)
       {
-        return StatusCode(500, ex);
+        _serviceResult.Success = false;
+        _serviceResult.Data = ex;
+        return Ok(_serviceResult);
       }
     }
   }

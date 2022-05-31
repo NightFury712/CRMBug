@@ -35,6 +35,12 @@ export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
   @Input()
   width: string = '100%';
 
+  @Input()
+  disabled: boolean = false;
+
+  @Input()
+  isHorizontal: boolean = true;
+
   @Output()
   valueChange = new EventEmitter();
   change = (data: any) => {};

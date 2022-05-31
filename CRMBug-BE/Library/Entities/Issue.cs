@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +15,14 @@ namespace Library.Entities
   public class Issue : BaseEntity
   {
     #region Properties
-    public string ID { get; set; }
+    public int ID { get; set; }
     [TableColumn]
     public int TypeID { get; set; }
     [TableColumn]
     public string TypeIDText { get; set; }
     [TableColumn]
+    [Required]
+    [DisplayName("Issue Subject")]
     public string Subject { get; set; }
     [TableColumn]
     public int PriorityID { get; set; }
@@ -32,18 +34,13 @@ namespace Library.Entities
     public string StatusIDText { get; set; }
     [TableColumn]
     public string AssignedTo { get; set; }
-    [TableColumn]
-    public string FoundInBuild { get; set; }
-    [TableColumn]
-    public string IntergratedBuild { get; set; }
+    public DateTime DueDate { get; set; }
     [TableColumn]
     public long AssignedUserID { get; set; }
     [TableColumn]
     public string AssignedUserIDText { get; set; }
     [TableColumn]
     public long ProjectID { get; set; }
-    [TableColumn]
-    public string ProjectIDText { get; set; }
 
     #endregion
   }

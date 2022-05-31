@@ -9,6 +9,6 @@ namespace ApplicationCore.Interfaces.BL
 {
     public interface IBLIssue : IBLBase<Issue>
     {
-
+      Dictionary<string, object> GetFormData(long projectID, long masterID, int formModeState);
     }
 }

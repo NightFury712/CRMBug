@@ -14,6 +14,7 @@ using Infarstructure.Projects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +44,15 @@ namespace BugTracking
                .AllowAnyMethod()
                .AllowAnyHeader();
       }));
+
+      services.AddDistributedMemoryCache();
+
+      services.AddSession((optional) =>
+      {
+        optional.IdleTimeout = TimeSpan.FromMinutes(360); // 360 phút  
+      });
+
+      services.AddHttpContextAccessor();
 
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -105,6 +115,8 @@ namespace BugTracking
       app.UseRouting();
 
       app.UseCors("ApiCorsPolicy");
+
+      app.UseSession();
 
       app.UseAuthentication();
       app.UseAuthorization();

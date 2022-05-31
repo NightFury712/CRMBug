@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Enumeration
 {
-  public class Enumeration
+  public static class Enumeration
   {
     /// <summary>
     /// Trạng thái của object
@@ -24,7 +24,11 @@ namespace Library.Enumeration
       /// <summary>
       /// Xóa
       /// </summary>
-      Delete = 3
+      Delete = 3,
+      /// <summary>
+      /// Xem
+      /// </summary>
+      View = 4
     }
 
     /// <summary>

@@ -9,6 +9,6 @@ namespace ApplicationCore.Interfaces.DL
 {
   public interface IDLEmployee : IDLBase<Employee>
   {
-
+    IEnumerable<Employee> GetEmployeeNotInProject(long projectID);
   }
 }

@@ -4,4 +4,5 @@ export enum Permission {
   Edit = 4, // Sửa
   Delete = 8, // Xóa
   Settings = 16, // Cài đặt
+  DeleteMany = 32, // Xóa nhiều bản ghi
 }

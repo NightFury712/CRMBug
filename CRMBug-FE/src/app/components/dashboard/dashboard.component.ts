@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit {
 
   openProject(project: any) {
     this.router.navigate([`/project/home/${project.ID}`]);
+    console.log(project);
     this.dataSV.project.next(project);
   }
 }

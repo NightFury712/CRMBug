@@ -51,9 +51,7 @@ namespace BugTracking.API.Base
       }
       catch (Exception ex)
       {
-        _serviceResult.Success = false;
-        _serviceResult.Data = ex;
-        return StatusCode(500, _serviceResult);
+        return GetExceptionResult(ex);
       }
     }
 
@@ -86,8 +84,7 @@ namespace BugTracking.API.Base
       }
       catch (Exception ex)
       {
-
-        return StatusCode(500, ex);
+        return GetExceptionResult(ex);
       }
     }
 
@@ -103,7 +100,7 @@ namespace BugTracking.API.Base
       }
       catch (Exception ex)
       {
-        return StatusCode(500, ex);
+        return GetExceptionResult(ex);
       }
     }
 
@@ -114,13 +111,15 @@ namespace BugTracking.API.Base
     {
       try
       {
-        _serviceResult = _baseService.GetDictionaryByLayoutCode();
+        _serviceResult.Code = Code.Ok;
+        _serviceResult.Success = true;
+        _serviceResult.Data = _baseService.GetDictionaryByLayoutCode();
         return Ok(_serviceResult);
         
       }
       catch (Exception ex)
       {
-        return StatusCode(500, ex);
+        return GetExceptionResult(ex);
       }
     }
 
@@ -134,6 +133,7 @@ namespace BugTracking.API.Base
       {
         var oWhere = BuildFilterClause.BuildFilter(paramGrid);
         var columns = Utils.Base64Decode(paramGrid.Columns);
+        _serviceResult.Success = true;
         _serviceResult.Code = Code.Ok;
         _serviceResult.Data = _baseService.Grid(oWhere, columns);
 
@@ -142,8 +142,36 @@ namespace BugTracking.API.Base
       }
       catch (Exception ex)
       {
-        return StatusCode(500, ex);
+        return GetExceptionResult(ex);
       }
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    [Authorize]
+    public IActionResult GetDataByID(long id)
+    {
+      try
+      {
+        _serviceResult.Success = true;
+        _serviceResult.Code = Code.Ok;
+        _serviceResult.Data = _baseService.GetDataByID(id);
+
+        return Ok(_serviceResult);
+
+      }
+      catch (Exception ex)
+      {
+        return GetExceptionResult(ex);
+      }
+    }
+
+    protected IActionResult GetExceptionResult(Exception ex)
+    {
+      _serviceResult.Success = false;
+      _serviceResult.Code = Code.Exception;
+      _serviceResult.Data = ex;
+      return Ok(_serviceResult);
     }
     #endregion
   }

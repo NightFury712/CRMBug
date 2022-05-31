@@ -12,7 +12,8 @@ namespace ApplicationCore.Interfaces.BL
     IEnumerable<T> GetEntities();
     ServiceResult Save(T entity);
     ServiceResult Delete(int entityID);
-    ServiceResult GetDictionaryByLayoutCode();
+    Dictionary<string, object> GetDictionaryByLayoutCode();
     IEnumerable<T> Grid(string oWhere, string columns);
+    T GetDataByID(long id);
   }
 }

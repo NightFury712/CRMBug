@@ -7,6 +7,9 @@ using Library.Entities;
 using ApplicationCore.Interfaces.DL;
 using Infarstructure.Base;
 using Microsoft.Extensions.Configuration;
+using Library;
+using Dapper;
+using System.Data;
 
 namespace Infarstructure.Projects
 {
@@ -16,6 +19,28 @@ namespace Infarstructure.Projects
     public DLProject(IConfiguration configuration) : base(configuration)
     {
 
+    }
+    #endregion
+
+    #region Methods
+    public bool InviteUser(int projectID, List<int> userIDs)
+    {
+      if (userIDs.Any())
+      {
+        string query = "INSERT INTO employee_project_mapping (EmployeeID, ProjectID, CreatedDate, ModifiedDate, CreatedBy, ModifiedBy) VALUES ";
+        List<string> inserts = new List<string>();
+        string userName = SessionData.FullName;
+        foreach (var id in userIDs)
+        {
+          inserts.Add($"({id}, {projectID}, NOW(), NOW(), \'{userName}\', \'{userName}\')");
+        }
+
+        query = $"{query} {string.Join(",", inserts.Select(x => x))};";
+        return _dbConnection.Execute(query, commandType: CommandType.Text) > 0;
+      } else
+      {
+        return false;
+      }
     }
     #endregion
   }

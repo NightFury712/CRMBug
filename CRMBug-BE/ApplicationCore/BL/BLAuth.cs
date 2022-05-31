@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.Authentication.Hashers;
 using ApplicationCore.Authentication.JWT.Generators;
-using Library.Entities;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
 using Library;
+using Library.Entities;
+using Microsoft.AspNetCore.Http;
 using static Library.Enumeration.Enumeration;
 
 namespace ApplicationCore.BL
@@ -47,7 +48,7 @@ namespace ApplicationCore.BL
         serviceResult.Code = Code.Authentication;
         return serviceResult;
       }
-
+      this.SetSessionData(user);
       var token = _accessTokenGenerator.GenerateToken(user);
       serviceResult.Success = true;
       serviceResult.Data = new
@@ -56,6 +57,12 @@ namespace ApplicationCore.BL
       };
       serviceResult.Code = Code.Ok;
       return serviceResult;
+    }
+    private void SetSessionData(Employee employee)
+    {
+      //SessionData.SetString("FullName", employee.FullName);
+      //SessionData.SetString("Email", employee.Email);
+      //SessionData.SetInt("UserID", employee.ID);
     }
   }
 }

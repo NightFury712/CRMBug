@@ -58,6 +58,7 @@ namespace ApplicationCore.Authentication.JWT.Generators
                     new Claim("PhoneNumber", userInfo?.PhoneNumber ?? ""),
                     new Claim("FirstName", userInfo?.FirstName ?? ""),
                     new Claim("LastName", userInfo?.LastName ?? ""),
+                    new Claim("FullName", userInfo?.FullName ?? ""),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 

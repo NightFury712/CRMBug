@@ -8,16 +8,16 @@ import { Component, OnInit } from '@angular/core';
 export class ChartComponent implements OnInit {
   priorities = [
     {
-      value: '1',
-      valueText: 'Hello'
+      Value: '1',
+      Text: 'Hello'
     },
     {
-      value: '2',
-      valueText: 'Hi'
+      Value: '2',
+      Text: 'Hi'
     },
     {
-      value: '3',
-      valueText: 'Good'
+      Value: '3',
+      Text: 'Good'
     }
   ]
   constructor() { }

@@ -37,11 +37,11 @@ export class BaseService {
 
   grid(param: any): Observable<any> {
     const url = `${this.controller}/Grid`;
-    return this.http.post<any>(url,param , {headers: this.headers}, )
+    return this.http.post<any>(url,param , {headers: this.headers})
   }
 
   saveData(data: any):  Observable<any> {
-    return this.http.post<any>(this.controller,data , {headers: this.headers}, );
+    return this.http.post<any>(this.controller,data , {headers: this.headers});
   }
 
   getDictionary(): Observable<any> {
@@ -52,5 +52,10 @@ export class BaseService {
   getDataByID(id: number): Observable<any> {
     const url = `${this.controller}/${id}`;
     return this.http.get<any>(url, {headers: this.headers});
+  }
+
+  delete(id: number): Observable<any> {
+    const url = `${this.controller}/${id}`;
+    return this.http.delete<any>(url, {headers: this.headers});
   }
 }

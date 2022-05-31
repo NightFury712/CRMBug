@@ -7,8 +7,8 @@ using Library.Entities;
 
 namespace ApplicationCore.Interfaces.DL
 {
-    public interface IDLIssue: IDLBase<Issue>
-    {
-
-    }
+  public interface IDLIssue : IDLBase<Issue>
+  {
+    IEnumerable<Employee> GetEmployeeByProjectID(long id);
+  }
 }

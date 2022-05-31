@@ -89,7 +89,8 @@ export class ViewIssueComponent implements OnInit {
   constructor(
     private issueSV: IssueService,
     private dialog: MatDialog,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private dataSV: DataService
   ) { 
 
   }
@@ -116,8 +117,10 @@ export class ViewIssueComponent implements OnInit {
   }
 
   getDataPaging() {
+    this.dataSV.loading.next(true);
     this.configPaging.PageIndex = (this.currentPage - 1) * this.configPaging.PageSize;
     this.issueSV.grid(this.configPaging).subscribe(resp => {
+      this.dataSV.loading.next(false);
       if(resp && resp.Success) {
         this.issues = resp.Data.map((item: any) =>  
           {
@@ -207,10 +210,7 @@ export class ViewIssueComponent implements OnInit {
     const config = new ConfigDialog('800px');
     config.data = {
       ProjectID: this.projectID,
-      Issue: {
-        ...issue,
-        State: EntityState.Edit
-      }
+      IssueID: issue.ID
     }
     const dialogRef = this.dialog.open(PopupEditIssueComponent, config);
     dialogRef.afterClosed().subscribe(resp => {

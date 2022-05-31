@@ -22,5 +22,7 @@ namespace ApplicationCore.Interfaces.DL
     string GetTableName<BEntity>();
 
     IEnumerable<T> Grid(string oWhere, string columns);
+
+    T GetDataByID(long id);
   }
 }

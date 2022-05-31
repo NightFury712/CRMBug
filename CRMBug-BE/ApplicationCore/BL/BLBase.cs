@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
+using Library;
 using Library.Entities;
 using static Library.Enumeration.Enumeration;
 
@@ -59,6 +60,7 @@ namespace ApplicationCore.BL
         {
           serviceResult.Code = Code.Created;
           serviceResult.Data = rowAffects;
+          this.AfterSave(entity);
         }
         else
         {
@@ -89,25 +91,19 @@ namespace ApplicationCore.BL
       return serviceResult;
     }
 
-    public ServiceResult GetDictionaryByLayoutCode()
+    public Dictionary<string, object> GetDictionaryByLayoutCode()
     {
-      var data = DLBase.GetDictionaryByLayoutCode();
-      if (data != null)
-      {
-        serviceResult.Code = Code.Ok;
-        serviceResult.Data = data;
-      }
-      else
-      {
-        serviceResult.Code = Code.Exception;
-        serviceResult.Data = data;
-      }
-      return serviceResult;
+      return DLBase.GetDictionaryByLayoutCode();
     }
 
     public IEnumerable<T> Grid(string oWhere, string columns)
     {
       return this.DLBase.Grid(oWhere, columns);
+    }
+
+    public T GetDataByID(long id)
+    {
+      return this.DLBase.GetDataByID(id);
     }
 
     public bool Validate(T entity)
@@ -153,6 +149,11 @@ namespace ApplicationCore.BL
       entity.Query = this.CreateQuery(entity);
     }
 
+    protected virtual void AfterSave(T entity)
+    {
+
+    }
+
     public string CreateQuery(T entity)
     {
       var properties = entity.GetType().GetProperties();
@@ -179,7 +180,7 @@ namespace ApplicationCore.BL
       field.Append(string.Join(",", propertyNames));
       value.Append(string.Join(",", propertyNames.Select(item => $"@{item}")));
       field.Append(", CreatedDate, CreatedBy, ModifiedDate, ModifiedBy");
-      value.Append(", NOW(), \'Hoàng Hải Đăng\', NOW(), \'Hoàng Hải Đăng\'");
+      value.Append($", NOW(), \'{SessionData.FullName}\', NOW(), \'{SessionData.FullName}\'");
       query = $"INSERT INTO {tableName} ({field}) VALUE ({value})";
       return query;
     }
@@ -189,7 +190,7 @@ namespace ApplicationCore.BL
       string query = string.Empty;
       StringBuilder queryUpdate =  new StringBuilder("");
       queryUpdate.Append(string.Join(",", propertyNames.Select(field => $"{field} = @{field}")));
-      queryUpdate.Append(", ModifiedDate = NOW(), ModifiedBy = \'Hoàng Hải Đăng\'");
+      queryUpdate.Append($", ModifiedDate = NOW(), ModifiedBy = \'{SessionData.FullName}\'");
       query = $"UPDATE {tableName} SET {queryUpdate} WHERE ID = @ID";
       return query;
     }

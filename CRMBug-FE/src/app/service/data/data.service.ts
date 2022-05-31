@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  project = new BehaviorSubject<object>({});
+  project = new BehaviorSubject<any>({});
 
   //user hiện tại
   user = new BehaviorSubject<any>(null);

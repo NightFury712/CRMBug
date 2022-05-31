@@ -23,6 +23,11 @@ namespace ApplicationCore.BL
       DLEmployee = dlEmployee;
     }
 
+    public IEnumerable<Employee> GetEmployeeNotInProject(long projectID)
+    {
+      return DLEmployee.GetEmployeeNotInProject(projectID);
+    }
+
     protected override void BeforeSave(Employee entity)
     {
       var passwordDecode = Utils.Base64Decode(entity.Password);

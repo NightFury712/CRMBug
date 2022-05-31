@@ -27,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-invite-member.component';
 
 @NgModule({
 	declarations: [
@@ -41,7 +42,8 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     RegisterComponent,
 		LoadingComponent,
   	ProjectSettingsComponent,
-		BaseDatetimepickerComponent
+		BaseDatetimepickerComponent,
+  	PopupInviteMemberComponent
 	],
 	imports: [
 		BrowserModule,

@@ -2,7 +2,7 @@
  *ngIf="isLogin"
 ></app-page-header>
 <app-loading
-  *ngIf="isLoading"
+  [hidden]="!isLoading"
 >
 
 </app-loading>

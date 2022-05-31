@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from './../base/base.service';
 import { Injectable } from '@angular/core';
@@ -12,5 +13,9 @@ export class EmployeeService extends BaseService {
   ) { 
     super(http);
     this.controller = `${this.controller}/Employee`
+  }
+
+  getEmployeeNotInProject(projectID: number): Observable<any> {
+    return this.http.get<any>(`${this.controller}/GetEmployeeNotInProject/${projectID}`, {headers: this.headers});
   }
 }

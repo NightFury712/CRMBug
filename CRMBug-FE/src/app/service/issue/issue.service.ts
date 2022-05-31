@@ -12,15 +12,7 @@ export class IssueService extends BaseService {
     this.controller = `${this.controller}/Issue`
   }
 
-  getIssues(): Observable<any> {
-    return this.http.get<any>(this.controller);
-  }
-
-  addIssue(issue: any) {
-    return this.http.post<any>(this.controller, issue);
-  }
-
-  delete(issueID: number) {
-    return this.http.delete<any>(`${this.controller}/${issueID}`);
+  getFormData(projectID: number, masterID: number, formModeState: number): Observable<any> {
+    return this.http.get<any>(`${this.controller}/FormData/${projectID}/${masterID}/${formModeState}`, {headers: this.headers});
   }
 }

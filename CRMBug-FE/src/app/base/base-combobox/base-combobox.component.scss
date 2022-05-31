@@ -5,6 +5,13 @@
     .mat-form-field {
       display: block;
       width: 100%;
+      &.color-disabled {
+        .mat-form-field-wrapper {
+          .mat-form-field-flex {
+            background-color: $color-grey-15;
+          }
+        }
+      }
       .mat-form-field-wrapper {
         padding: 0;
         .mat-form-field-flex {
@@ -43,6 +50,13 @@
     }
     .mat-form-field-ripple {
       background-color: $default-color-green !important;
+    }
+  }
+  .bt-combobox {
+    &.bt-flex-column {
+      .label-combobox {
+        margin-bottom: 8px;
+      }
     }
   }
 }

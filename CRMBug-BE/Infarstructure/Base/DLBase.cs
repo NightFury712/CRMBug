@@ -137,6 +137,16 @@ namespace Infarstructure.Base
       return datas;
     }
 
+    public T GetDataByID(long id)
+    {
+      var query = string.Empty;
+      var properties = typeof(T).GetProperties();
+      var propertyNames = string.Join(",", properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name));
+      propertyNames = $"{propertyNames},ID,ModifiedDate,CreatedDate,ModifiedBy,CreatedBy";
+      query = $"SELECT {propertyNames} FROM {_tableName} WHERE ID = @ID";
+      return _dbConnection.QueryFirstOrDefault<T>(query, new { ID = id });
+    }
+
     public string GetTableName<BEntity>()
     {
       var tableName = typeof(BEntity).GetCustomAttributes(typeof(TableNameAttribute), true).FirstOrDefault() as TableNameAttribute;

@@ -9,5 +9,6 @@ namespace ApplicationCore.Interfaces.DL
 {
   public interface IDLProject : IDLBase<Project>
   {
+    bool InviteUser(int projectID, List<int> userIDs);
   }
 }
