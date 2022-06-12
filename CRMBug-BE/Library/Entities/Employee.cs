@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Library.Enumeration.Enumeration;
 
 namespace Library.Entities
 {
@@ -23,7 +24,8 @@ namespace Library.Entities
     public string Email { get; set; }
     [TableColumn]
     public string PhoneNumber { get; set; }
-    public int Role { get; set; }
+    [TableColumn]
+    public int RoleID { get; set; } = (int)RoleEmployee.Guest;
     public string Username { get; set; }
     public string Password { get; set; }
     #endregion

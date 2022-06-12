@@ -22,6 +22,9 @@ export class BaseButtonComponent implements OnInit {
   @Input()
   iconCSS: string = '';
 
+  @Input()
+  iconMargin: number = 0;
+
   @Output()
   btnClick = new EventEmitter();
   constructor() { }

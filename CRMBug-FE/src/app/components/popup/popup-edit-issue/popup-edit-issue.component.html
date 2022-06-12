@@ -1,7 +1,7 @@
 <div class="add-issue-container">
   <div class="header bt-flex">
     <div class="title">
-      Add Issue
+      {{title}}
     </div>
     <div class="close bt-flex bt-justify-self-end">
       <i class="fa-solid fa-x" (click)="close()"></i>
@@ -13,17 +13,7 @@
         Details
       </div>
       <div class="field w-full bt-flex bt-flex-row">
-        <div class="field-left w-1/2">
-          <base-combobox
-            [datas]="issueType"
-            [value]="dataSave.TypeID"
-            [isShowLabel]="true"
-            labelText="Type"
-            (valueChange)="valueChangeCombo($event)"
-            fieldName="TypeID"
-          ></base-combobox>
-        </div>
-        <div class="field-right w-1/2">
+        <div class="field-left w-full" style="margin: 0;">
           <base-textbox
             text="Subject"
             [titleWidth]="120"
@@ -33,10 +23,22 @@
             [(value)]="dataSave.Subject"
           >
           </base-textbox>
+          
         </div>
       </div>
       <div class="field w-full bt-flex bt-flex-row">
         <div class="field-left w-1/2">
+          <base-combobox
+            [datas]="issueType"
+            [value]="dataSave.TypeID"
+            [isShowLabel]="true"
+            labelText="Type"
+            (valueChange)="valueChangeCombo($event)"
+            fieldName="TypeID"
+          ></base-combobox>
+         
+        </div>
+        <div class="field-right w-1/2">
           <base-combobox
             [datas]="issuePriority"
             [value]="dataSave.PriorityID"
@@ -45,22 +47,6 @@
             (valueChange)="valueChangeCombo($event)"
             fieldName="PriorityID"
           ></base-combobox>
-          <!-- <base-textbox
-            text="Priority"
-            [titleWidth]="120"
-            [type]="typeControl.Textbox"
-            placeholder=""
-          >
-          </base-textbox> -->
-        </div>
-        <div class="field-right w-1/2">
-          <base-textbox
-            text="Caused from"
-            [titleWidth]="120"
-            [type]="typeControl.Textbox"
-            placeholder=""
-          >
-          </base-textbox>
         </div>
       </div>
       <div class="field w-full bt-flex bt-flex-column">
@@ -110,7 +96,7 @@
           ></base-combobox>
         </div>
       </div>
-      <div class="field w-full bt-flex bt-flex-row">
+      <!-- <div class="field w-full bt-flex bt-flex-row">
         <div class="field-left w-1/2">
           <base-textbox
             text="Solution Approved"
@@ -122,30 +108,32 @@
         </div>
         <div class="field-right w-1/2">
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="groupbox-item">
       <div class="groupbox-title">
-        Build
+        Deadline
       </div>
       <div class="field w-full bt-flex bt-flex-row">
         <div class="field-left w-1/2">
-          <base-textbox
-            text="Found in build"
-            [titleWidth]="120"
-            [type]="typeControl.Textbox"
-            placeholder=""
+          <base-datetimepicker
+            [isShowLabel]="true"
+            [label]="'Due Date'"
+            [labelWidth]="120"
+            [value]="dataSave.DueDate"
+            [label]="'DueDate'"
+            (valueChange)="valueChangeCombo($event)"
           >
-          </base-textbox>
+          </base-datetimepicker>
         </div>
         <div class="field-right w-1/2">
-          <base-textbox
+          <!-- <base-textbox
             text="Intergrated in build"
             [titleWidth]="120"
             [type]="typeControl.Textbox"
             placeholder=""
           >
-          </base-textbox>
+          </base-textbox> -->
         </div>
       </div>
     </div>

@@ -1,7 +1,11 @@
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { MonthlyCalendarComponent } from './../base/calendar/monthly-calendar/monthly-calendar.component';
+import { WeeklyCalendarComponent } from './../base/calendar/weekly-calendar/weekly-calendar.component';
+import { CalendarComponent } from './../base/calendar/calendar.component';
 import { BaseDatetimepickerComponent } from './../base/base-datetimepicker/base-datetimepicker.component';
 import { BaseNotificationComponent } from '../base/base-notification/base-notification.component';
 import { BaseComboboxComponent } from './../base/base-combobox/base-combobox.component';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BaseButtonComponent } from "../base/base-button/base-button.component";
@@ -43,7 +47,10 @@ import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-in
 		LoadingComponent,
   	ProjectSettingsComponent,
 		BaseDatetimepickerComponent,
-  	PopupInviteMemberComponent
+  	PopupInviteMemberComponent,
+		CalendarComponent,
+		WeeklyCalendarComponent,
+		MonthlyCalendarComponent
 	],
 	imports: [
 		BrowserModule,
@@ -62,7 +69,8 @@ import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-in
 		MatButtonModule,
 		NgxMatDatetimePickerModule,
 		MatNativeDateModule,
-		NgxMatMomentModule
+		NgxMatMomentModule,
+		FullCalendarModule
 	],
 	exports: [
 		BaseButtonComponent,
@@ -72,6 +80,9 @@ import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-in
 		BaseDatetimepickerComponent,
 		LoadingComponent,
 		AppRoutingModule,
+		CalendarComponent,
+		WeeklyCalendarComponent,
+		MonthlyCalendarComponent
 	]
 })
 export class SharedComponentModule { }

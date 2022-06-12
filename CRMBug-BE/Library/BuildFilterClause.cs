@@ -40,7 +40,7 @@ namespace Library
           oWhere.Append(tmpQuery);
         }
       } 
-      oWhere.Append($") LIMIT {param.PageIndex},{param.PageSize};");
+      oWhere.Append($")");
       return oWhere.ToString();
     }
   }

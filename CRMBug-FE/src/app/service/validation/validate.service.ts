@@ -27,6 +27,7 @@ export class ValidateService {
       case "Username":
       case "Password":
       case "FirstName":
+      case "LastName":
       case "Subject":
       case "ProjectName":
       case "ProjectCode":

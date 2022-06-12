@@ -16,8 +16,8 @@ namespace Library.Entities
   {
     #region Properties
     public int ID { get; set; }
-    [TableColumn]
-    public int TypeID { get; set; }
+    //[TableColumn]
+    //public int TypeID { get; set; }
     [TableColumn]
     public string TypeIDText { get; set; }
     [TableColumn]
@@ -34,6 +34,7 @@ namespace Library.Entities
     public string StatusIDText { get; set; }
     [TableColumn]
     public string AssignedTo { get; set; }
+    [TableColumn]
     public DateTime DueDate { get; set; }
     [TableColumn]
     public long AssignedUserID { get; set; }
@@ -41,7 +42,6 @@ namespace Library.Entities
     public string AssignedUserIDText { get; set; }
     [TableColumn]
     public long ProjectID { get; set; }
-
     #endregion
   }
 }

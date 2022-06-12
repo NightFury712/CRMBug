@@ -139,4 +139,12 @@ body {
   width: 80%;
 }
 
+.btn {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  transition: 0.22s;
+}
+
 html, body { height: 100%; }

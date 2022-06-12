@@ -63,11 +63,11 @@ namespace BugTracking.API.Base
     /// Author: HHDang 23.2.2022
     [HttpPost]
     [Authorize]
-    public IActionResult Post(T entity)
+    public IActionResult Post(BaseEntity entity)
     {
       try
       {
-        _serviceResult = _baseService.Save(entity);
+        _serviceResult = _baseService.Save<T>(entity);
         if (_serviceResult.Code == Code.Created && (int)_serviceResult.Data > 0)
         {
           return Created("Create successfully! ", _serviceResult);
@@ -133,9 +133,10 @@ namespace BugTracking.API.Base
       {
         var oWhere = BuildFilterClause.BuildFilter(paramGrid);
         var columns = Utils.Base64Decode(paramGrid.Columns);
+        var limit = $" LIMIT {paramGrid.PageIndex},{paramGrid.PageSize}";
         _serviceResult.Success = true;
         _serviceResult.Code = Code.Ok;
-        _serviceResult.Data = _baseService.Grid(oWhere, columns);
+        _serviceResult.Data = _baseService.Grid(oWhere, columns, limit);
 
         return Ok(_serviceResult);
         

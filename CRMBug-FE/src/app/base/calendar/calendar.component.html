@@ -1,0 +1,13 @@
+<ng-container [ngSwitch]="type">
+  <ng-container *ngSwitchCase="calendarType.MonthLy">
+    <monthly-calendar [events]="events">
+      
+    </monthly-calendar>
+
+  </ng-container>
+  <ng-container *ngSwitchCase="calendarType.WeekLy">
+    <weekly-calendar >
+    
+    </weekly-calendar>
+  </ng-container>
+</ng-container>

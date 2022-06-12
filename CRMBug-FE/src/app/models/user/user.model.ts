@@ -10,6 +10,7 @@ export class User {
         public employeeId: string,
         public avatar: string,
         private _accessToken: string,
+        public fullName: string
         // private _accessTokenExpDate: Date,
         // private _refreshToken: string,
         // private _refreshTokenExpDate: Date

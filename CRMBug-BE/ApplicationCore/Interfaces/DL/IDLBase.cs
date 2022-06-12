@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Library.Entities;
 
 namespace ApplicationCore.Interfaces.DL
 {
@@ -11,7 +12,7 @@ namespace ApplicationCore.Interfaces.DL
   {
     IEnumerable<T> GetEntities();
 
-    int Save(T entity);
+    int Save(BaseEntity entity);
 
     int Delete(int entityID);
 
@@ -21,7 +22,7 @@ namespace ApplicationCore.Interfaces.DL
 
     string GetTableName<BEntity>();
 
-    IEnumerable<T> Grid(string oWhere, string columns);
+    Dictionary<string, object> Grid(string oWhere, string columns, string limit);
 
     T GetDataByID(long id);
   }

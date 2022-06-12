@@ -4,7 +4,7 @@ import { AddIssueComponent } from './components/add-issue/add-issue.component';
 import { ProjectComponent } from './components/project/project.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { HomeComponent } from './components/home/home.component';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatMenuModule} from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,21 @@ import { ChartComponent } from './components/chart/chart.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
+
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin,
+  timeGridPlugin,
+  bootstrapPlugin
+])
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +42,7 @@ import { HttpClientModule } from '@angular/common/http';
     SidebarComponent,
     AddIssueComponent,
     ViewIssueComponent,
-    ChartComponent
+    ChartComponent,
   ],
   imports: [
     BrowserModule,

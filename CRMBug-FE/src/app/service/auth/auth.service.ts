@@ -88,17 +88,17 @@ export class AuthService {
         }
 
         //Cast sang dạng User
-        const loadedUser = new User(
-            userData['email'],
-            userData['userId'],
-            userData['username'],
-            userData['employeeId'],
-            userData['avatar'],
-            // userData['_accessToken'],
-            // new Date(userData['_accessTokenExpDate']),
-            // userData['_refreshToken'],
-            // new Date(userData['_refreshTokenExpDate'])
-        )
+        // const loadedUser = new User(
+        //     userData['email'],
+        //     userData['userId'],
+        //     userData['username'],
+        //     userData['employeeId'],
+        //     userData['avatar'],
+        //     userData['_accessToken'],
+        //     new Date(userData['_accessTokenExpDate']),
+        //     userData['_refreshToken'],
+        //     new Date(userData['_refreshTokenExpDate'])
+        // )
 
         //Nếu token không hợp lệ thì thử refresh lại token
         // if (
@@ -265,6 +265,7 @@ export class AuthService {
             userInfo.EmployeeID,
             'avatar', 
             accessToken, 
+            userInfo.FullName
             // accessTokenExpDate, 
             // refreshToken, 
             // refreshTokenExpDate

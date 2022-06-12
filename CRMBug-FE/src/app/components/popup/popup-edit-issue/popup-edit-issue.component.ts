@@ -2,15 +2,15 @@ import { DataService } from './../../../service/data/data.service';
 import { Utils } from './../../../../shared/Utils';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { IssueState } from './../../../enumeration/issue-state.enum';
-import { IssuePriority } from './../../../enumeration/issue-priority.enum';
+import { IssueState } from './../../../enumeration/issue.enum';
+import { IssuePriority } from './../../../enumeration/issue.enum';
 import { EntityState } from './../../../enumeration/entity-state.enum';
 import { IssueService } from './../../../service/issue/issue.service';
 import { EmployeeService } from './../../../service/employee/employee.service';
 import { Component, Inject, OnInit, Input, OnDestroy } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { TypeControl } from 'src/app/enumeration/type-control.enum';
-import { IssueType } from 'src/app/enumeration/issue-type.enum';
+import { IssueType } from 'src/app/enumeration/issue.enum';
 import * as moment from 'moment';
 
 @Component({
@@ -22,6 +22,8 @@ export class PopupEditIssueComponent implements OnInit, OnDestroy {
   //#region Properties
   _onDestroySub: Subject<void> = new Subject<void>();
   typeControl = TypeControl;
+
+  title: string = "Add issue";
 
   issueType: any = [];
 
@@ -63,6 +65,7 @@ export class PopupEditIssueComponent implements OnInit, OnDestroy {
           (user) => {
             if(user) {
               this.dataSave["AssignedUserID"] = Number(user.id);
+              this.dataSave["AssignedUserIDText"] = user.fullName;
               console.log(this.dataSave);
             }
           }
@@ -70,30 +73,13 @@ export class PopupEditIssueComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    // this.empService.getDatas().subscribe(resp => {
-    //   if(resp && resp.Success) {
-    //     this.employees = resp.Data.map((x: any) => {
-    //       return {
-    //         Value: x.ID,
-    //         Text: x.FullName
-    //       }
-    //     });
-    //   }
-    // });
-    // this.issueService.getDictionary().subscribe(resp => {
-    //   if(resp && resp.Data && resp.Data.Dictionary) {
-    //     this.issueType = resp.Data.Dictionary[0];
-    //     this.issuePriority = resp.Data.Dictionary[1];
-    //     this.issueState = resp.Data.Dictionary[2];
-    //   }
-    // })
-
     if(this.data) {
       let formMode = EntityState.Add;
       let issueID = 0;
       if(this.data["IssueID"]) {
         issueID = this.data["IssueID"];
         formMode = EntityState.Edit;
+        this.title = "Edit issue"
       }
       this.issueService
         .getFormData(this.data["ProjectID"], issueID, formMode)
@@ -159,8 +145,15 @@ export class PopupEditIssueComponent implements OnInit, OnDestroy {
   }
 
   valueChangeCombo(data: any) {
-    const fieldName = data.FieldName;
-    this.dataSave[fieldName] = data.Value;
-    this.dataSave[`${fieldName}Text`] = data.Text;
+    const fieldName = data?.FieldName;
+    switch(fieldName) {
+      case 'DueDate':
+        this.dataSave[fieldName] = data.Value;
+        break;
+      default: 
+        this.dataSave[fieldName] = data.Value;
+        this.dataSave[`${fieldName}Text`] = data.Text;
+        break;
+    }
   }
 }

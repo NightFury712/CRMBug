@@ -21,7 +21,6 @@ namespace Library.Entities
     /// Mã của kết quả
     /// </summary>
     public Code Code { get; set; }
-
     public bool Success { get; set; }
     public List<string> ValidateInfo { get; set; }
   }

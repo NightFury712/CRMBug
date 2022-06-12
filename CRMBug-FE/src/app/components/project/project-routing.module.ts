@@ -16,27 +16,27 @@ const routes: Routes = [
       {
         path: "home/:projectID",
         component: HomeComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "add-issue/:projectID",
         component: AddIssueComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "view-issue/:projectID",
         component: ViewIssueComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "chart/:projectID",
         component: ChartComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: "settings/:projectID",
         component: ProjectSettingsComponent,
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
     ]
   }

@@ -15,6 +15,7 @@ using Library;
 using System.Reflection;
 using Library.Entities;
 using static Library.Enumeration.Enumeration;
+using Library.Constant;
 
 namespace Infarstructure.Base
 {
@@ -58,11 +59,30 @@ namespace Infarstructure.Base
         return null;
       }
     }
-    public IEnumerable<T> Grid(string oWhere, string columns)
+    public Dictionary<string, object> Grid(string oWhere, string columns, string limit)
     {
-      string query = $"SELECT {columns} FROM {_tableName} WHERE {oWhere}";
-      var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
-      return entities;
+      Dictionary<string, object> data = new Dictionary<string, object>();
+      if(string.IsNullOrEmpty(columns))
+      {
+        columns = "*";
+      }
+      string query = $"SELECT {columns} FROM {_tableName} WHERE {oWhere} {limit};SELECT COUNT(*) AS TotalRecord FROM {_tableName} WHERE {oWhere};";
+      //var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
+      using (var rd = _dbConnection.ExecuteReader(query, new { v_LayoutCode = _tableName }, commandType: CommandType.Text))
+      {
+        if(rd != null)
+        {
+          data["Data"] = ExtensionMethod.ToListDictionary(rd);
+          if(rd.NextResult())
+          {
+            while(rd.Read())
+            {
+              data["TotalRecord"] = rd.GetInt32(0);
+            }
+          }
+        }
+      }
+      return data;
     }
     /// <summary>
     /// Thêm mới bản ghi
@@ -70,7 +90,7 @@ namespace Infarstructure.Base
     /// <param name="entity">Thông tin bản ghi</param>
     /// <returns>Số cột bị ảnh hưởng</returns>
     /// Author: HHDang 23.2.2022
-    public int Save(T entity)
+    public int Save(BaseEntity entity)
     {
       var rowAffects = 0;
       _dbConnection.Open();
@@ -82,7 +102,7 @@ namespace Infarstructure.Base
       return rowAffects;
     }
 
-    protected DynamicParameters MappingDbtype(T entity)
+    protected DynamicParameters MappingDbtype(BaseEntity entity)
     {
       var properties = entity.GetType().GetProperties();
       var parameters = new DynamicParameters();
@@ -121,8 +141,9 @@ namespace Infarstructure.Base
     {
       Dictionary<string, object> datas = new Dictionary<string, object>();
       List<List<Dictionary<string, object>>> listData = new List<List<Dictionary<string, object>>>();
-      string procedures = "Proc_GetDictionaryByFormLayout";
-      using (var rd = _dbConnection.ExecuteReader(procedures, new { v_LayoutCode = _tableName }, commandType: CommandType.StoredProcedure))
+      //string procedures = "Proc_GetDictionaryByFormLayout";
+      string query = Constant.DLIssue_GetFormData;
+      using (var rd = _dbConnection.ExecuteReader(query, commandType: CommandType.Text))
       {
         if(rd != null)
         {

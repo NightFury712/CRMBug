@@ -38,7 +38,7 @@ namespace BugTracking.API.Authentication
     /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("login")]
-    public IActionResult Authenticate([FromBody] Employee entity)
+    public IActionResult Authenticate(Employee entity)
     {
       try
       {

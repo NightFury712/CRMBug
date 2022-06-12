@@ -1,0 +1,13 @@
+@import '../../../color.scss';
+@import '../../../styles.scss';
+@import '../../../font.scss';
+
+:host {
+  ::ng-deep {
+    .calendar-container {
+      height: calc(100vh - 180px);
+      margin-top: 16px;
+      background-color: $color-white;
+    }
+  }
+}

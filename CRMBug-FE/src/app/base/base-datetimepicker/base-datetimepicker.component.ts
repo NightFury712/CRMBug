@@ -49,6 +49,9 @@ export class BaseDatetimepickerComponent implements OnInit {
   @Input()
   isShowLabel: boolean = false;
 
+  @Input()
+  fieldName: string = '';
+
   @Output()
   valueChange = new EventEmitter();
   public dateControl = new FormControl(moment());
@@ -77,6 +80,10 @@ export class BaseDatetimepickerComponent implements OnInit {
 
   onChange() {
     const me = this;
-    me.valueChange.emit(me.value);
+    me.valueChange.emit({
+      FieldName: this.fieldName,
+      Value: me.value,
+      Text: me.value
+    });
   }
 }

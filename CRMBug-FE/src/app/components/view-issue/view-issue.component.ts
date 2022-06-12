@@ -1,3 +1,5 @@
+import { IssueView } from './../../enumeration/issue.enum';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { Operator } from './../../enumeration/operator.enum';
 import { Addition } from './../../enumeration/addition.enum';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +11,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EntityState } from 'src/app/enumeration/entity-state.enum';
 import { TypeControl } from 'src/app/enumeration/type-control.enum';
 import { ConfigDialog } from 'src/app/modules/config-dialog';
+import { Subject } from 'rxjs';
 declare const $: any;
 
 @Component({
@@ -17,21 +20,13 @@ declare const $: any;
   styleUrls: ['./view-issue.component.scss']
 })
 export class ViewIssueComponent implements OnInit {
-  issues: any = [
-    // {
-    //   TypeID: 0,
-    //   TypeIDText: "Task",
-    //   Subject: "Can't add ticket",
-    //   PriorityID: 1,
-    //   PriorityIDText: "Normal",
-    //   StatusID: 1,
-    //   StatusIDText: "Approved",
-    //   AssignedTo: "HHDANG",
-    //   FoundInBuild: "R24.0.16",
-    //   IntergratedBuild: "R25.0.01",
-    //   State: EntityState.View
-    // }
-  ];
+  _onDestroySub: Subject<void> = new Subject<void>();
+
+  currentView: IssueView = IssueView.List;
+
+  issueView = IssueView;
+
+  issues: any = [];
 
   pageSizeCbx = [
     {
@@ -99,61 +94,29 @@ export class ViewIssueComponent implements OnInit {
     this.projectID = this.activeRoute.snapshot.params.projectID;
     this.configPaging.Filters[0].Value = this.projectID;
     this.getDataPaging();
-    // this.issueSV.getDatas().subscribe(resp => {
-    //   if(resp && resp.Success) {
-    //     this.issues = resp.Data.map((item: any) =>  
-    //       {
-    //         return {
-    //           ...item,
-    //           State: EntityState.View,
-    //           EntityState: EntityState.Edit
-    //         }
-    //       });
-    //   } else {
-    //     console.log(resp)
-    //   }
-    // });
-    // this.issueSV.grid()
   }
 
   getDataPaging() {
-    this.dataSV.loading.next(true);
+    // this.dataSV.loading.next(true);
     this.configPaging.PageIndex = (this.currentPage - 1) * this.configPaging.PageSize;
-    this.issueSV.grid(this.configPaging).subscribe(resp => {
-      this.dataSV.loading.next(false);
-      if(resp && resp.Success) {
-        this.issues = resp.Data.map((item: any) =>  
-          {
-            return {
-              ...item,
-              State: EntityState.View,
-              EntityState: EntityState.Edit
-            }
-          });
-      } else {
-        console.log(resp)
-      }
-    }) 
+    this.issueSV.grid(this.configPaging)
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe(resp => {
+        this.dataSV.loading.next(false);
+        if(resp && resp.Success) {
+          this.issues = resp.Data.Data;
+          this.totalRecord = resp.Data.TotalRecord
+        } else {
+          console.log(resp)
+        }
+      },
+      error => {
+        this.dataSV.loading.next(false);
+        console.log(error);
+      }) 
   }
 
   addIssue(e: any) {
-    // let newIssue = {
-    //   TypeID: 0,
-    //   TypeIDText: "Task",
-    //   Subject: "",
-    //   PriorityID: 0,
-    //   PriorityIDText: "Low",
-    //   StatusID: 0,
-    //   StatusIDText: "New",
-    //   AssignedTo: "",
-    //   FoundInBuild: "",
-    //   IntergratedBuild: "",
-    //   State: EntityState.Add,
-    //   EntityState: EntityState.Add
-    // }
-    // this.issues.push(newIssue);
-    // this.currentData = newIssue;
-    // this.isEditing = true;
     const config = new ConfigDialog('800px');
     config.data = {
       ProjectID: this.projectID
@@ -182,6 +145,10 @@ export class ViewIssueComponent implements OnInit {
     // }
     // this.currentData = item;
     // this.isEditing = true;
+  }
+
+  switchView(viewType: IssueView) {
+    this.currentView = viewType;
   }
 
   cancelEdit(item: any, index: number) {

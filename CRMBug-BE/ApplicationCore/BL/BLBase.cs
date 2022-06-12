@@ -43,9 +43,8 @@ namespace ApplicationCore.BL
       return DLBase.GetEntities();
     }
 
-    public virtual ServiceResult Save(T entity)
+    public virtual ServiceResult Save<T>(BaseEntity entity)
     {
-      entity.EntityState = EntityState.Add;
       isValid = Validate(entity);
       // Thêm mới dữ liệu khi đã hợp lệ:
       if (isValid)
@@ -54,10 +53,11 @@ namespace ApplicationCore.BL
       }
       if (isValid)
       {
-        this.BeforeSave(entity);
+        this.BeforeSave<T>(entity);
         var rowAffects = DLBase.Save(entity);
         if (rowAffects >= 1)
         {
+          serviceResult.Success = true;
           serviceResult.Code = Code.Created;
           serviceResult.Data = rowAffects;
           this.AfterSave(entity);
@@ -67,7 +67,8 @@ namespace ApplicationCore.BL
           serviceResult.Code = Code.Exception;
           serviceResult.Data = rowAffects;
         }
-      } else
+      }
+      else
       {
         serviceResult.Code = Code.NotValid;
         serviceResult.Data = 0;
@@ -96,9 +97,9 @@ namespace ApplicationCore.BL
       return DLBase.GetDictionaryByLayoutCode();
     }
 
-    public IEnumerable<T> Grid(string oWhere, string columns)
+    public Dictionary<string, object> Grid(string oWhere, string columns, string limit)
     {
-      return this.DLBase.Grid(oWhere, columns);
+      return this.DLBase.Grid(oWhere, columns, limit);
     }
 
     public T GetDataByID(long id)
@@ -106,12 +107,12 @@ namespace ApplicationCore.BL
       return this.DLBase.GetDataByID(id);
     }
 
-    public bool Validate(T entity)
+    public bool Validate(BaseEntity entity)
     {
       bool isValid = true;
       // Đọc các property
       var properties = entity.GetType().GetProperties();
-      foreach(var prop in properties)
+      foreach (var prop in properties)
       {
         /// Lấy giá trị của property hiện tại
         var propertyValue = prop.GetValue(entity);
@@ -133,39 +134,41 @@ namespace ApplicationCore.BL
           }
         }
       }
-      
+
       return isValid;
     }
 
-    public bool ValidateCustom(T entity)
+    public bool ValidateCustom(BaseEntity entity)
     {
       return true;
     }
 
-    protected virtual void BeforeSave(T entity)
+    protected virtual void BeforeSave<T>(BaseEntity entity)
     {
-
       // Build câu truy vấn
-      entity.Query = this.CreateQuery(entity);
+      entity.Query = this.CreateQuery<T>(entity);
     }
 
-    protected virtual void AfterSave(T entity)
+    protected virtual void AfterSave(BaseEntity entity)
     {
 
     }
 
-    public string CreateQuery(T entity)
+    public string CreateQuery<T>(BaseEntity entity)
     {
-      var properties = entity.GetType().GetProperties();
+      var properties = typeof(T).GetProperties();
       var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name);
       string tableName = this.DLBase.GetTableName<T>();
       string query = string.Empty;
       switch (entity.EntityState)
       {
         case EntityState.Add:
+          entity.CreatedBy = SessionData.FullName;
+          entity.ModifiedBy = SessionData.FullName;
           query = this.CreateAddQuery(propertyNames, tableName);
           break;
         case EntityState.Edit:
+          entity.ModifiedBy = SessionData.FullName;
           query = this.CreateEditQuery(propertyNames, tableName);
           break;
       }
@@ -180,7 +183,7 @@ namespace ApplicationCore.BL
       field.Append(string.Join(",", propertyNames));
       value.Append(string.Join(",", propertyNames.Select(item => $"@{item}")));
       field.Append(", CreatedDate, CreatedBy, ModifiedDate, ModifiedBy");
-      value.Append($", NOW(), \'{SessionData.FullName}\', NOW(), \'{SessionData.FullName}\'");
+      value.Append($", NOW(), @CreatedBy, NOW(), @ModifiedBy");
       query = $"INSERT INTO {tableName} ({field}) VALUE ({value})";
       return query;
     }
@@ -188,9 +191,9 @@ namespace ApplicationCore.BL
     protected virtual string CreateEditQuery(IEnumerable<string> propertyNames, string tableName)
     {
       string query = string.Empty;
-      StringBuilder queryUpdate =  new StringBuilder("");
+      StringBuilder queryUpdate = new StringBuilder("");
       queryUpdate.Append(string.Join(",", propertyNames.Select(field => $"{field} = @{field}")));
-      queryUpdate.Append($", ModifiedDate = NOW(), ModifiedBy = \'{SessionData.FullName}\'");
+      queryUpdate.Append($", ModifiedDate = NOW(), ModifiedBy = @ModifiedBy");
       query = $"UPDATE {tableName} SET {queryUpdate} WHERE ID = @ID";
       return query;
     }

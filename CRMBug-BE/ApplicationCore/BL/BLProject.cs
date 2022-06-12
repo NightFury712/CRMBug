@@ -37,8 +37,9 @@ namespace ApplicationCore.BL
     #endregion
 
     #region Methods Override
-    protected override void AfterSave(Project project)
+    protected override void AfterSave(BaseEntity entity)
     {
+      var project = entity as Project;
       List<int> userIDs = new List<int>()
       {
         Int32.Parse(SessionData.UserID)

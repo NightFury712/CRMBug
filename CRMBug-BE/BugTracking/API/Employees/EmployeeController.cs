@@ -45,6 +45,30 @@ namespace BugTracking.API.Employees
         return GetExceptionResult(ex);
       }
     }
+
+    /// <summary>
+    /// Đăng ký tài khoản
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public IActionResult Register(Employee entity)
+    {
+      try
+      {
+        //Gọi service xác thực tài khoản
+        _serviceResult = BL.Save<Employee>(entity);
+
+        return Ok(_serviceResult);
+      }
+      catch (Exception ex)
+      {
+        _serviceResult.Success = false;
+        _serviceResult.Data = ex;
+        return Ok(_serviceResult);
+      }
+    }
     #endregion
   }
 }

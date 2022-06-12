@@ -8,6 +8,7 @@ using Library.Entities;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
 using Library;
+using static Library.Enumeration.Enumeration;
 
 namespace ApplicationCore.BL
 {
@@ -28,14 +29,21 @@ namespace ApplicationCore.BL
       return DLEmployee.GetEmployeeNotInProject(projectID);
     }
 
-    protected override void BeforeSave(Employee entity)
+    protected override void BeforeSave<T>(BaseEntity entity)
     {
-      var passwordDecode = Utils.Base64Decode(entity.Password);
-      entity.Password = Hasher.BcryptHash(passwordDecode);
-      base.BeforeSave(entity);
+      var employee = entity as Employee;
+      var passwordDecode = Utils.Base64Decode(employee.Password);
+      employee.Password = Hasher.BcryptHash(passwordDecode);
+      if (entity.EntityState == EntityState.Add)
+      {
+        employee.EmployeeID = (Guid.NewGuid()).ToString();
+      }
+      employee.FullName = $"{employee.FirstName} {employee.LastName}";
+      base.BeforeSave<Employee>(employee);
     }
     protected override string CreateAddQuery(IEnumerable<string> propertyNames, string tableName)
     {
+      propertyNames.Append("Username");
       propertyNames.Append("PassWord");
       return base.CreateAddQuery(propertyNames, tableName);
     }

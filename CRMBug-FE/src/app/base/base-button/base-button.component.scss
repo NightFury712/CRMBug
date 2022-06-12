@@ -3,17 +3,7 @@
 @import "../../../font.scss";
 
 :host { 
-  .btn {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    border-radius: 4px;
-    transition: 0.22s;
-  }
-
-  .icon-margin {
-    margin-right: 6px;
-  }
+  
   
   .btn-primary {
     background-color: $default-color-green;

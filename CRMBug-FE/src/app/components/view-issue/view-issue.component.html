@@ -23,8 +23,35 @@
         >
         </base-textbox>
       </div>
-      <div class="right w-1/2 bt-flex bt-align-item-center bt-justify-content-end">
-        
+      <div class="right w-1/2 bt-flex bt-align-items-center bt-justify-content-end">
+        <div class="right-item">
+          <div class="switch-view bt-flex bt-align-items-center bt-justify-content-center">
+            <button 
+              class="btn" 
+              [ngClass]="{'actived': currentView == issueView.List}"
+              (click)="switchView(issueView.List)"
+            >
+              <i class="fa-solid fa-list"></i> 
+            </button>
+            <button 
+              class="btn" 
+              [ngClass]="{'actived': currentView == issueView.Calendar}" 
+              (click)="switchView(issueView.Calendar)"
+            >
+              <i class="fa-solid fa-calendar"></i>
+            </button>
+          </div>
+        </div>
+        <div class="right-item bt-flex bt-align-items-center">
+          <base-button
+            [iconCSS]="'fa-solid fa-rotate-right'"
+            [typeButton]="'secondary'"
+            [width]="40"
+            [height]="40"
+            (btnClick)="getDataPaging()"
+          >
+          </base-button>
+        </div>
       </div>
     </div>
     <div class="content">
@@ -44,130 +71,38 @@
         <tbody class="issues">
           <tr *ngFor="let item of issues; let index = index" (click)="editIssue(item)">
             <td>
-              <span *ngIf="item.State == entityState.View">{{
+              <span>{{
                 item.TypeIDText
               }}</span>
-              <!-- <base-combobox
-                [datas]="typeOfIssue"
-                [(value)]="item.TypeID"
-                *ngIf="item.State != entityState.View"
-              >
-              </base-combobox> -->
             </td>
             <td>
-              <span *ngIf="item.State == entityState.View">{{ item.Subject }}</span>
-              <base-textbox
-                [type]="typeControl.Textbox"
-                text=""
-                [(value)]="item.Subject"
-                [isLabel]="false"
-                placeholder=""
-                *ngIf="item.State != entityState.View"
-              >
-              </base-textbox>
+              <span>{{ item.Subject }}</span>
             </td>
             <td>
-              <span *ngIf="item.State == entityState.View">{{
+              <span>{{
                 item.PriorityIDText
               }}</span>
-              <!-- <base-combobox
-                [datas]="priorities"
-                [(value)]="item.PriorityID"
-                *ngIf="item.State != entityState.View"
-              >
-              </base-combobox> -->
             </td>
             <td>
-              <span *ngIf="item.State == entityState.View">{{
+              <span>{{
                 item.StatusIDText
               }}</span>
-              <!-- <base-combobox
-                [datas]="issueState"
-                [(value)]="item.StatusID"
-                *ngIf="item.State != entityState.View"
-              >
-              </base-combobox> -->
             </td>
             <td>
-              <span *ngIf="item.State == entityState.View">{{
+              <span >{{
                 item.AssignedUserIDText
               }}</span>
-              <base-textbox
-                [type]="typeControl.Textbox"
-                text=""
-                [(value)]="item.AssignedUserID"
-                [isLabel]="false"
-                placeholder=""
-                *ngIf="item.State != entityState.View"
-              >
-              </base-textbox>
             </td>
             <td>
-              <span *ngIf="item.State == entityState.View">{{
+              <span>{{
                 item.FoundInBuild
               }}</span>
-              <base-textbox
-                [type]="typeControl.Textbox"
-                text=""
-                [(value)]="item.FoundInBuild"
-                [isLabel]="false"
-                placeholder=""
-                *ngIf="item.State != entityState.View"
-              >
-              </base-textbox>
             </td>
             <td>
-              <span *ngIf="item.State == entityState.View">{{
+              <span>{{
                 item.IntergratedBuild
               }}</span>
-              <base-textbox
-                [type]="typeControl.Textbox"
-                text=""
-                [(value)]="item.IntergratedBuild"
-                [isLabel]="false"
-                placeholder=""
-                *ngIf="item.State != entityState.View"
-              >
-              </base-textbox>
             </td>
-            <!-- <td class="action">
-              <base-button
-                iconCSS="fa-solid fa-pencil"
-                text=""
-                typeButton="secondary"
-                [width]="36"
-                (btnClick)="clickBtnEdit(item, index)"
-                *ngIf="item.State == entityState.View"
-              >
-              </base-button>
-              <base-button
-                iconCSS="fa-solid fa-check"
-                text=""
-                typeButton="primary"
-                [width]="36"
-                (btnClick)="saveIssue(item, index)"
-                *ngIf="item.State != entityState.View"
-              >
-              </base-button>
-              <base-button
-                iconCSS="fa-solid fa-trash"
-                text=""
-                typeButton="danger"
-                [width]="36"
-                (btnClick)="deleteIssue(item, index)"
-                *ngIf="item.State == entityState.Edit"
-              >
-              </base-button>
-              <base-button
-                iconCSS="fa-solid fa-xmark"
-                text=""
-                typeButton="secondary"
-                [width]="36"
-                (btnClick)="cancelEdit(item, index)"
-                *ngIf="item.State != entityState.View"
-              >
-              </base-button>
-            </td> -->
           </tr>
         </tbody>
       </table>
@@ -175,7 +110,7 @@
   </div>
   <div class="pagination bt-flex">
     <div class="total-record bt-flex bt-align-items-center w-1/2">
-      Total Page: <span class="number"> {{totalRecord}} </span>
+      Total Record: <span class="number"> {{totalRecord}} </span>
     </div>
     <div class="pager bt-flex bt-align-items-center bt-justify-content-end w-1/2">
       <div class="page-size">
@@ -189,10 +124,10 @@
         >
         </base-combobox>
       </div>
-      <div class="prev-to-first" [ngClass]="{'disable': this.configPaging.PageIndex == 1}">
+      <div class="prev-to-first" [ngClass]="{'disable': currentPage == 1}">
         <i class="fa-solid fa-angles-left"></i>
       </div>
-      <div class="prev-one" [ngClass]="{'disable': this.configPaging.PageIndex == 1}">
+      <div class="prev-one" [ngClass]="{'disable': currentPage == 1}">
         <i class="fa-solid fa-angle-left"></i>
       </div>
       <div class="page-info bt-flex bt-justify-content-center">

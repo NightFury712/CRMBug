@@ -32,7 +32,7 @@ namespace ApplicationCore.BL
     public ServiceResult Authenticate(Employee entity)
     {
       var usernameProp = entity.GetType().GetProperty("Username");
-      var user = DLEmployee.GetEntityByProperty(entity, usernameProp);
+      var user = DLEmployee.GetEntityByProperty(entity, usernameProp) as Employee;
       //Không tìm thấy user
       if(user == null)
       {
@@ -48,7 +48,6 @@ namespace ApplicationCore.BL
         serviceResult.Code = Code.Authentication;
         return serviceResult;
       }
-      this.SetSessionData(user);
       var token = _accessTokenGenerator.GenerateToken(user);
       serviceResult.Success = true;
       serviceResult.Data = new
@@ -57,12 +56,6 @@ namespace ApplicationCore.BL
       };
       serviceResult.Code = Code.Ok;
       return serviceResult;
-    }
-    private void SetSessionData(Employee employee)
-    {
-      //SessionData.SetString("FullName", employee.FullName);
-      //SessionData.SetString("Email", employee.Email);
-      //SessionData.SetInt("UserID", employee.ID);
     }
   }
 }
