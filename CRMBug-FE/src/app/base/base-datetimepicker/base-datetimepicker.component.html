@@ -6,11 +6,11 @@
   </div>  
   <mat-form-field [ngStyle]="{'width': width}" (click)="picker.open()">
     <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [formControl]="dateControl"
-      [min]="minDate" [max]="maxDate" [disabled]="disabled">
+      [min]="minDate" [max]="maxDate" [disabled]="disabled" [(ngModel)]="value">
     <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
     <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
       [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
-      [color]="color" [enableMeridian]="enableMeridian">
+      [color]="color" [enableMeridian]="enableMeridian" (closed)="onChange()">
     </ngx-mat-datetime-picker>
   </mat-form-field>
 </div>

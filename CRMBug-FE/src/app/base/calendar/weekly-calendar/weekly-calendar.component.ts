@@ -11,7 +11,7 @@ export class WeeklyCalendarComponent implements OnInit {
   //options cho fullcalendar
   calendarOptions: CalendarOptions = {
     ...DEFAULT_CALENDAR_OPTIONS,
-    initialView: 'timeGridWeek',
+    initialView: 'dayGridWeek',
 
     allDaySlot: false, //Không cho phép hiện ô sự kiện cả ngày
 
@@ -26,10 +26,9 @@ export class WeeklyCalendarComponent implements OnInit {
       omitCommas: true,
     },
 
-    events: [
-      { title: 'event 1', date: '2022-06-01' },
-      { title: 'event 2', date: '2022-06-02' },
-    ],
+    eventDisplay: 'block',
+
+    events: [],
   };
 
   @Input()

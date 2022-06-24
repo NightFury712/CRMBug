@@ -22,14 +22,15 @@
       [matMenuTriggerFor]="moreInfos"
     >
       <div class="text">
-        H
+        {{ firstCharacter }}
       </div>
     </div>
   </div>
 </div>
 
 <mat-menu #moreInfos="matMenu">
-  <div class="title">Hello, Hoang Hai Dang</div>
+  <div class="title">Hello, {{ fullName }}</div>
   <button mat-menu-item (click)="updateUserSetting()">Personal Settings</button>
   <button mat-menu-item>Reset Password</button>
+  <button mat-menu-item (click)="logout()">Logout</button>
 </mat-menu>

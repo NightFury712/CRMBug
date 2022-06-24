@@ -1,3 +1,4 @@
+import { TaskService } from './../../service/task/task.service';
 import { IssueView } from './../../enumeration/issue.enum';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { Operator } from './../../enumeration/operator.enum';
@@ -6,12 +7,13 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from './../../service/data/data.service';
 import { PopupEditIssueComponent } from './../popup/popup-edit-issue/popup-edit-issue.component';
 import { MatDialog } from '@angular/material/dialog';
-import { IssueService } from '../../service/issue/issue.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EntityState } from 'src/app/enumeration/entity-state.enum';
 import { TypeControl } from 'src/app/enumeration/type-control.enum';
 import { ConfigDialog } from 'src/app/modules/config-dialog';
 import { Subject } from 'rxjs';
+import { CalendarType } from 'src/app/enumeration/calendar.enum';
+import { ToastrService } from 'ngx-toastr';
 declare const $: any;
 
 @Component({
@@ -26,7 +28,54 @@ export class ViewIssueComponent implements OnInit {
 
   issueView = IssueView;
 
-  issues: any = [];
+  calendarType = CalendarType;
+
+  currCalendarType: CalendarType = CalendarType.MonthLy;
+
+  fieldDisplay: Array<any> = [
+    {
+      fieldName: "Subject",
+      displayText: "Subject",
+      typeControl: TypeControl.Textbox
+    },
+    {
+      fieldName: "PriorityID",
+      displayText: "Priority",
+      typeControl: TypeControl.Textbox
+    },
+    {
+      fieldName: "CompletedProgress",
+      displayText: "Completed progress",
+      typeControl: TypeControl.Textbox
+    },
+    {
+      fieldName: "Description",
+      displayText: "Description",
+      typeControl: TypeControl.Textbox
+    },
+    {
+      fieldName: "AssignedUserIDText",
+      displayText: "Assigned to",
+      typeControl: TypeControl.Textbox
+    },
+    {
+      fieldName: "RelatedUserIDText",
+      displayText: "Related to",
+      typeControl: TypeControl.Textbox
+    },
+    {
+      fieldName: "CreatedDate",
+      displayText: "Created date",
+      typeControl: TypeControl.DateTime
+    },
+    {
+      fieldName: "DueDate",
+      displayText: "Deadline",
+      typeControl: TypeControl.DateTime
+    },
+  ];
+
+  tasks: Array<any> = [];
 
   pageSizeCbx = [
     {
@@ -66,7 +115,7 @@ export class ViewIssueComponent implements OnInit {
     ],
     PageIndex: 0,
     PageSize: 20,
-    Columns: btoa("ID ,TypeID ,TypeIDText ,Subject ,PriorityID ,PriorityIDText ,StatusID ,StatusIDText ,AssignedTo ,FoundInBuild ,IntergratedBuild ,CreatedBy ,CreatedDate ,ModifiedBy ,ModifiedDate ,AssignedUserID ,AssignedUserIDText ,ProjectID ,ProjectIDText")
+    Columns: btoa("ID,Subject,PriorityID,PriorityIDText,StatusID,StatusIDText,CompletedProgress,AssignedUserID,AssignedUserIDText,RelatedUserID,RelatedUserIDText,ProjectID,DueDate,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate")
   }
 
   entityState = EntityState;
@@ -82,10 +131,11 @@ export class ViewIssueComponent implements OnInit {
   projectID: number = 0;
 
   constructor(
-    private issueSV: IssueService,
+    private taskSV: TaskService,
     private dialog: MatDialog,
     private activeRoute: ActivatedRoute,
-    private dataSV: DataService
+    private dataSV: DataService,
+    private toastSV: ToastrService
   ) { 
 
   }
@@ -97,14 +147,20 @@ export class ViewIssueComponent implements OnInit {
   }
 
   getDataPaging() {
-    // this.dataSV.loading.next(true);
+    this.dataSV.loading.next(true);
     this.configPaging.PageIndex = (this.currentPage - 1) * this.configPaging.PageSize;
-    this.issueSV.grid(this.configPaging)
+    this.taskSV.grid(this.configPaging)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe(resp => {
         this.dataSV.loading.next(false);
         if(resp && resp.Success) {
-          this.issues = resp.Data.Data;
+          this.tasks = resp.Data.Data.map((x: any) => {
+            return {
+              ...x,
+              title: x.Subject,
+              date: x.CreatedDate
+            }
+          });
           this.totalRecord = resp.Data.TotalRecord
         } else {
           console.log(resp)
@@ -117,6 +173,7 @@ export class ViewIssueComponent implements OnInit {
   }
 
   addIssue(e: any) {
+    this.toastSV.success("This is a toast");
     const config = new ConfigDialog('800px');
     config.data = {
       ProjectID: this.projectID
@@ -134,10 +191,10 @@ export class ViewIssueComponent implements OnInit {
     // item.State = EntityState.Edit;
     // item.EntityState = EntityState.Edit;
     // if(this.isEditing) {
-    //   const oldIndex = this.issues.indexOf(this.currentData);
-    //   this.issues[oldIndex].State = EntityState.View;
+    //   const oldIndex = this.tasks.indexOf(this.currentData);
+    //   this.tasks[oldIndex].State = EntityState.View;
     //   //Save data
-    //   this.issueSV.addIssue(item).subscribe(
+    //   this.taskSV.addIssue(item).subscribe(
     //     resp => {
     //       console.log(resp);
     //     }
@@ -148,16 +205,23 @@ export class ViewIssueComponent implements OnInit {
   }
 
   switchView(viewType: IssueView) {
+    if(viewType === IssueView.Calendar) {
+      this.currCalendarType = CalendarType.MonthLy;
+    }
     this.currentView = viewType;
+  }
+
+  switchcalendarType(calendarType: CalendarType) {
+    this.currCalendarType = calendarType;
   }
 
   cancelEdit(item: any, index: number) {
     this.isEditing = false;
     if(item.State == EntityState.Add) {
-      this.issues.splice(index, 1);
+      this.tasks.splice(index, 1);
       return;
     }
-    this.issues[index] = this.oldData
+    this.tasks[index] = this.oldData
     item.State = EntityState.View;
   }
   
@@ -166,7 +230,7 @@ export class ViewIssueComponent implements OnInit {
     // this.isEditing = false;
     // this.mappingData(item);
     // // Save data
-    // this.issueSV.addIssue(item).subscribe(
+    // this.taskSV.addIssue(item).subscribe(
     //   resp => {
     //     console.log(resp);
     //   }
@@ -188,9 +252,9 @@ export class ViewIssueComponent implements OnInit {
   }
 
   deleteIssue(item: any, index: number) {
-    this.issues.splice(index, 1);
+    this.tasks.splice(index, 1);
     this.isEditing = false;
-    this.issueSV.delete(item.ID).subscribe(resp => {
+    this.taskSV.delete(item.ID).subscribe(resp => {
       console.log(resp);
     })
   }

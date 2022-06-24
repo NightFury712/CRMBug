@@ -1,3 +1,5 @@
+import { ToastService } from './../../../service/toast/toast.service';
+import { BaseComponent } from 'src/app/shared/base-component';
 import { ProjectService } from 'src/app/service/project/project.service';
 import { Utils } from './../../../../shared/Utils';
 import { Subject } from 'rxjs';
@@ -7,14 +9,14 @@ import { TypeControl } from 'src/app/enumeration/type-control.enum';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil, map } from 'rxjs/operators';
+import { ErrorMessage, SuccessMessage } from 'src/app/constants/constant.enum';
 
 @Component({
   selector: 'app-popup-invite-member',
   templateUrl: './popup-invite-member.component.html',
   styleUrls: ['./popup-invite-member.component.scss']
 })
-export class PopupInviteMemberComponent implements OnInit,OnDestroy {
-  _onDestroySub: Subject<void> = new Subject<void>();
+export class PopupInviteMemberComponent extends BaseComponent implements OnInit,OnDestroy {
   typeControl = TypeControl;
 
   project: Array<any> = [];
@@ -30,9 +32,10 @@ export class PopupInviteMemberComponent implements OnInit,OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dataSV: DataService,
     private employeeSV: EmployeeService,
-    private projectSV: ProjectService
+    private projectSV: ProjectService,
+    private toastSV: ToastService
   ) { 
-    
+    super();
   }
 
   ngOnInit(): void {
@@ -58,15 +61,24 @@ export class PopupInviteMemberComponent implements OnInit,OnDestroy {
   saveData() {
     console.log(this.param);
     if(this.param.UserIDs?.length > 0) {
+      this.toastSV.loading();
       this.projectSV
       .inviteUser(this.param)
       .pipe(takeUntil(this._onDestroySub))
-      .subscribe((resp => {
-        console.log(resp);
+      .subscribe((resp) => {
         if(resp?.Success) {
-          this.dialogRef.close();
+          this.toastSV.showSuccess(SuccessMessage.InviteMember);
+        } else if(resp?.ValidateInfo && resp?.ValidateInfo.length > 0) {
+          this.toastSV.showError(resp?.ValidateInfo[0]);
+        } else {
+          this.toastSV.showError(ErrorMessage.Exception);
         }
-      }));
+        this.dialogRef.close();
+      },
+      error => {
+        console.log(error);
+        this.toastSV.showError(ErrorMessage.Exception);
+      });
     }
   }
 

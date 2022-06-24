@@ -21,7 +21,7 @@ export class MonthlyCalendarComponent implements OnInit {
 
     weekNumbers: true,
 
-    eventDisplay: 'list-item',
+    eventDisplay: 'block',
 
     events: [
       { title: 'event 1', date: '2022-06-01' },

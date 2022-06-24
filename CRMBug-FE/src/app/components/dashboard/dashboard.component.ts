@@ -25,6 +25,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getDatas();
+  }
+
+  getDatas() {
     this.projectSV.getDatas().subscribe((resp) => {
       if(resp && resp.Success && resp.Data) {
         this.projects = resp.Data;
@@ -38,6 +42,12 @@ export class DashboardComponent implements OnInit {
       top: '100px'
     }
     const dialogRef = this.dialog.open(PopupAddProjectComponent, config);
+    dialogRef.afterClosed().subscribe((resp) => {
+      if(resp) {
+        this.getDatas();
+      }
+    })
+
   }
 
   openProject(project: any) {

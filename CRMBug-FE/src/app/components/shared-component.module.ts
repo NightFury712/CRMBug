@@ -32,7 +32,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-invite-member.component';
-
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ViewTaskComponent } from './view-task/view-task.component';
+import { PopupAddTaskComponent } from './popup/popup-add-task/popup-add-task.component';
 @NgModule({
 	declarations: [
 		BaseButtonComponent,
@@ -50,7 +52,9 @@ import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-in
   	PopupInviteMemberComponent,
 		CalendarComponent,
 		WeeklyCalendarComponent,
-		MonthlyCalendarComponent
+		MonthlyCalendarComponent,
+  ViewTaskComponent,
+  PopupAddTaskComponent
 	],
 	imports: [
 		BrowserModule,
@@ -70,7 +74,8 @@ import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-in
 		NgxMatDatetimePickerModule,
 		MatNativeDateModule,
 		NgxMatMomentModule,
-		FullCalendarModule
+		FullCalendarModule,
+		NgxSliderModule
 	],
 	exports: [
 		BaseButtonComponent,

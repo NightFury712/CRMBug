@@ -46,6 +46,9 @@ export class BaseTextboxComponent implements OnInit, ControlValueAccessor  {
   @Output()
   valueChange = new EventEmitter();
 
+  @Output()
+  searchEvent = new EventEmitter();
+
   typeControl = TypeControl;
   change = (data: any) => {};
   constructor() { }
@@ -73,5 +76,11 @@ export class BaseTextboxComponent implements OnInit, ControlValueAccessor  {
 
   onInput() {
     this.valueChange.emit(this.value);
+  }
+
+  search() {
+    this.searchEvent.emit(
+      this.value
+    )
   }
 }

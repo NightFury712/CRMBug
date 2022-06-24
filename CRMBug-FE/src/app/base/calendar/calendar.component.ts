@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import * as moment from 'moment';
 import { CalendarType } from 'src/app/enumeration/calendar.enum';
 
 @Component({
@@ -10,12 +11,12 @@ export class CalendarComponent implements OnInit {
   calendarType = CalendarType;
 
   @Input()
-  type: CalendarType = CalendarType.MonthLy;
+  type: CalendarType = CalendarType.WeekLy;
 
   @Input()
   events: Array<any> = [
-    { title: 'event 1', date: '2022-06-01' },
-    { title: 'event 2', date: '2022-06-02' },
+    { title: 'event 1', date: new Date(), allDay: true },
+    { title: 'event 2', date: '2022-06-02', allDay: true },
   ]
 
   constructor() { }

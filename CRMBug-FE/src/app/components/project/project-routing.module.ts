@@ -1,3 +1,4 @@
+import { ViewTaskComponent } from './../view-task/view-task.component';
 import { ProjectSettingsComponent } from './../project-settings/project-settings.component';
 import { AddIssueComponent } from './../add-issue/add-issue.component';
 import { ViewIssueComponent } from './../view-issue/view-issue.component';
@@ -26,6 +27,11 @@ const routes: Routes = [
       {
         path: "view-issue/:projectID",
         component: ViewIssueComponent,
+        // canActivate: [AuthGuard]
+      },
+      {
+        path: "view-task/:projectID",
+        component: ViewTaskComponent,
         // canActivate: [AuthGuard]
       },
       {

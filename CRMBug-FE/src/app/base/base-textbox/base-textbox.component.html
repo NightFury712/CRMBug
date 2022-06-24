@@ -16,9 +16,9 @@
   </ng-container>
   <ng-container *ngSwitchCase="typeControl.Search">
     <div class="searchbox-container bt-flex bt-flex-row bt-align-items-center">
-      <div class="icon ic-search-16"></div>
+      <div class="icon ic-search-16" (click)="search()"></div>
       <input 
-        type="text" class="textbox search w-full" placeholder="{{placeholder}}" [(ngModel)]="value"
+        type="text" class="textbox search w-full" placeholder="{{placeholder}}" [(ngModel)]="value" (keyup.enter)="search()"
       >
     </div>
   </ng-container>

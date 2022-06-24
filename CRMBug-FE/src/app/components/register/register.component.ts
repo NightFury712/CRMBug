@@ -1,19 +1,22 @@
+import { SuccessMessage } from './../../constants/constant.enum';
+import { ToastService } from './../../service/toast/toast.service';
+import { DataService } from './../../service/data/data.service';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { EmployeeService } from './../../service/employee/employee.service';
 import { EntityState } from './../../enumeration/entity-state.enum';
 import { ValidateService } from './../../service/validation/validate.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { ValidateMessage } from 'src/app/enumeration/enumeration.enum';
+import { ErrorMessage, ValidateMessage } from 'src/app/constants/constant.enum';
 import { Subject } from 'rxjs';
+import { BaseComponent } from 'src/app/shared/base-component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
-  _onDestroySub: Subject<void> = new Subject<void>();
+export class RegisterComponent extends BaseComponent implements OnInit {
   
   validateMessage: any = ValidateMessage;
 
@@ -43,8 +46,11 @@ export class RegisterComponent implements OnInit {
   constructor(
     private router: Router,
     private validateSV : ValidateService,
-    private employeeSV: EmployeeService
-  ) { }
+    private employeeSV: EmployeeService,
+    private toastSV: ToastService
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
   }
@@ -63,17 +69,23 @@ export class RegisterComponent implements OnInit {
   saveData() {
     const dataSave = JSON.parse(JSON.stringify(this.dataSave));
     dataSave.Password = btoa(dataSave.Password);
+    this.toastSV.loading();
     this.employeeSV
       .register(dataSave)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((resp) => {
-        console.log(resp);
         if(resp?.Success) {
+          this.toastSV.showSuccess(SuccessMessage.Register);
           this.router.navigate(['/login'])
+        } else if(resp?.ValidateInfo?.length > 0) {
+          this.toastSV.showError(resp?.ValidateInfo[0]);
+        } else {
+          this.toastSV.showError(ErrorMessage.Exception);
         }
       },
       error => {
         console.log(error);
+        this.toastSV.showError(ErrorMessage.Exception);
       })
   }
 

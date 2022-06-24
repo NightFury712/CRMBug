@@ -1,6 +1,4 @@
 import { DataService } from './service/data/data.service';
-import { take, map } from 'rxjs/operators';
-import { AuthService } from './service/auth/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -21,6 +19,8 @@ export class AppComponent {
     this.dataSV.user.subscribe(user => {
       if(user) {
         this.isLogin = true;
+      } else {
+        this.isLogin = false;
       }
     })
     this.dataSV.loading.subscribe(loading => {

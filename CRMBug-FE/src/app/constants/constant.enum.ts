@@ -1,0 +1,24 @@
+export const ValidateMessage = {
+  Username: 'Username is not allow empty',
+  Password: 'Password is not allow empty',
+  PasswordReEnter: 'Password ReEnter is not same with Password',
+  FirstName: 'FirstName is not allow empty',
+  LastName: 'LastName is not allow empty',
+  Email: 'Email is not valid'
+}
+
+export const SuccessMessage = {
+  AddProject: "Add project success!",
+  AddIssue: "Add issue success!",
+  InviteMember: "Invite member success!",
+  DeleteProject: "Delete project success!",
+  DeleteIssue: "Delete issue success!",
+  RemoveMember: "Remove member success!",
+  UpdateProject: "Update project success!",
+  UpdateIssue: "Update issue success!",
+  Register: "Register success!"
+}
+
+export const ErrorMessage = {
+  Exception: "Error has occurred!",
+}

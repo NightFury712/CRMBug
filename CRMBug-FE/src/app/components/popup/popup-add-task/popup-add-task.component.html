@@ -34,7 +34,7 @@
         <div class="field w-full bt-flex bt-flex-row">
           <div class="field-left w-1/2 bt-flex">
             <base-combobox
-              [datas]="issuePriority"
+              [datas]="taskPriority"
               [value]="dataSave.PriorityID"
               [isShowLabel]="true"
               labelText="Priority"
@@ -100,6 +100,7 @@
               [labelWidth]="120"
               [value]="dataSave.DueDate"
               [label]="'Due Date'"
+              [fieldName]="'DueDate'"
               (valueChange)="valueChangeCombo($event)"
             >
             </base-datetimepicker>

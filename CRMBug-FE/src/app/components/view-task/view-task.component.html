@@ -6,8 +6,8 @@
     <div class="bt-flex bt-justify-content-end w-1/2">
       <base-button
         typeButton="primary"
-        text="Add issue"
-        (btnClick)="addIssue($event)"
+        text="Add task"
+        (btnClick)="addTask($event)"
         iconCSS="fa-solid fa-plus"
         [height]="36"
         [iconMargin]="6"
@@ -18,14 +18,28 @@
   <div class="tasks-container bt-flex bt-flex-column">
     <div class="toolbar bt-flex">
       <div class="left w-1/2 bt-flex bt-align-item-center">
-        <base-textbox
-          [placeholder]="'Search issue'"
-          [type]="typeControl.Search"
-        >
-        </base-textbox>
+        <div class="left-item">
+          <base-textbox
+            [placeholder]="'Search task'"
+            [type]="typeControl.Search"
+            (searchEvent)="searchTask($event)"
+          >
+          </base-textbox>
+        </div>
+        <div class="left-item">
+          <base-combobox
+            [datas]="assignedUserCbx"
+            [value]="assignedUserID"
+            (valueChange)="valueChangeCombo($event)"
+            [isShowLabel]="false"
+            [width]="'150px'"
+            [fieldName]="'AssignedUserID'"
+          >
+          </base-combobox>
+        </div>
       </div>
       <div class="right w-1/2 bt-flex bt-align-items-center bt-justify-content-end">
-        <div class="right-item" *ngIf="currentView == issueView.Calendar">
+        <div class="right-item" *ngIf="currentView == taskView.Calendar">
           <div class="switch-type bt-flex bt-align-items-center bt-justify-content-center">
             <button 
               class="btn" 
@@ -48,15 +62,15 @@
           <div class="switch-view bt-flex bt-align-items-center bt-justify-content-center">
             <button 
               class="btn" 
-              [ngClass]="{'actived': currentView == issueView.List}"
-              (click)="switchView(issueView.List)"
+              [ngClass]="{'actived': currentView == taskView.List}"
+              (click)="switchView(taskView.List)"
             >
               <i class="fa-solid fa-list"></i> 
             </button>
             <button 
               class="btn" 
-              [ngClass]="{'actived': currentView == issueView.Calendar}" 
-              (click)="switchView(issueView.Calendar)"
+              [ngClass]="{'actived': currentView == taskView.Calendar}" 
+              (click)="switchView(taskView.Calendar)"
             >
               <i class="fa-solid fa-calendar"></i>
             </button>
@@ -76,14 +90,14 @@
     </div>
     <div class="content">
       <app-calendar
-        *ngIf="currentView == issueView.Calendar"
+        *ngIf="currentView == taskView.Calendar"
         [type]="currCalendarType"
         [events]="tasks"
       >
       </app-calendar>
       <table 
         class="table-fixed-header"
-        *ngIf="currentView == issueView.List"
+        *ngIf="currentView == taskView.List"
       >
         <thead>
           <tr >
@@ -93,7 +107,7 @@
           </tr>
         </thead>
         <tbody class="tasks">
-          <tr *ngFor="let item of tasks;" (click)="editIssue(item)">
+          <tr *ngFor="let item of tasks;" (click)="editTask(item)">
             <td *ngFor="let field of fieldDisplay;">
               <ng-container [ngSwitch]="field.typeControl">
                 <span *ngSwitchCase="typeControl.DateTime">

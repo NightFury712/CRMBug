@@ -35,7 +35,7 @@ export class BaseDatetimepickerComponent implements OnInit {
   public color: ThemePalette = 'primary';
 
   @Input()
-  value: any = '';
+  value: any = moment();
 
   @Input()
   width: string = '100%';
