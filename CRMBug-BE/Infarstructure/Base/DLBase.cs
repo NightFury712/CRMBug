@@ -66,13 +66,14 @@ namespace Infarstructure.Base
       {
         columns = "*";
       }
-      string query = $"SELECT {columns} FROM {_tableName} WHERE {oWhere} {limit};SELECT COUNT(*) AS TotalRecord FROM {_tableName} WHERE {oWhere};";
+      string order = "ORDER BY CreatedDate DESC";
+      string query = $"SELECT {columns} FROM {_tableName} WHERE {oWhere} {order} {limit} ;SELECT COUNT(*) AS TotalRecord FROM {_tableName} WHERE {oWhere};";
       //var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
       using (var rd = _dbConnection.ExecuteReader(query, new { v_LayoutCode = _tableName }, commandType: CommandType.Text))
       {
         if(rd != null)
         {
-          data["Data"] = ExtensionMethod.ToListDictionary(rd);
+          data["Data"] = ExtensionMethod.ToListObject<T>(rd);
           if(rd.NextResult())
           {
             while(rd.Read())
@@ -90,19 +91,19 @@ namespace Infarstructure.Base
     /// <param name="entity">Thông tin bản ghi</param>
     /// <returns>Số cột bị ảnh hưởng</returns>
     /// Author: HHDang 23.2.2022
-    public int Save(BaseEntity entity)
+    public int Save(T entity)
     {
       var rowAffects = 0;
       _dbConnection.Open();
       // Xử lý các kiểu dữ liệu (mapping dataType):
-      var parameters = MappingDbtype(entity);
+      var parameters = this.MappingDbtype(entity);
       // Thực thi commandText
       rowAffects = _dbConnection.Execute(entity.Query, parameters, commandType: CommandType.Text);
       // Trả về kết quả (Số bản ghi thêm mới được)
       return rowAffects;
     }
 
-    protected DynamicParameters MappingDbtype(BaseEntity entity)
+    protected DynamicParameters MappingDbtype(T entity)
     {
       var properties = entity.GetType().GetProperties();
       var parameters = new DynamicParameters();
@@ -142,7 +143,7 @@ namespace Infarstructure.Base
       Dictionary<string, object> datas = new Dictionary<string, object>();
       List<List<Dictionary<string, object>>> listData = new List<List<Dictionary<string, object>>>();
       //string procedures = "Proc_GetDictionaryByFormLayout";
-      string query = Constant.DLIssue_GetFormData;
+      string query = string.Format(Constant.DLBase_GetFormData, _tableName);
       using (var rd = _dbConnection.ExecuteReader(query, commandType: CommandType.Text))
       {
         if(rd != null)
@@ -156,6 +157,22 @@ namespace Infarstructure.Base
       }
       datas.Add("Dictionary", listData);
       return datas;
+    }
+
+    public bool WriteLog(Notification notification)
+    {
+      var parameter = new
+      {
+        Content = notification.Content,
+        Config = notification.Config,
+        ProjectID = notification.ProjectID,
+        FromUserID = notification.FromUserID,
+        ToUserID = notification.ToUserID,
+        LayoutCode = notification.LayoutCode,
+        CreatedBy = SessionData.FullName,
+        ModifiedBy = SessionData.FullName
+      };
+      return _dbConnection.Execute(notification.Query, parameter, commandType: CommandType.Text) > 0;
     }
 
     public T GetDataByID(long id)

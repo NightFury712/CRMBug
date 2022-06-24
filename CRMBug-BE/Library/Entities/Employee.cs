@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Library.Entities
   public class Employee : BaseEntity
   {
     #region Properties
-    public int ID { get; set; }
+    public long ID { get; set; }
     [TableColumn]
     public string EmployeeID { get; set; }
     [TableColumn]
@@ -26,6 +27,8 @@ namespace Library.Entities
     public string PhoneNumber { get; set; }
     [TableColumn]
     public int RoleID { get; set; } = (int)RoleEmployee.Guest;
+    [Unique]
+    [DisplayName("Username")]
     public string Username { get; set; }
     public string Password { get; set; }
     #endregion

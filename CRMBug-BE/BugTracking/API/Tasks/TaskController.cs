@@ -1,27 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Library.Entities;
 using ApplicationCore.Interfaces.BL;
 using BugTracking.API.Base;
-using Microsoft.AspNetCore.Mvc;
+using Library.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using static Library.Enumeration.Enumeration;
 
-namespace BugTracking.API.Issues
+namespace BugTracking.API.Tasks
 {
-    public class IssueController : BaseApiController<Issue>
-    {
-        #region DECLARE
-        IBLIssue BL;
-        #endregion
+  public class TaskController : BaseApiController<Task>
+  {
+    #region DECLARE
+    IBLTask BL;
+    #endregion
 
-        #region CONSTRUCTOR
-        public IssueController(IBLIssue BLIssue):base(BLIssue)
-        {
-            BL = BLIssue;
-        }
+    #region CONSTRUCTOR
+    public TaskController(IBLTask BLTask) : base(BLTask)
+    {
+      BL = BLTask;
+    }
     #endregion
 
     #region Methods

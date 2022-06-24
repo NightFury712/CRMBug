@@ -8,6 +8,6 @@ namespace Library.Constant
 {
   public class Constant
   {
-    public const string DLIssue_GetFormData = "SELECT dtt.* FROM issue_dictionary_data dtt JOIN issue_dictionary dt ON dt.ID = dtt.DictionaryID WHERE dt.FieldName = 'Type';SELECT dtt.* FROM issue_dictionary_data dtt JOIN issue_dictionary dt ON dt.ID = dtt.DictionaryID WHERE dt.FieldName = 'Priority';SELECT dtt.* FROM issue_dictionary_data dtt JOIN issue_dictionary dt ON dt.ID = dtt.DictionaryID WHERE dt.FieldName = 'State';";
+    public const string DLBase_GetFormData = "SELECT dtt.* FROM {0}_dictionary_data dtt JOIN {0}_dictionary dt ON dt.ID = dtt.DictionaryID WHERE dt.FieldName = 'Type';SELECT dtt.* FROM {0}_dictionary_data dtt JOIN {0}_dictionary dt ON dt.ID = dtt.DictionaryID WHERE dt.FieldName = 'Priority';SELECT dtt.* FROM {0}_dictionary_data dtt JOIN {0}_dictionary dt ON dt.ID = dtt.DictionaryID WHERE dt.FieldName = 'State';";
   }
 }

@@ -1,21 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using ApplicationCore.Interfaces.DL;
+using Dapper;
 using Infarstructure.Base;
 using Library.Entities;
-using ApplicationCore.Interfaces.DL;
 using Microsoft.Extensions.Configuration;
-using Dapper;
-using System.Data;
 
-namespace Infarstructure.Issues
+namespace Infarstructure.Tasks
 {
-  public class DLIssue : DLBase<Issue>, IDLIssue
+  public class DLTask : DLBase<Task>, IDLTask
   {
     #region Constructor
-    public DLIssue(IConfiguration configuration) : base(configuration)
+    public DLTask(IConfiguration configuration) : base(configuration)
     {
 
     }

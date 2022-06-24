@@ -8,7 +8,7 @@ namespace Library.Entities
 {
   public class DictionaryData : BaseEntity
   {
-    public int ID { get; set; }
+    public long ID { get; set; }
     public int DictionaryID { get; set; }
     public int Value { get; set; }
     public string Text { get; set; }

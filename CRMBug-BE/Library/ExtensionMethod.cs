@@ -20,12 +20,34 @@ namespace Library
         {
           string name = dataReader.GetName(i);
           var value = dataReader[name];
-          data.Add(name, value);
+          data.Add(name, value.ToString());
         }
         listData.Add(data);
       }
       return listData;
     }
 
+    public static List<T> ToListObject<T>(IDataReader dataReader)
+    {
+      List<T> listData = new List<T>();
+      var type = typeof(T);
+      int fieldCount = dataReader.FieldCount;
+      while (dataReader.Read())
+      {
+        var entity = Activator.CreateInstance<T>();
+        for (int i = 0; i < fieldCount; i++)
+        {
+          string name = dataReader.GetName(i);
+          var value = dataReader[name];
+          var propInfo = type.GetProperty(name);
+          if (propInfo != null && !string.IsNullOrEmpty(value.ToString()))
+          {
+            propInfo.SetValue(entity, value);
+          }
+        }
+        listData.Add(entity);
+      }
+      return listData;
+    }
   }
 }

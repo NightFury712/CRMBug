@@ -8,7 +8,7 @@ namespace Library.Entities.param
 {
   public class ParamInviteUser
   {
-    public List<int> UserIDs { get; set; }
-    public int ProjectID { get; set; }
+    public List<long> UserIDs { get; set; }
+    public long ProjectID { get; set; }
   }
 }

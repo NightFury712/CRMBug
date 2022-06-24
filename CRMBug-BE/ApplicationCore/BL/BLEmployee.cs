@@ -29,22 +29,21 @@ namespace ApplicationCore.BL
       return DLEmployee.GetEmployeeNotInProject(projectID);
     }
 
-    protected override void BeforeSave<T>(BaseEntity entity)
+    protected override void BeforeSave(Employee entity)
     {
-      var employee = entity as Employee;
-      var passwordDecode = Utils.Base64Decode(employee.Password);
-      employee.Password = Hasher.BcryptHash(passwordDecode);
+      var passwordDecode = Utils.Base64Decode(entity.Password);
+      entity.Password = Hasher.BcryptHash(passwordDecode);
       if (entity.EntityState == EntityState.Add)
       {
-        employee.EmployeeID = (Guid.NewGuid()).ToString();
+        entity.EmployeeID = (Guid.NewGuid()).ToString();
       }
-      employee.FullName = $"{employee.FirstName} {employee.LastName}";
-      base.BeforeSave<Employee>(employee);
+      entity.FullName = $"{entity.FirstName} {entity.LastName}";
+      base.BeforeSave(entity);
     }
-    protected override string CreateAddQuery(IEnumerable<string> propertyNames, string tableName)
+    protected override string CreateAddQuery(List<string> propertyNames, string tableName)
     {
-      propertyNames.Append("Username");
-      propertyNames.Append("PassWord");
+      propertyNames.Add("Username");
+      propertyNames.Add("PassWord");
       return base.CreateAddQuery(propertyNames, tableName);
     }
 

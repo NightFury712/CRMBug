@@ -13,5 +13,6 @@ namespace Library.Entities
     public string Value { get; set; }
     public Operator Operator { get; set; }
     public Addition Addition { get; set; }
+    public bool IsFormula { get; set; }
   }
 }

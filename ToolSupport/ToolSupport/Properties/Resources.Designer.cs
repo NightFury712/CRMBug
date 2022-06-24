@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApplicationCore.Properties {
+namespace ToolSupport.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ApplicationCore.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ApplicationCore.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ToolSupport.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,42 +57,6 @@ namespace ApplicationCore.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} can not be empty!.
-        /// </summary>
-        internal static string Fail_ValidateRequired {
-            get {
-                return ResourceManager.GetString("Fail_ValidateRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is unique!.
-        /// </summary>
-        internal static string Fail_ValidateUnique {
-            get {
-                return ResourceManager.GetString("Fail_ValidateUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} added a new {1}.
-        /// </summary>
-        internal static string WriteLog_Add {
-            get {
-                return ResourceManager.GetString("WriteLog_Add", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} invite {1} to ptoject {2}.
-        /// </summary>
-        internal static string WriteLog_InviteMember {
-            get {
-                return ResourceManager.GetString("WriteLog_InviteMember", resourceCulture);
             }
         }
     }

@@ -43,7 +43,7 @@ namespace ApplicationCore.BL
       return DLBase.GetEntities();
     }
 
-    public virtual ServiceResult Save<T>(BaseEntity entity)
+    public virtual ServiceResult Save(T entity)
     {
       isValid = Validate(entity);
       // Thêm mới dữ liệu khi đã hợp lệ:
@@ -53,7 +53,7 @@ namespace ApplicationCore.BL
       }
       if (isValid)
       {
-        this.BeforeSave<T>(entity);
+        this.BeforeSave(entity);
         var rowAffects = DLBase.Save(entity);
         if (rowAffects >= 1)
         {
@@ -107,7 +107,7 @@ namespace ApplicationCore.BL
       return this.DLBase.GetDataByID(id);
     }
 
-    public bool Validate(BaseEntity entity)
+    public bool Validate(T entity)
     {
       bool isValid = true;
       // Đọc các property
@@ -133,6 +133,17 @@ namespace ApplicationCore.BL
             isValid = false;
           }
         }
+        if(entity.EntityState == EntityState.Add && prop.IsDefined(typeof(Unique), false))
+        {
+          // Check duy nhất:
+          var data = this.DLBase.GetEntityByProperty(entity, prop, "ID");
+          if(data != null)
+          {
+            var messenger = string.Format(Properties.Resources.Fail_ValidateUnique, displayName);
+            serviceResult.ValidateInfo.Add(messenger);
+            isValid = false;
+          }
+        }
       }
 
       return isValid;
@@ -143,21 +154,29 @@ namespace ApplicationCore.BL
       return true;
     }
 
-    protected virtual void BeforeSave<T>(BaseEntity entity)
+    protected virtual void BeforeSave(T entity)
     {
       // Build câu truy vấn
-      entity.Query = this.CreateQuery<T>(entity);
+      entity.Query = this.CreateQuery(entity);
     }
 
-    protected virtual void AfterSave(BaseEntity entity)
+    protected virtual void AfterSave(T entity)
     {
 
     }
 
-    public string CreateQuery<T>(BaseEntity entity)
+    public bool WriteLog(Notification notification)
     {
-      var properties = typeof(T).GetProperties();
-      var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name);
+      var properties = notification.GetType().GetProperties();
+      var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name)?.ToList();
+      notification.Query = this.CreateAddQuery(propertyNames, "notification");
+      return this.DLBase.WriteLog(notification);
+    }
+
+    public string CreateQuery(T entity)
+    {
+      var properties = entity.GetType().GetProperties();
+      var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name)?.ToList();
       string tableName = this.DLBase.GetTableName<T>();
       string query = string.Empty;
       switch (entity.EntityState)
@@ -175,7 +194,7 @@ namespace ApplicationCore.BL
       return query;
     }
 
-    protected virtual string CreateAddQuery(IEnumerable<string> propertyNames, string tableName)
+    protected virtual string CreateAddQuery(List<string> propertyNames, string tableName)
     {
       string query = string.Empty;
       StringBuilder field = new StringBuilder("");
@@ -188,7 +207,7 @@ namespace ApplicationCore.BL
       return query;
     }
 
-    protected virtual string CreateEditQuery(IEnumerable<string> propertyNames, string tableName)
+    protected virtual string CreateEditQuery(List<string> propertyNames, string tableName)
     {
       string query = string.Empty;
       StringBuilder queryUpdate = new StringBuilder("");

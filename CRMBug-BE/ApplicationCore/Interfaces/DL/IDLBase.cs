@@ -12,7 +12,7 @@ namespace ApplicationCore.Interfaces.DL
   {
     IEnumerable<T> GetEntities();
 
-    int Save(BaseEntity entity);
+    int Save(T entity);
 
     int Delete(int entityID);
 
@@ -25,5 +25,7 @@ namespace ApplicationCore.Interfaces.DL
     Dictionary<string, object> Grid(string oWhere, string columns, string limit);
 
     T GetDataByID(long id);
+
+    bool WriteLog(Notification notification);
   }
 }

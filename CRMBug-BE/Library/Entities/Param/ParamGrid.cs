@@ -12,5 +12,6 @@ namespace Library.Entities
     public int PageSize { get; set; }
     public int PageIndex { get; set; }
     public string Columns { get; set; }
+    public string Formula { get; set; }
   }
 }

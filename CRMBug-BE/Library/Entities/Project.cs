@@ -14,7 +14,7 @@ namespace Library.Entities
     /// <summary>
     /// Khóa chính
     /// </summary>
-    public int ID { get; set; }
+    public long ID { get; set; }
     /// <summary>
     /// Tên dự án
     /// </summary>
@@ -27,6 +27,7 @@ namespace Library.Entities
     /// </summary>
     [TableColumn]
     [Required]
+    [Unique]
     [DisplayName("Project Code")]
     public string ProjectCode { get; set; }
 

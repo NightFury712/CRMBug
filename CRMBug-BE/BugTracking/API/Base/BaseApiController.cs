@@ -63,11 +63,11 @@ namespace BugTracking.API.Base
     /// Author: HHDang 23.2.2022
     [HttpPost]
     [Authorize]
-    public IActionResult Post(BaseEntity entity)
+    public virtual IActionResult Post(T entity)
     {
       try
       {
-        _serviceResult = _baseService.Save<T>(entity);
+        _serviceResult = _baseService.Save(entity);
         if (_serviceResult.Code == Code.Created && (int)_serviceResult.Data > 0)
         {
           return Created("Create successfully! ", _serviceResult);

@@ -41,5 +41,14 @@ namespace Library.Entities
   {
 
   }
+
+  /// <summary>
+  /// Attribute dùng để validate trường duy nhất
+  /// </summary>
+  [AttributeUsage(AttributeTargets.Property)]
+  public class Unique : Attribute
+  {
+
+  }
   #endregion
 }

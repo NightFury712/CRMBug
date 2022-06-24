@@ -9,8 +9,8 @@ using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
 using Infarstructure.Base;
 using Infarstructure.Employees;
-using Infarstructure.Issues;
 using Infarstructure.Projects;
+using Infarstructure.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -87,9 +87,9 @@ namespace BugTracking
       services.AddScoped(typeof(IBLBase<>), typeof(BLBase<>));
       services.AddScoped(typeof(IDLBase<>), typeof(DLBase<>));
 
-      // Thực hiện DI cho issue
-      services.AddScoped<IBLIssue, BLIssue>();
-      services.AddScoped<IDLIssue, DLIssue>();
+      // Thực hiện DI cho task
+      services.AddScoped<IBLTask, BLTask>();
+      services.AddScoped<IDLTask, DLTask>();
 
       // Thực hiện DI cho employee
       services.AddScoped<IBLEmployee, BLEmployee>();

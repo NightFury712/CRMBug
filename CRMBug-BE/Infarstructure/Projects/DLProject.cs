@@ -23,7 +23,7 @@ namespace Infarstructure.Projects
     #endregion
 
     #region Methods
-    public bool InviteUser(int projectID, List<int> userIDs)
+    public bool InviteUser(long projectID, List<long> userIDs)
     {
       if (userIDs.Any())
       {

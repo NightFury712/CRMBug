@@ -117,16 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Fail_ValidateRequired" xml:space="preserve">
-    <value>{0} can not be empty!</value>
-  </data>
-  <data name="Fail_ValidateUnique" xml:space="preserve">
-    <value>{0} is unique!</value>
-  </data>
-  <data name="WriteLog_Add" xml:space="preserve">
-    <value>{0} added a new {1}</value>
-  </data>
-  <data name="WriteLog_InviteMember" xml:space="preserve">
-    <value>{0} invite {1} to ptoject {2}</value>
-  </data>
 </root>

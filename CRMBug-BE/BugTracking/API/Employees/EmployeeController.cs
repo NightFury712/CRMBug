@@ -53,12 +53,12 @@ namespace BugTracking.API.Employees
     /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public IActionResult Register(Employee entity)
+    public override IActionResult Post(Employee entity)
     {
       try
       {
         //Gọi service xác thực tài khoản
-        _serviceResult = BL.Save<Employee>(entity);
+        _serviceResult = BL.Save(entity);
 
         return Ok(_serviceResult);
       }

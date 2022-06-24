@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 namespace Library.Entities
 {
   /// <summary>
-  /// Thông tin vấn đề
+  /// Thông tin công việc
   /// </summary>
   /// Author: HHDang 23.2.2022
-  [TableName("issue")]
-  public class Issue : BaseEntity
+  [TableName("task")]
+  public class Task : BaseEntity
   {
     #region Properties
-    public int ID { get; set; }
+    public long ID { get; set; }
     //[TableColumn]
     //public int TypeID { get; set; }
-    [TableColumn]
-    public string TypeIDText { get; set; }
+    //[TableColumn]
+    //public string TypeIDText { get; set; }
     [TableColumn]
     [Required]
-    [DisplayName("Issue Subject")]
+    [DisplayName("Task Subject")]
     public string Subject { get; set; }
     [TableColumn]
     public int PriorityID { get; set; }
@@ -33,15 +33,21 @@ namespace Library.Entities
     [TableColumn]
     public string StatusIDText { get; set; }
     [TableColumn]
-    public string AssignedTo { get; set; }
-    [TableColumn]
-    public DateTime DueDate { get; set; }
+    public DateTime? DueDate { get; set; }
     [TableColumn]
     public long AssignedUserID { get; set; }
     [TableColumn]
     public string AssignedUserIDText { get; set; }
     [TableColumn]
+    public long RelatedUserID { get; set; }
+    [TableColumn]
+    public string RelatedUserIDText { get; set; }
+    [TableColumn]
     public long ProjectID { get; set; }
+    [TableColumn]
+    public string Description { get; set; }
+    [TableColumn]
+    public int CompletedProgress { get; set; }
     #endregion
   }
 }
