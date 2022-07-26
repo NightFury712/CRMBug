@@ -9,13 +9,13 @@ export const ValidateMessage = {
 
 export const SuccessMessage = {
   AddProject: "Add project success!",
-  AddIssue: "Add issue success!",
+  AddTask: "Add task success!",
   InviteMember: "Invite member success!",
   DeleteProject: "Delete project success!",
-  DeleteIssue: "Delete issue success!",
+  DeleteTask: "Delete task success!",
   RemoveMember: "Remove member success!",
   UpdateProject: "Update project success!",
-  UpdateIssue: "Update issue success!",
+  UpdateTask: "Update task success!",
   Register: "Register success!"
 }
 

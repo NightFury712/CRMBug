@@ -9,7 +9,10 @@
         <i class="fa-solid fa-wifi"></i>
       </span>
     </div>
-    <base-notification>
+    <base-notification
+      [height]="'calc(100vh - 156px)'"
+      [projectID]="projectID"
+    >
     </base-notification>
   </div>
   <div class="sub-summary w-2/5">
@@ -18,51 +21,36 @@
     </div>
     <div class="status-container w-full">
       <div class="graphbar-number w-full bt-flex bt-align-items-center">
-        <div class="line status-1" style="width: 20%;"></div>
-        <div class="line status-2" style="width: 20%;"></div>
-        <div class="line status-3" style="width: 20%;"></div>
-        <div class="line status-4" style="width: 20%;"></div>
-        <div class="line status-5" style="width: 20%;"></div>
+        <div class="total-record" *ngIf="summaryData.TotalRecord != 0">
+          {{ summaryData.TotalRecord }}
+        </div>
+        <div class="line status-1" [ngStyle]="{'width.%': summaryStyle.Pending}" *ngIf="summaryData.Pending != 0"></div>
+        <div class="line status-2" [ngStyle]="{'width.%': summaryStyle.Completed}" *ngIf="summaryData.Completed != 0"></div>
+        <div class="line status-3" [ngStyle]="{'width.%': summaryStyle.CompletedLate}" *ngIf="summaryData.CompletedLate != 0"></div>
       </div>
-      <div class="graphbar-info bt-flex">
+      <div class="graphbar-info bt-flex bt-justify-content-between">
         <div class="wrapper">
           <div class="name">
-            New
+            Pending
           </div>
           <div class="number status-1">
-            0
+            {{ summaryData.Pending }}
           </div>
         </div>
         <div class="wrapper">
           <div class="name">
-            Approved
+            Completed
           </div>
           <div class="number status-2">
-            0
+            {{ summaryData.Completed }}
           </div>
         </div>
         <div class="wrapper">
           <div class="name">
-            Commited
+            Completed late
           </div>
           <div class="number status-3">
-            0
-          </div>
-        </div>
-        <div class="wrapper">
-          <div class="name">
-            Done
-          </div>
-          <div class="number status-4">
-            0
-          </div>
-        </div>
-        <div class="wrapper">
-          <div class="name">
-            Removed
-          </div>
-          <div class="number status-5">
-            0
+            {{ summaryData.CompletedLate }}
           </div>
         </div>
       </div>

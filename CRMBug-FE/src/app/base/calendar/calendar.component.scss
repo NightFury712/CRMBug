@@ -8,6 +8,11 @@
       height: calc(100vh - 180px);
       margin-top: 16px;
       background-color: $color-white;
+      .fc {
+        .fc-popover {
+          z-index: 1 !important;
+        }
+      }
     }
   }
 }

@@ -1,4 +1,6 @@
 export enum Operator {
-  Equal =1,
-  Like = 2
+  None = -1,
+  Equal = 1,
+  Like = 2,
+  Between = 3,
 }

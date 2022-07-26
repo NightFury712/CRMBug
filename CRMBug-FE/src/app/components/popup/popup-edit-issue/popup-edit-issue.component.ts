@@ -145,7 +145,7 @@ export class PopupEditIssueComponent extends BaseComponent implements OnInit, On
    */
   saveData() {
     this.toastSV.loading();
-    const msg = this.dataSave.EntityState === EntityState.Edit ? SuccessMessage.UpdateIssue : SuccessMessage.AddIssue;
+    const msg = this.dataSave.EntityState === EntityState.Edit ? SuccessMessage.UpdateTask : SuccessMessage.AddTask;
     this.taskSV
       .saveData(this.dataSave)
       .pipe(takeUntil(this._onDestroySub))

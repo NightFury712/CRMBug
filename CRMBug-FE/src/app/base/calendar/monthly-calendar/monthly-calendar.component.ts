@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { DEFAULT_CALENDAR_OPTIONS } from 'src/app/enumeration/calendar.enum';
 
@@ -8,6 +8,10 @@ import { DEFAULT_CALENDAR_OPTIONS } from 'src/app/enumeration/calendar.enum';
   styleUrls: ['./monthly-calendar.component.scss'],
 })
 export class MonthlyCalendarComponent implements OnInit {
+
+  @Output()
+  eventClick = new EventEmitter();
+
   calendarOptions: CalendarOptions = {
     ...DEFAULT_CALENDAR_OPTIONS,
 
@@ -24,17 +28,17 @@ export class MonthlyCalendarComponent implements OnInit {
     eventDisplay: 'block',
 
     events: [
-      { title: 'event 1', date: '2022-06-01' },
-      { title: 'event 2', date: '2022-06-02' },
+      { title: 'event 1', date: '2022-07-01' },
+      { title: 'event 2', date: '2022-07-02' },
     ],
     /**
      * Hàm xử lý khi bấm vào 1 event
      * @param info
      */
-    // eventClick: (info) => {
-    //     console.log(info);
-    //     this.eventClick.emit(info);
-    // },
+    eventClick: (info) => {
+      console.log(info.event.extendedProps);
+      this.eventClick.emit(info.event.extendedProps);
+    },
   };
 
   @Input()

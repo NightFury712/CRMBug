@@ -1,3 +1,5 @@
+import { AppServerResponse } from './../../../service/base/base.service';
+import { SignalrService } from './../../../service/signalr/signalr.service';
 import { TaskPriority, TaskState } from './../../../enumeration/task.enum';
 import { BaseComponent } from 'src/app/shared/base-component';
 import { Options } from '@angular-slider/ngx-slider';
@@ -41,8 +43,8 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
     Subject: '',
     PriorityID: TaskPriority.Low,
     PriorityIDText: 'Low',
-    StatusID: TaskState.NotCompleted,
-    StatusIDText: 'Not Completed',
+    StatusID: TaskState.Pending,
+    StatusIDText: 'Pending',
     AssignedUserID: '',
     AssignedUserIDText: '',
     RelatedUserID: '',
@@ -52,6 +54,7 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
     DueDate: moment(),
     CompletedProgress: 0,
     State: EntityState.Add,
+    Description: ''
   };
   //#endregion
 
@@ -61,7 +64,8 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private taskSV: TaskService,
     private dataSV: DataService,
-    private toastSV: ToastService
+    private toastSV: ToastService,
+    private signalrSV: SignalrService
   ) {
     super();
     this.dataSave['ProjectID'] = data['ProjectID'];
@@ -81,6 +85,8 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
       let taskID = 0;
       if (this.data['TaskID']) {
         taskID = this.data['TaskID'];
+        this.saveDataToSessionStorage(taskID);
+        
         formMode = EntityState.Edit;
         this.title = 'Edit task';
       }
@@ -129,6 +135,23 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
   ngOnDestroy(): void {
     super.ngOnDestroy();
   }
+
+  saveDataToSessionStorage(taskID: number) {
+    let tasks = JSON.parse(sessionStorage.getItem("Tasks") || '[]');
+    if(tasks?.length > 0) {
+      const index = tasks.indexOf(taskID);
+      if(index > -1) {
+        tasks.splice(index, 1);
+      }
+      tasks.unshift(taskID);
+      if(tasks.lenth > 10) {
+        tasks.pop();
+      }
+    } else {
+      tasks.unshift(taskID);
+    }
+    sessionStorage.setItem("Tasks", JSON.stringify(tasks));
+  }
   //#endregion
   /**
    * Thực hiện lưu dữ liệu
@@ -138,15 +161,16 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
     this.toastSV.loading();
     const msg =
       this.dataSave.EntityState === EntityState.Edit
-        ? SuccessMessage.UpdateIssue
-        : SuccessMessage.AddIssue;
+        ? SuccessMessage.UpdateTask
+        : SuccessMessage.AddTask;
     this.taskSV
       .saveData(this.dataSave)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe(
-        (resp) => {
+        (resp: AppServerResponse<any>) => {
           if (resp?.Success) {
             this.toastSV.showSuccess(msg);
+            this.signalrSV.askServer(resp.Data);
           } else if (resp?.ValidateInfo && resp?.ValidateInfo.length > 0) {
             this.toastSV.showError(resp?.ValidateInfo[0]);
           } else {
@@ -179,6 +203,7 @@ export class PopupAddTaskComponent extends BaseComponent implements OnInit {
     switch (fieldName) {
       case 'DueDate':
         this.dataSave[fieldName] = data.Value;
+        console.log(this.dataSave);
         break;
       default:
         this.dataSave[fieldName] = data.Value;

@@ -35,6 +35,23 @@ import { PopupInviteMemberComponent } from './popup/popup-invite-member/popup-in
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ViewTaskComponent } from './view-task/view-task.component';
 import { PopupAddTaskComponent } from './popup/popup-add-task/popup-add-task.component';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
+import { HighchartsChartModule } from "highcharts-angular";
+import { PopupConfirmComponent } from './popup/popup-confirm/popup-confirm.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { DaterangeComponent } from '../base/daterange/daterange.component';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { RecentlyViewedComponent } from './recently-viewed/recently-viewed.component';
+import { NoDataComponent } from '../base/no-data/no-data.component';
+import { BaseProjectComponent } from '../base/base-project/base-project.component';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
+
 @NgModule({
 	declarations: [
 		BaseButtonComponent,
@@ -53,8 +70,14 @@ import { PopupAddTaskComponent } from './popup/popup-add-task/popup-add-task.com
 		CalendarComponent,
 		WeeklyCalendarComponent,
 		MonthlyCalendarComponent,
-  ViewTaskComponent,
-  PopupAddTaskComponent
+		ViewTaskComponent,
+		PopupAddTaskComponent,
+		GanttChartComponent,
+		PopupConfirmComponent,
+		DaterangeComponent,
+  	RecentlyViewedComponent,
+		NoDataComponent,
+		BaseProjectComponent
 	],
 	imports: [
 		BrowserModule,
@@ -75,7 +98,11 @@ import { PopupAddTaskComponent } from './popup/popup-add-task/popup-add-task.com
 		MatNativeDateModule,
 		NgxMatMomentModule,
 		FullCalendarModule,
-		NgxSliderModule
+		NgxSliderModule,
+		PerfectScrollbarModule,
+		HighchartsChartModule,
+		MatMenuModule,
+		NgxDaterangepickerMd.forRoot()
 	],
 	exports: [
 		BaseButtonComponent,
@@ -87,7 +114,16 @@ import { PopupAddTaskComponent } from './popup/popup-add-task/popup-add-task.com
 		AppRoutingModule,
 		CalendarComponent,
 		WeeklyCalendarComponent,
-		MonthlyCalendarComponent
-	]
+		MonthlyCalendarComponent,
+		DaterangeComponent,
+		NoDataComponent,
+		BaseProjectComponent
+	],
+	providers: [
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
+  ]
 })
 export class SharedComponentModule { }

@@ -14,6 +14,7 @@
             <base-textbox
               [placeholder]="'Search project'"
               [type]="typeControl.Search"
+              (searchEvent)="searchProject($event)"
             >
             </base-textbox>
           </div>
@@ -21,22 +22,26 @@
             class="add-project bt-flex bt-align-items-center bt-justify-content-center"
             matTooltip="Add Project"
             [matTooltipPosition]="'above'"
+            [matTooltipClass]="'mg-bottom'"
             (click)="addProject()"
           >
             <i class="fa-solid fa-plus"></i>
           </div>
         </div>
       </div>
-      <div class="project-list">
+      <base-project
+        #projectComponent
+      >
+      </base-project>
+      <!-- <div class="project-list">
         <div 
           class="project-item bt-flex bt-align-items-center"
           *ngFor="let item of projects"
-          (click)="openProject(item)"
         >
-          <div class="avatar bt-flex bt-align-items-center bt-justify-content-center">
+          <div class="avatar bt-flex bt-align-items-center bt-justify-content-center" (click)="openProject(item)">
             <i class="fa-solid fa-city"></i>
           </div>
-          <div class="info">
+          <div class="info" (click)="openProject(item)">
             <div class="name">
               {{ item.ProjectName }}
             </div>
@@ -44,8 +49,18 @@
               {{ item.ProjectCode }}
             </div>
           </div>
+          <div class="project-settings" 
+            [matTooltip]="'Project settings'"
+            [matTooltipPosition]="'above'"
+            [matTooltipClass]="'mg-top'"
+            [matTooltipClass]="'mg-bottom'"
+            [matMenuTriggerFor]="menuOptions"
+            [matMenuTriggerData]="{project: item}"
+          >
+            <i class="fa-solid fa-gear"></i>
+          </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="notification-container w-1/2">
       <div class="notification-header">
@@ -53,8 +68,31 @@
           Recent Updates
         </div>
       </div>
-      <base-notification>
+      <base-notification
+        [height]="'calc(100vh - 202px)'"
+      >
       </base-notification>
     </div>
   </div>
 </div>
+
+<!-- <mat-menu #menuOptions="matMenu">
+  <ng-template matMenuContent let-project="project">
+    <button mat-menu-item class="btn-secondary bt-flex bt-align-items-center" (click)="openProjectSettings(project)">
+      <div class="icon">
+        <i class="fa-solid fa-gear"></i>
+      </div>
+      <div class="text">
+        General Settings
+      </div>
+    </button>
+    <button mat-menu-item class="btn-delete bt-flex bt-align-items-center" (click)="deleteProject(project)">
+      <div class="icon">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <div class="text">
+        Delete
+      </div>
+    </button>
+  </ng-template>
+</mat-menu> -->

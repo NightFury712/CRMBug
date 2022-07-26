@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarType } from 'src/app/enumeration/calendar.enum';
 
@@ -19,9 +19,16 @@ export class CalendarComponent implements OnInit {
     { title: 'event 2', date: '2022-06-02', allDay: true },
   ]
 
+  @Output()
+  eventClick = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  clickEvent(e: any) {
+    this.eventClick.emit(e);
   }
 
 }

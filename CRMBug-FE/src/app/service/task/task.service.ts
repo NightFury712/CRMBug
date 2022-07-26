@@ -1,4 +1,4 @@
-import { BaseService } from './../base/base.service';
+import { AppServerResponse, BaseService } from './../base/base.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -14,6 +14,14 @@ export class TaskService extends BaseService {
   }
 
   getFormData(projectID: number, masterID: number, formModeState: number): Observable<any> {
-    return this.http.get<any>(`${this.controller}/FormData/${projectID}/${masterID}/${formModeState}`, {headers: this.headers});
+    return this.http.get<AppServerResponse<any>>(`${this.controller}/FormData/${projectID}/${masterID}/${formModeState}`, {headers: this.headers});
+  }
+
+  getSummaryData(projectID: number): Observable<any> {
+    return this.http.get<AppServerResponse<any>>(`${this.controller}/GetSummaryData/${projectID}`, {headers: this.headers});
+  }
+
+  getDataRecentlyViewed(taskIDs: Array<any>): Observable<any> {
+    return this.http.post<AppServerResponse<any>>(`${this.controller}/GetDataRecentlyViewed`, taskIDs, {headers: this.headers});
   }
 }

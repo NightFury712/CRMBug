@@ -1,5 +1,7 @@
+import { BaseComponent } from 'src/app/shared/base-component';
+import { TaskPriority } from './../../enumeration/task.enum';
 import { PopupAddTaskComponent } from './../popup/popup-add-task/popup-add-task.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,14 +16,16 @@ import { ConfigDialog } from 'src/app/modules/config-dialog';
 import { DataService } from 'src/app/service/data/data.service';
 import { TaskService } from 'src/app/service/task/task.service';
 import { TaskView } from 'src/app/enumeration/task.enum';
+import { ParamGrid } from 'src/app/models/param-grid.model';
+import { AppServerResponse } from 'src/app/service/base/base.service';
+import { PopupConfirmComponent } from '../popup/popup-confirm/popup-confirm.component';
 
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
   styleUrls: ['./view-task.component.scss'],
 })
-export class ViewTaskComponent implements OnInit {
-  _onDestroySub: Subject<void> = new Subject<void>();
+export class ViewTaskComponent extends BaseComponent implements OnInit {
 
   currentView: TaskView = TaskView.List;
 
@@ -33,12 +37,17 @@ export class ViewTaskComponent implements OnInit {
 
   fieldDisplay: Array<any> = [
     {
+      fieldName: 'TaskCode',
+      displayText: 'Task Code',
+      typeControl: TypeControl.Textbox,
+    },
+    {
       fieldName: 'Subject',
       displayText: 'Subject',
       typeControl: TypeControl.Textbox,
     },
     {
-      fieldName: 'PriorityID',
+      fieldName: 'PriorityIDText',
       displayText: 'Priority',
       typeControl: TypeControl.Textbox,
     },
@@ -61,6 +70,11 @@ export class ViewTaskComponent implements OnInit {
       fieldName: 'RelatedUserIDText',
       displayText: 'Related to',
       typeControl: TypeControl.Textbox,
+    },
+    {
+      fieldName: 'StatusIDText',
+      displayText: 'Status',
+      typeControl: TypeControl.List,
     },
     {
       fieldName: 'CreatedDate',
@@ -107,11 +121,11 @@ export class ViewTaskComponent implements OnInit {
 
   toRecord = 1;
 
-  configPaging: any = {
+  configPaging: ParamGrid = {
     Filters: [
       {
         FieldName: 'ProjectID',
-        Value: '0',
+        Value: null,
         Addition: Addition.And,
         IsFormula: false,
         Operator: Operator.Equal,
@@ -137,12 +151,19 @@ export class ViewTaskComponent implements OnInit {
         IsFormula: true,
         Operator: Operator.Like,
       },
+      {
+        FieldName: 'TaskCode',
+        Value: '',
+        Addition: Addition.Or,
+        IsFormula: true,
+        Operator: Operator.Like,
+      },
     ],
     PageIndex: 0,
-    Formula: '({0} OR {1} OR {2})',
+    Formula: '({0} OR {1} OR {2} OR {3})',
     PageSize: 20,
     Columns: btoa(
-      'ID,Subject,PriorityID,PriorityIDText,StatusID,StatusIDText,CompletedProgress,AssignedUserID,AssignedUserIDText,RelatedUserID,RelatedUserIDText,ProjectID,DueDate,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
+      'ID,TaskCode,Subject,PriorityID,PriorityIDText,StatusID,StatusIDText,CompletedProgress,Description,AssignedUserID,AssignedUserIDText,RelatedUserID,RelatedUserIDText,ProjectID,DueDate,PriorityColor,StatusColor,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
     ),
   };
 
@@ -163,12 +184,37 @@ export class ViewTaskComponent implements OnInit {
     private dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private dataSV: DataService,
-    private toastSV: ToastrService
-  ) {}
+    private toastSV: ToastrService,
+    private cdf: ChangeDetectorRef
+  ) {
+    super();
+  }
 
   ngOnInit() {
-    this.projectID = this.activeRoute.snapshot.params.projectID;
-    this.configPaging.Filters[0].Value = this.projectID;
+    let me = this
+    this.dataSV.project
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((project) => {
+        if(project) {
+          me.projectID = project.ID;
+          me.configPaging.Filters[0].Value = `${project.ID}`;
+          me.getDataPaging();
+        }
+      })
+    // this.projectID = this.activeRoute.snapshot.params.projectID;
+    
+    this.initconfig();
+  }
+
+  initconfig() {
+    this.dataSV.task
+    .pipe(takeUntil(this._onDestroySub))
+      .subscribe(task => {
+        if(task) {
+          this.editTask(task);
+          this.dataSV.task.next(null)
+        }
+      })
     this.dataSV.user
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((user) => {
@@ -184,8 +230,7 @@ export class ViewTaskComponent implements OnInit {
             }
           ]
         }
-      })
-    this.getDataPaging();
+    })
   }
 
   getDataPaging() {
@@ -199,14 +244,16 @@ export class ViewTaskComponent implements OnInit {
         (resp) => {
           this.dataSV.loading.next(false);
           if (resp && resp.Success) {
-            this.tasks = resp.Data.Data.map((x: any) => {
+            this.tasks = resp.Data.Result.map((x: any) => {
               return {
                 ...x,
                 title: x.Subject,
                 date: x.CreatedDate,
+                color: x.StatusColor
               };
             });
             this.totalRecord = resp.Data.TotalRecord;
+            this.calculateRecord();
           } else {
             console.log(resp);
           }
@@ -231,24 +278,6 @@ export class ViewTaskComponent implements OnInit {
     });
   }
 
-  clickBtnEdit(item: any, index: number) {
-    // this.oldData = JSON.parse(JSON.stringify(item));
-    // item.State = EntityState.Edit;
-    // item.EntityState = EntityState.Edit;
-    // if(this.isEditing) {
-    //   const oldIndex = this.tasks.indexOf(this.currentData);
-    //   this.tasks[oldIndex].State = EntityState.View;
-    //   //Save data
-    //   this.taskSV.addTask(item).subscribe(
-    //     resp => {
-    //       console.log(resp);
-    //     }
-    //   )
-    // }
-    // this.currentData = item;
-    // this.isEditing = true;
-  }
-
   switchView(viewType: TaskView) {
     if (viewType === TaskView.Calendar) {
       this.currCalendarType = CalendarType.MonthLy;
@@ -269,19 +298,7 @@ export class ViewTaskComponent implements OnInit {
     this.tasks[index] = this.oldData;
     item.State = EntityState.View;
   }
-
-  saveTask(item: any, index: number) {
-    // item.State = EntityState.View
-    // this.isEditing = false;
-    // this.mappingData(item);
-    // // Save data
-    // this.taskSV.addTask(item).subscribe(
-    //   resp => {
-    //     console.log(resp);
-    //   }
-    // )
-  }
-
+  
   editTask(task: any) {
     const config = new ConfigDialog('800px');
     config.data = {
@@ -296,12 +313,26 @@ export class ViewTaskComponent implements OnInit {
     });
   }
 
-  deleteTask(item: any, index: number) {
-    this.tasks.splice(index, 1);
-    this.isEditing = false;
-    this.taskSV.delete(item.ID).subscribe((resp) => {
-      console.log(resp);
-    });
+  deleteTask(task: any) {
+    const config = new ConfigDialog('600px');
+    config.data = {
+      title: "Delete task",
+      content: `Do you want to delete task <b>${task.TaskCode}</b>?`
+    };
+    const dialogRef = this.dialog.open(PopupConfirmComponent, config);
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((resp) => {
+        if(resp) {
+          this.taskSV.delete(task.ID)
+            .pipe(takeUntil(this._onDestroySub))
+            .subscribe((resp: AppServerResponse<any>) => {
+              if(resp.Success) {
+                this.getDataPaging();
+              }
+            })
+        }
+      })
   }
 
   valueChangeCombo(e: any) {
@@ -346,36 +377,40 @@ export class ViewTaskComponent implements OnInit {
     this.toRecord =
       this.currentPage * this.configPaging.PageSize < this.totalRecord
         ? this.currentPage * this.configPaging.PageSize
-        : this.toRecord;
+        : this.totalRecord;
   }
 
   prevFirst() {
     if (this.currentPage > 1) {
       this.currentPage = 1;
+      this.getDataPaging();
     }
   }
 
   prevOne() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.getDataPaging();
     }
   }
 
   nextLast() {
     if (
-      (this.currentPage + 1) * this.configPaging.PageSize >
+      this.currentPage * this.configPaging.PageSize <
       this.totalRecord
     ) {
-      this.currentPage = this.totalRecord / this.configPaging.PageSize;
+      this.currentPage = Math.ceil(this.totalRecord / this.configPaging.PageSize);
+      this.getDataPaging();
     }
   }
 
   nextOne() {
     if (
-      (this.currentPage + 1) * this.configPaging.PageSize >
+      this.currentPage * this.configPaging.PageSize <
       this.totalRecord
     ) {
       this.currentPage++;
+      this.getDataPaging();
     }
   }
 }

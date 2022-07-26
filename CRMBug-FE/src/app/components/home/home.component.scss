@@ -78,14 +78,22 @@
         min-width: 412px;
         .graphbar-number {
           height: 40px;
+          position: relative;
+          .total-record {
+            position: absolute;
+            color: $color-white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
           .line {
             height: 20px;
-          }
-          .line:nth-child(1) {
-            border-radius: 20px 0 0 20px;
-          }
-          .line:nth-last-child(1) {
-            border-radius: 0 20px 20px 0;
+            // &:nth-child(1) {
+            //   border-radius: 20px 0 0 20px;
+            // }
+            // &:nth-last-child(1) {
+            //   border-radius: 0 20px 20px 0;
+            // }
           }
         }
         .graphbar-info {

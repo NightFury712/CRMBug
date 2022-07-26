@@ -80,10 +80,11 @@ export class BaseDatetimepickerComponent implements OnInit {
 
   onChange() {
     const me = this;
+    console.log(me.value.toDate());
     me.valueChange.emit({
       FieldName: this.fieldName,
-      Value: me.value,
-      Text: me.value
+      Value: me.value.toDate(),
+      Text: me.value.toDate()
     });
   }
 }

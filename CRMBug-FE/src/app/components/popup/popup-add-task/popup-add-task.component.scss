@@ -7,7 +7,7 @@
     .ngx-slider {
       .ngx-slider-ceil {
         left: unset !important;
-        right: 0;
+        right: 0 !important;
       }
       .ngx-slider-selection-bar {
         visibility: visible !important;

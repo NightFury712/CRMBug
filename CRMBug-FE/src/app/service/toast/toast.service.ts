@@ -22,22 +22,22 @@ export class ToastService {
     this.dataSV.loading.next(false);
   }
 
-  showSuccess(message: string) {
+  showSuccess(message: string, title?: string, config?: any) {
     this.unLoad();
     this.toast.success(message);
   }
   
-  showInfo(message: string) {
+  showInfo(message: string, title?: string, config?: any) {
     this.unLoad();
     this.toast.info(message);
   }
 
-  showWarning(message: string) {
+  showWarning(message: string, title?: string, config?: any) {
     this.unLoad();
-    this.toast.warning(message);
+    this.toast.warning(message, title, config);
   }
 
-  showError(message: string) {
+  showError(message: string, title?: string, config?: any) {
     this.unLoad();
     this.toast.error(message);
   }

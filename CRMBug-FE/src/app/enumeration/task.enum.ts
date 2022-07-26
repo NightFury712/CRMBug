@@ -5,7 +5,7 @@ export enum TaskPriority {
 }
 
 export enum TaskState {
-  NotCompleted = 1,
+  Pending = 1,
   Completed = 2,
   CompletedLate = 3,
 }

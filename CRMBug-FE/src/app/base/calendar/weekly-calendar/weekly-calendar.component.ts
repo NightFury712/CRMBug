@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular';
 import { DEFAULT_CALENDAR_OPTIONS } from 'src/app/enumeration/calendar.enum';
 
@@ -8,6 +8,10 @@ import { DEFAULT_CALENDAR_OPTIONS } from 'src/app/enumeration/calendar.enum';
   styleUrls: ['./weekly-calendar.component.scss'],
 })
 export class WeeklyCalendarComponent implements OnInit {
+
+  @Output()
+  eventClick = new EventEmitter();
+  
   //options cho fullcalendar
   calendarOptions: CalendarOptions = {
     ...DEFAULT_CALENDAR_OPTIONS,
@@ -29,6 +33,14 @@ export class WeeklyCalendarComponent implements OnInit {
     eventDisplay: 'block',
 
     events: [],
+    /**
+     * Hàm xử lý khi bấm vào 1 event
+     * @param info
+     */
+     eventClick: (info) => {
+      console.log(info.event.extendedProps);
+      this.eventClick.emit(info.event.extendedProps);
+    },
   };
 
   @Input()

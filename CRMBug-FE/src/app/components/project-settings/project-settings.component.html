@@ -32,7 +32,7 @@
                 placeholder=""
                 [isHorizontal]="false"
                 [maxLength]="255"
-                [(value)]="data.ProjectName"
+                [(value)]="projectInfo.ProjectName"
               >
               </base-textbox>
             </div>
@@ -48,7 +48,7 @@
                 [required]="true"
                 placeholder=""
                 [isHorizontal]="false"
-                [(value)]="data.ProjectCode"
+                [(value)]="projectInfo.ProjectCode"
               >
               </base-textbox>
             </div>
@@ -73,37 +73,32 @@
     </div>
     <div class="member" *ngSwitchCase="2">
       <div class="title">
-        Project Members (1 members)
+        Project Members ( {{projectMember.length}} members)
       </div>
       <div class="content">
         <table class="table-fixed-header">
           <thead>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Role</th>
-            <th>Join on</th>
+            <th *ngFor="let field of fieldDisplay;">
+              {{ field.displayText }}
+            </th>
             <th>Remove</th>
           </thead>
           <tbody>
-            <td>
-              Hoàng Hải Đăng
-            </td>
-            <td>
-              haidangk63@gmail.com
-            </td>
-            <td>
-              0866422499
-            </td>
-            <td>
-              Admin
-            </td>
-            <td>
-              27/2/2022
-            </td>
-            <td>
-              x
-            </td>
+            <tr *ngFor="let item of projectMember;">
+              <td *ngFor="let field of fieldDisplay;">
+                <ng-container [ngSwitch]="field.typeControl">
+                  <span *ngSwitchCase="typeControl.DateTime">
+                    {{ item[field.fieldName] | date: 'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngSwitchDefault>
+                    {{ item[field.fieldName]}}
+                  </span>
+                </ng-container>
+              </td>
+              <td>
+                x
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

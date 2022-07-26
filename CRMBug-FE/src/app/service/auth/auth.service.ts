@@ -52,8 +52,8 @@ export class AuthService {
             .post<any>(
                 this.url + '/login',
                 {
-                    username: username,
-                    password: btoa(password),
+                    Username: username,
+                    Password: btoa(password),
                 }
             )
             .pipe(
@@ -151,7 +151,7 @@ export class AuthService {
                     return this.handleError(errorRes);
                 }),
                 tap(resData => {
-                    if (!resData.success) {
+                    if (!resData.Success) {
                         this.logout();
                         return;
                     }
@@ -219,7 +219,7 @@ export class AuthService {
 
         //Xóa khỏi localStorage
         localStorage.removeItem('userData');
-
+        localStorage.removeItem('AccessToken');
         //Clear timer
         if (this.tokenExperationTimer) {
             clearTimeout(this.tokenExperationTimer);

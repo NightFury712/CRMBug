@@ -6,13 +6,13 @@
     <div class="nav-link bt-flex bt-align-items-center">
       <div class="text">Project</div>
     </div>
-    <div class="nav-link bt-flex bt-align-items-center">
+    <div class="nav-link bt-flex bt-align-items-center" (click)="openRecentlyViewed()">
       <div class="text">Recently Viewed</div>
     </div>
   </div>
-  <div class="bt-flex bt-align-items-center">
+  <!-- <div class="bt-flex bt-align-items-center">
     <base-textbox></base-textbox>  
-  </div>
+  </div> -->
   <div class="bt-flex bt-align-items-center">
     <div class="norify-container">
 
@@ -30,7 +30,7 @@
 
 <mat-menu #moreInfos="matMenu">
   <div class="title">Hello, {{ fullName }}</div>
-  <button mat-menu-item (click)="updateUserSetting()">Personal Settings</button>
-  <button mat-menu-item>Reset Password</button>
-  <button mat-menu-item (click)="logout()">Logout</button>
+  <button mat-menu-item class="btn-primary" (click)="updateUserSetting()">Personal Settings</button>
+  <button mat-menu-item class="btn-primary">Reset Password</button>
+  <button mat-menu-item class="btn-primary" (click)="logout()">Logout</button>
 </mat-menu>

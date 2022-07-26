@@ -93,6 +93,7 @@
         *ngIf="currentView == taskView.Calendar"
         [type]="currCalendarType"
         [events]="tasks"
+        (eventClick)="editTask($event)"
       >
       </app-calendar>
       <table 
@@ -107,45 +108,33 @@
           </tr>
         </thead>
         <tbody class="tasks">
-          <tr *ngFor="let item of tasks;" (click)="editTask(item)">
+          <tr *ngFor="let item of tasks;" (dblclick)="editTask(item)">
             <td *ngFor="let field of fieldDisplay;">
               <ng-container [ngSwitch]="field.typeControl">
-                <span *ngSwitchCase="typeControl.DateTime">
-                  {{ item[field.fieldName] | date: 'dd/MM/yyyy'}}
-                </span>
-                <span *ngSwitchDefault>
-                  {{ item[field.fieldName]}}
-                </span>
+                <div *ngSwitchCase="typeControl.DateTime">
+                  <span>{{ item[field.fieldName] | date: 'dd/MM/yyyy'}}</span>
+                </div>
+                <div *ngSwitchCase="typeControl.List" class="task-status">
+                  
+                  <div class="icon" [style.background-color]="item.StatusColor">
+
+                  </div>
+                  <div class="text">{{ item[field.fieldName]}}</div>
+                </div>
+                <div *ngSwitchDefault [ngClass]="{'priority': field.fieldName === 'PriorityIDText'}" [style.background-color]="field.fieldName === 'PriorityIDText' ? item.PriorityColor : 'none'">
+                  <span>{{ item[field.fieldName]}}</span>
+                </div>
               </ng-container>
             </td>
-            <!-- <td>
-              <span>{{ item.Subject }}</span>
-            </td>
-            <td>
-              <span>{{
-                item.PriorityIDText
-              }}</span>
-            </td>
-            <td>
-              <span>{{
-                item.StatusIDText
-              }}</span>
-            </td>
-            <td>
-              <span >{{
-                item.AssignedUserIDText
-              }}</span>
-            </td>
-            <td>
-              <span>{{
-                item.FoundInBuild
-              }}</span>
-            </td>
-            <td>
-              <span>{{
-                item.IntergratedBuild
-              }}</span>
-            </td> -->
+            <div class="action">
+              <div 
+                class="more" 
+                [matMenuTriggerFor]="menuOptions"
+                [matMenuTriggerData]="{task: item}"
+              >
+                <i class="fa-solid fa-ellipsis"></i>
+              </div>
+            </div>
           </tr>
         </tbody>
       </table>
@@ -167,10 +156,18 @@
         >
         </base-combobox>
       </div>
-      <div class="prev-to-first" [ngClass]="{'disable': currentPage == 1}">
+      <div 
+        class="prev-to-first" 
+        [ngClass]="{'disable': currentPage == 1}"
+        (click)="prevFirst()"
+      >
         <i class="fa-solid fa-angles-left"></i>
       </div>
-      <div class="prev-one" [ngClass]="{'disable': currentPage == 1}">
+      <div 
+        class="prev-one" 
+        [ngClass]="{'disable': currentPage == 1}"
+        (click)="prevOne()"
+      >
         <i class="fa-solid fa-angle-left"></i>
       </div>
       <div class="page-info bt-flex bt-justify-content-center">
@@ -184,12 +181,41 @@
           {{ toRecord }}
         </div>
       </div>
-      <div class="next-one" [ngClass]="{'disable': (configPaging.PageIndex + 1) * configPaging.PageSize > totalRecord}">
+      <div 
+        class="next-one" 
+        [ngClass]="{'disable': (configPaging.PageIndex + 1) * configPaging.PageSize > totalRecord}"
+        (click)="nextOne()"
+      >
         <i class="fa-solid fa-angle-right"></i>
       </div>
-      <div class="next-to-last" [ngClass]="{'disable': (configPaging.PageIndex + 1) * configPaging.PageSize > totalRecord}">
+      <div 
+        class="next-to-last" 
+        [ngClass]="{'disable': (configPaging.PageIndex + 1) * configPaging.PageSize > totalRecord}"
+        (click)="nextLast()"
+      >
         <i class="fa-solid fa-angles-right"></i>
       </div>
     </div>
   </div>
 </div>
+
+<mat-menu #menuOptions="matMenu" xPosition="before">
+  <ng-template matMenuContent let-task="task">
+    <button mat-menu-item class="btn-secondary bt-flex bt-align-items-center" (click)="editTask(task)">
+      <div class="icon">
+        <i class="fa-solid fa-pencil"></i>
+      </div>
+      <div class="text">
+        Edit
+      </div>
+    </button>
+    <button mat-menu-item class="btn-delete bt-flex bt-align-items-center" (click)="deleteTask(task)">
+      <div class="icon">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <div class="text">
+        Delete
+      </div>
+    </button>
+  </ng-template>
+</mat-menu>

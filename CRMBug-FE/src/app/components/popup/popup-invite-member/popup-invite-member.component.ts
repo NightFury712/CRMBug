@@ -84,7 +84,7 @@ export class PopupInviteMemberComponent extends BaseComponent implements OnInit,
 
   getEmployees(projectID: number) {
     this.employeeSV
-      .getEmployeeNotInProject(projectID)
+      .getEmployeeByProjectID(projectID, false)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((resp) => {
         if(resp?.Success) {

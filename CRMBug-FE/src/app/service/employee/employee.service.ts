@@ -15,8 +15,8 @@ export class EmployeeService extends BaseService {
     this.controller = `${this.controller}/Employee`
   }
 
-  getEmployeeNotInProject(projectID: number): Observable<any> {
-    return this.http.get<any>(`${this.controller}/GetEmployeeNotInProject/${projectID}`, {headers: this.headers});
+  getEmployeeByProjectID(projectID: number, isInProject: boolean): Observable<any> {
+    return this.http.get<any>(`${this.controller}/GetEmployeeByProjectID/${projectID}/${isInProject}`, {headers: this.headers});
   }
 
   register(data: any):  Observable<any> {

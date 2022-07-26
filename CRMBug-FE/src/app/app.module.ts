@@ -4,27 +4,28 @@ import { AddIssueComponent } from './components/add-issue/add-issue.component';
 import { ProjectComponent } from './components/project/project.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { HomeComponent } from './components/home/home.component';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatMenuModule} from '@angular/material/menu';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
-import { ViewIssueComponent } from './components/view-issue/view-issue.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-
+import { HighchartsChartModule } from "highcharts-angular";
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { ToastrModule } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -43,8 +44,7 @@ FullCalendarModule.registerPlugins([
     ProjectComponent,
     SidebarComponent,
     AddIssueComponent,
-    ViewIssueComponent,
-    ChartComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +55,8 @@ FullCalendarModule.registerPlugins([
     HttpClientModule,
     MatMenuModule,
     NgxSliderModule,
+    HighchartsChartModule,
+    NgxDaterangepickerMd.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
       progressBar: true,
@@ -62,7 +64,7 @@ FullCalendarModule.registerPlugins([
       positionClass: 'toast-top-center'
     }), // ToastrModule added
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
