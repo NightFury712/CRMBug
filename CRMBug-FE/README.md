@@ -13,7 +13,7 @@
 
 ## Development client
 
-* Mở thư mục CRMBug-FE bằng VSCode, mở cửa sổ terminal bằng phím tắt Ctrl + ~ hoặc sử dụng thanh công cụ. Chạy `npm install` để cài đặt node_module (các thư viện môi trường phục vụ build client)
+* Mở thư mục CRMBug-FE bằng VSCode, mở cửa sổ terminal bằng phím tắt `Ctrl + ~` hoặc sử dụng thanh công cụ. Chạy `npm install` để cài đặt node_module (các thư viện môi trường phục vụ build client)
 * Chạy `ng serve` để build dự án trên môi trường phát triển. Điều hướng đến `http://localhost:4200/` để sử dụng phần mềm. Ứng dụng sẽ tự động tải lại nếu bạn thay đổi bất kỳ tệp nguồn nào.
 
 ## Build
@@ -27,7 +27,7 @@
 
 ## Development server
 
-* Truy cập theo đường dẫn CRMBug-BE/BugTracking.sln và khởi chạy dự án bằng phím tắt Ctrl + F5
+* Truy cập theo đường dẫn CRMBug-BE/BugTracking.sln và khởi chạy dự án bằng phím tắt `Ctrl + F5`
 
 ## API documentation
 
