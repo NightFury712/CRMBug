@@ -1,27 +1,16 @@
-# BugTracking
+# Task Management System
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.5.
+Hệ thống theo dõi tiến độ công việc cung cấp tính năng phân công công việc một cách dễ dàng, thông tin được truyền tải đầy đủ, đồng nhất, tập trung và trực tiếp tới nhân viên. Phần mềm hỗ trợ tính năng vẽ báo cáo theo thời gian, số liệu đo lường chi tiết và đa chiều, giúp nhân viên chủ động tự đánh giá và quản lý công việc, đồng thời cũng giúp các cấp quản lý nắm bắt được các vấn đề phát sinh, cân đối nguồn lực và phân bổ khối lượng công việc sao cho hợp lý.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+chạy `ng serve` để build dự án trên môi trường phát triển. Điều hướng đến `http://localhost:4200/` để sử dụng phần mềm. Ứng dụng sẽ tự động tải lại nếu bạn thay đổi bất kỳ tệp nguồn nào.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Chạy `ng build` để build dự án. Các file sinh ra sẽ được lưu trữ trong thư mục `dist /`.
 
-## Running unit tests
+## API documentation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Sau khi ứng dụng khởi động thành công, truy cập URL sau để xem documentation của các REST API trong hệ
+thống: http://localhost:44378/api/swagger-ui/
