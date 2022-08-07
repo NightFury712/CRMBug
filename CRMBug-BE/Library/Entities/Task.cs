@@ -33,7 +33,7 @@ namespace Library.Entities
     [TableColumn]
     public string StatusIDText { get; set; }
     [TableColumn]
-    public DateTime? DueDate { get; set; }
+    public DateTime DueDate { get; set; }
     [TableColumn]
     public long AssignedUserID { get; set; }
     [TableColumn]
@@ -48,6 +48,12 @@ namespace Library.Entities
     public string Description { get; set; }
     [TableColumn]
     public int CompletedProgress { get; set; }
+    [TableColumn]
+    public string TaskCode { get; set; }
+    [TableColumn]
+    public string PriorityColor { get; set; }
+    [TableColumn]
+    public string StatusColor { get; set; }
     #endregion
   }
 }

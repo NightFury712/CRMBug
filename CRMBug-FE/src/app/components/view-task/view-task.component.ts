@@ -234,7 +234,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
   }
 
   getDataPaging() {
-    this.dataSV.loading.next(true);
+    // this.dataSV.loading.next(true);
     this.configPaging.PageIndex =
       (this.currentPage - 1) * this.configPaging.PageSize;
     this.taskSV
@@ -242,7 +242,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this._onDestroySub))
       .subscribe(
         (resp) => {
-          this.dataSV.loading.next(false);
+          // this.dataSV.loading.next(false);
           if (resp && resp.Success) {
             this.tasks = resp.Data.Result.map((x: any) => {
               return {
@@ -259,7 +259,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           }
         },
         (error) => {
-          this.dataSV.loading.next(false);
+          // this.dataSV.loading.next(false);
           console.log(error);
         }
       );

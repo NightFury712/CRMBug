@@ -102,8 +102,6 @@ export class GanttChartComponent extends BaseComponent implements OnInit {
 
   projectName: string = '';
 
-  isHaveData: boolean = true;
-
   ganttTypeCbx: Array<any> = [
     {
       Value: GanttViewType.User,

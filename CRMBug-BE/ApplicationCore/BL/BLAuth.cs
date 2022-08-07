@@ -46,6 +46,7 @@ namespace ApplicationCore.BL
       {
         serviceResult.Success = false;
         serviceResult.Code = Code.Authentication;
+        serviceResult.Messenger = "Wrong username or password";
         return serviceResult;
       }
       var token = _accessTokenGenerator.GenerateToken(user);

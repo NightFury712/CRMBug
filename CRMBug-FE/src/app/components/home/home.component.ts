@@ -1,3 +1,4 @@
+import { DataService } from './../../service/data/data.service';
 import { TaskService } from 'src/app/service/task/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -31,14 +32,20 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private taskSV: TaskService
+    private taskSV: TaskService,
+    private dataSV: DataService
   ) { 
     super();
   }
 
   ngOnInit(): void {
-    this.projectID = this.activeRoute.snapshot.params.projectID;
-    this.getDatas()
+    this.dataSV.project.pipe(takeUntil(this._onDestroySub))
+      .subscribe(project => {
+        if(project) {
+          this.projectID = project.ID
+          this.getDatas()
+        }
+      })
   }
 
   getDatas() {

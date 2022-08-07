@@ -10,9 +10,12 @@ namespace Library.Entities
   public class FilterField
   {
     public string FieldName { get; set; }
-    public string Value { get; set; }
+    public object Value { get; set; }
     public Operator Operator { get; set; }
     public Addition Addition { get; set; }
     public bool IsFormula { get; set; }
+
+    public object Value1 { get; set; }
+    public object Value2 { get; set; }
   }
 }

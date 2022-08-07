@@ -1,3 +1,5 @@
+import { takeUntil } from 'rxjs/operators';
+import { BaseComponent } from 'src/app/shared/base-component';
 import { TypeControl } from 'src/app/enumeration/type-control.enum';
 import { PopupInviteMemberComponent } from './../popup/popup-invite-member/popup-invite-member.component';
 import { ConfigDialog } from 'src/app/modules/config-dialog';
@@ -11,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent extends BaseComponent implements OnInit {
   typeControl = TypeControl;
   projectName: string = '';
 
@@ -22,10 +24,12 @@ export class ProjectComponent implements OnInit {
     private router: ActivatedRoute,
     private dataSV: DataService,
     private dialog: MatDialog
-  ) { }
+  ) { 
+    super();
+  }
 
   ngOnInit(): void {
-    this.dataSV.project.subscribe((project: any) => {
+    this.dataSV.project.pipe(takeUntil(this._onDestroySub)).subscribe((project: any) => {
       this.projectName = project.ProjectName;
       this.projectCode = project.ProjectCode
     })

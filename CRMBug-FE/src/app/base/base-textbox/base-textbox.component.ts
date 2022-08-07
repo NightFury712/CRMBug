@@ -41,7 +41,10 @@ export class BaseTextboxComponent implements OnInit, ControlValueAccessor  {
   isHorizontal: boolean = true;
 
   @Input()
-  maxLength: number = 255
+  maxLength: number = 255;
+
+  @Input()
+  borderRadius: string = '20px';
 
   @Output()
   valueChange = new EventEmitter();

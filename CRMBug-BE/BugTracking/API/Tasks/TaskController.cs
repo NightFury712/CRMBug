@@ -43,6 +43,56 @@ namespace BugTracking.API.Tasks
         return GetExceptionResult(ex);
       }
     }
+    /// <summary>
+    /// Phương thức lấy thông tin tóm lược về công việc trong dự án
+    /// </summary>
+    /// <param name="projectID">ID dự án</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("GetSummaryData/{projectID}")]
+    [Authorize]
+    public IActionResult GetSummaryData(long projectID)
+    {
+      try
+      {
+        _serviceResult.Success = true;
+        _serviceResult.Code = Code.Ok;
+        _serviceResult.Data = BL.GetSummaryData(projectID);
+
+        return Ok(_serviceResult);
+
+      }
+      catch (Exception ex)
+      {
+        return GetExceptionResult(ex);
+      }
+    }
+
+    /// <summary>
+    /// Phương thức lấy thông tin các công việc được xem gần đây
+    /// </summary>
+    /// <param name="taskIDs">danh sách ID công việc</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("GetDataRecentlyViewed")]
+    [Authorize]
+    public IActionResult GetDataRecentlyViewed(List<long> taskIDs)
+    {
+      try
+      {
+        _serviceResult.Success = true;
+        _serviceResult.Code = Code.Ok;
+        _serviceResult.Data = BL.GetDataRecentlyViewed(taskIDs);
+
+        return Ok(_serviceResult);
+
+      }
+      catch (Exception ex)
+      {
+        return GetExceptionResult(ex);
+      }
+    }
+
     #endregion
   }
 }

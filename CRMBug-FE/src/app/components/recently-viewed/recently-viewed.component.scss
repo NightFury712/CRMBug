@@ -1,14 +1,7 @@
 @import '../../../color.scss';
 @import '../../../font.scss';
 
-::ng-deep {
-  .cdk-overlay-container {
-    .no-background {
-      background-color: $color-white !important;
-      background: transparent !important;
-    }
-  }
-}
+
 
 :host {
   .recently-viewed-container {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Authentication.JWT.Generators;
 using ApplicationCore.Interfaces.BL;
+using Library;
 using Library.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;

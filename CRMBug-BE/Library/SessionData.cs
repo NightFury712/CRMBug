@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Library.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace Library
 {
   public class SessionData
   {
+    private static List<Employee> _clients;
     private static IHttpContextAccessor _httpContextAccessor;
     private static HttpContext httpContext => HttpContextAccessor.HttpContext;
     public static IHttpContextAccessor HttpContextAccessor
@@ -46,6 +48,18 @@ namespace Library
       get
       {
         return httpContext.User.FindFirst("Email")?.Value;
+      }
+    }
+
+    public static List<Employee> Clients
+    {
+      get
+      {
+        if (_clients == null)
+        {
+          _clients = new List<Employee>();
+        }
+        return _clients;
       }
     }
   }

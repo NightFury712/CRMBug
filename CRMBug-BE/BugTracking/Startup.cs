@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ApplicationCore.Authentication.JWT.Generators;
 using ApplicationCore.BL;
 using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
+using BugTracking.Middlewares;
 using Infarstructure.Base;
 using Infarstructure.Employees;
+using Infarstructure.Notifications;
 using Infarstructure.Projects;
 using Infarstructure.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +27,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace BugTracking
 {
@@ -70,9 +75,12 @@ namespace BugTracking
             });
 
       services.AddControllers();
+
       services.AddControllers().AddJsonOptions(jsonOptions =>
       {
         jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+        jsonOptions.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+
       });
       services.AddSwaggerGen(c =>
       {
@@ -98,6 +106,10 @@ namespace BugTracking
       // Thực hiện DI cho project
       services.AddScoped<IBLProject, BLProject>();
       services.AddScoped<IDLProject, DLProject>();
+
+      // Thực hiện DI cho notification
+      services.AddScoped<IBLNotification, BLNotification>();
+      services.AddScoped<IDLNotification, DLNotification>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,10 +133,24 @@ namespace BugTracking
       app.UseAuthentication();
       app.UseAuthorization();
 
+      app.UseMiddleware<ExceptionMiddleware>();
+
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
       });
+    }
+  }
+  public class DateTimeConverter : System.Text.Json.Serialization.JsonConverter<DateTime>
+  {
+    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+      return DateTime.SpecifyKind(DateTime.Parse(reader.GetString()), DateTimeKind.Utc);
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    {
+      writer.WriteStringValue(DateTime.SpecifyKind(value, DateTimeKind.Utc));
     }
   }
 }

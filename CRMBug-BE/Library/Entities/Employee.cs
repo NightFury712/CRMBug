@@ -16,6 +16,8 @@ namespace Library.Entities
     [TableColumn]
     public string EmployeeID { get; set; }
     [TableColumn]
+    public string EmployeeCode { get; set; }
+    [TableColumn]
     public string FirstName { get; set; }
     [TableColumn]
     public string LastName { get; set; }
@@ -27,10 +29,12 @@ namespace Library.Entities
     public string PhoneNumber { get; set; }
     [TableColumn]
     public int RoleID { get; set; } = (int)RoleEmployee.Guest;
+    public string RoleIDText { get; set; }
     [Unique]
     [DisplayName("Username")]
     public string Username { get; set; }
     public string Password { get; set; }
+    public string ConectionID { get; set; }
     #endregion
   }
 }

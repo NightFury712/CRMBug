@@ -22,7 +22,7 @@ namespace Library.Entities
     /// <summary>
     /// Thời gian tạo
     /// </summary>
-    public DateTime? CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
     /// <summary>
     /// Người tạo
     /// </summary>
@@ -30,7 +30,7 @@ namespace Library.Entities
     /// <summary>
     /// Thời gian thay đổi
     /// </summary>
-    public DateTime? ModifiedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
     /// <summary>
     /// Người thay đổi
     /// </summary>

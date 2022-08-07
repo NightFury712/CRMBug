@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/app/shared/base-component';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Addition } from 'src/app/enumeration/addition.enum';
 import { Operator } from 'src/app/enumeration/operator.enum';
 import { NotificationService } from 'src/app/service/notification/notification.service';
@@ -62,9 +62,16 @@ export class BaseNotificationComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.configPaging.Filters[0].Value = this.projectID; 
-    this.configPaging.Filters[1].Value = this.userID;
-    this.getData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.projectID) {
+      this.configPaging.Filters[0].Value = changes.projectID.currentValue; 
+    }
+    if(changes.userID) {
+      this.configPaging.Filters[1].Value = changes.userID.currentValue; 
+    }
+    this.reloadData();
   }
 
   scollReachEnd() {
@@ -88,4 +95,8 @@ export class BaseNotificationComponent extends BaseComponent implements OnInit {
       })
   }
 
+  reloadData() {
+    this.data = [];
+    this.getData();
+  }
 }

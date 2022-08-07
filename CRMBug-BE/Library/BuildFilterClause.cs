@@ -19,26 +19,36 @@ namespace Library
       {
         foreach(var fieldFilter in filters)
         {
-          string tmpQuery = string.Empty;
-          switch(fieldFilter.Addition)
+          if (fieldFilter.Value != null && !string.IsNullOrEmpty(fieldFilter.Value.ToString()) && !string.IsNullOrEmpty(fieldFilter.FieldName))
           {
-            case Addition.And:
-              tmpQuery += " AND";
-              break;
-            case Addition.Or:
-              tmpQuery += " OR";
-              break;
+            string tmpQuery = string.Empty;
+            switch(fieldFilter.Addition)
+            {
+              case Addition.And:
+                tmpQuery += " AND";
+                break;
+              case Addition.Or:
+                tmpQuery += " OR";
+                break;
+            }
+            switch(fieldFilter.Operator)
+            {
+              case Operator.Equal:
+                tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} = '{fieldFilter.Value.ToString()}' ";
+                break;
+              case Operator.Like:
+                tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} LIKE N'%{fieldFilter.Value.ToString()}%' ";
+                break;
+              case Operator.Between:
+                //var fromDate = Utils.Deserialize<DateTime>(fieldFilter.Value1);
+                //var toDate = Utils.Deserialize<DateTime>(fieldFilter.Value2);
+                var fromDate = Convert.ToDateTime(fieldFilter.Value1.ToString());
+                var toDate = Convert.ToDateTime(fieldFilter.Value2.ToString());
+                tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} BETWEEN '{fromDate.ToString("yyyy-MM-dd HH:mm:ss")}' AND '{toDate.ToString("yyyy-MM-dd HH:mm:ss")}'";
+                break;
+            }
+            oWhere.Append(tmpQuery);
           }
-          switch(fieldFilter.Operator)
-          {
-            case Operator.Equal:
-              tmpQuery = $"{tmpQuery} {fieldFilter.FieldName} = '{fieldFilter.Value}' ";
-              break;
-            case Operator.Like:
-              tmpQuery = $"{tmpQuery} {fieldFilter.FieldName} LIKE N'%{fieldFilter.Value}%' ";
-              break;
-          }
-          oWhere.Append(tmpQuery);
         }
       }
       if(!string.IsNullOrEmpty(param.Formula) && formulas != null && formulas.Any())
@@ -50,10 +60,10 @@ namespace Library
           switch (fieldFilter.Operator)
           {
             case Operator.Equal:
-              tmpQuery = $"{fieldFilter.FieldName} = '{fieldFilter.Value}' ";
+              tmpQuery = $"T.{fieldFilter.FieldName} = '{fieldFilter.Value}' ";
               break;
             case Operator.Like:
-              tmpQuery = $"{fieldFilter.FieldName} LIKE N'%{fieldFilter.Value}%' ";
+              tmpQuery = $"T.{fieldFilter.FieldName} LIKE N'%{fieldFilter.Value}%' ";
               break;
           }
           formulaQuery.Add(tmpQuery);

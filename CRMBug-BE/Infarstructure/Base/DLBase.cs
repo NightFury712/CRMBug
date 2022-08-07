@@ -49,7 +49,7 @@ namespace Infarstructure.Base
       try
       {
         // Khởi tạo các commandText:
-        string query = $"select * from {_tableName}";
+        string query = $"select * from {_tableName} ";
         var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
         // Trả về dữ liệu:
         return entities;
@@ -59,21 +59,25 @@ namespace Infarstructure.Base
         return null;
       }
     }
-    public Dictionary<string, object> Grid(string oWhere, string columns, string limit)
+    public Dictionary<string, object> Grid(string oWhere, string columns, string limit, string join = "")
     {
       Dictionary<string, object> data = new Dictionary<string, object>();
       if(string.IsNullOrEmpty(columns))
       {
-        columns = "*";
+        columns = "T.*";
+      } else
+      {
+        var column = columns.Split(",");
+        columns = string.Join(",", column.Select(x => $"T.{x}"));
       }
       string order = "ORDER BY CreatedDate DESC";
-      string query = $"SELECT {columns} FROM {_tableName} WHERE {oWhere} {order} {limit} ;SELECT COUNT(*) AS TotalRecord FROM {_tableName} WHERE {oWhere};";
+      string query = $"SELECT {columns} FROM {_tableName} T {join} WHERE {oWhere} {order} {limit} ;SELECT COUNT(*) AS TotalRecord FROM {_tableName} T {join} WHERE {oWhere};";
       //var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
       using (var rd = _dbConnection.ExecuteReader(query, new { v_LayoutCode = _tableName }, commandType: CommandType.Text))
       {
         if(rd != null)
         {
-          data["Data"] = ExtensionMethod.ToListObject<T>(rd);
+          data["Result"] = rd.ToListObject<T>();
           if(rd.NextResult())
           {
             while(rd.Read())
@@ -130,12 +134,10 @@ namespace Infarstructure.Base
       return parameters;
     }
 
-    public int Delete(int entityID)
+    public bool Delete(long entityID)
     {
       string query = $"DELETE FROM {_tableName} WHERE ID = @ID";
-      _dbConnection.Open();
-      int rowAffects = _dbConnection.Execute(query, new { ID = entityID }, commandType: CommandType.Text);
-      return rowAffects;
+      return _dbConnection.Execute(query, new { ID = entityID }, commandType: CommandType.Text) > 0;
     }
 
     public Dictionary<string, object> GetDictionaryByLayoutCode()
@@ -148,10 +150,10 @@ namespace Infarstructure.Base
       {
         if(rd != null)
         {
-          listData.Add(ExtensionMethod.ToListDictionary(rd));
+          listData.Add(rd.ToListDictionary());
           while(rd.NextResult())
           {
-            listData.Add(ExtensionMethod.ToListDictionary(rd));
+            listData.Add(rd.ToListDictionary());
           }
         }
       }
@@ -161,18 +163,12 @@ namespace Infarstructure.Base
 
     public bool WriteLog(Notification notification)
     {
-      var parameter = new
-      {
-        Content = notification.Content,
-        Config = notification.Config,
-        ProjectID = notification.ProjectID,
-        FromUserID = notification.FromUserID,
-        ToUserID = notification.ToUserID,
-        LayoutCode = notification.LayoutCode,
-        CreatedBy = SessionData.FullName,
-        ModifiedBy = SessionData.FullName
-      };
-      return _dbConnection.Execute(notification.Query, parameter, commandType: CommandType.Text) > 0;
+      return _dbConnection.Execute(notification.Query, notification, commandType: CommandType.Text) > 0;
+    }
+
+    public bool InsertSchedule(Schedule schedule)
+    {
+      return _dbConnection.Execute(schedule.Query, schedule, commandType: CommandType.Text) > 0;
     }
 
     public T GetDataByID(long id)
@@ -193,6 +189,12 @@ namespace Infarstructure.Base
         return tableName.Name;
       }
       return "";
+    }
+
+    public string GenerateAutoNumber(string fieldName)
+    {
+      var query = string.Format(Constant.DLBase_GenerateAutoNumber, fieldName);
+      return _dbConnection.QueryFirstOrDefault<string>(query, commandType: CommandType.Text);
     }
 
     public T GetEntityByProperty(T entity, PropertyInfo property, string columns = "*")

@@ -28,6 +28,11 @@ export class ProjectSettingsComponent extends BaseComponent implements OnInit {
 
   fieldDisplay: Array<any> = [
     {
+      fieldName: "EmployeeCode",
+      displayText: "Employee Code",
+      typeControl: TypeControl.Textbox
+    },
+    {
       fieldName: "FullName",
       displayText: "Full Name",
       typeControl: TypeControl.Textbox

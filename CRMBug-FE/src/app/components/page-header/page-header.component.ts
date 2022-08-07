@@ -1,3 +1,4 @@
+import { PopupListProjectComponent } from './../popup/popup-list-project/popup-list-project.component';
 import { RecentlyViewedComponent } from './../recently-viewed/recently-viewed.component';
 import { SignalrService } from './../../service/signalr/signalr.service';
 import { takeUntil } from 'rxjs/operators';
@@ -64,7 +65,7 @@ export class PageHeaderComponent extends BaseComponent implements OnInit {
     let config = new ConfigDialog('500px', '450px');
 
     config.position = {
-      top: '60px',
+      top: '50px',
       left: '160px'
     }
     config.backdropClass = 'no-background'
@@ -81,7 +82,26 @@ export class PageHeaderComponent extends BaseComponent implements OnInit {
           })
           this.router.navigate([`/project/view-task/${resp.ProjectID}`])
         }
-        console.log(resp);
       })
+  }
+
+  openPopupListProject() {
+    let config = new ConfigDialog('450px');
+
+    config.position = {
+      top: '50px',
+      left: '100px'
+    }
+    config.backdropClass = 'no-background'
+    const dialogRef = this.dialog.open(PopupListProjectComponent, config);
+    // dialogRef.afterClosed()
+    //   .pipe(takeUntil(this._onDestroySub))
+    //   .subscribe(resp => {
+    //     if(resp) {
+    //       this.dataSV.project.next(resp)
+    //       this.router.navigate([`/project/view-task/${resp.ProjectID}`])
+    //     }
+    //     console.log(resp);
+    //   })
   }
 }

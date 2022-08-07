@@ -7,6 +7,8 @@ export abstract class BaseComponent implements OnDestroy {
 
   public _onDestroySub: Subject<void> = new Subject<void>();
 
+  isHaveData: boolean = true;
+
   constructor() {
     
   }

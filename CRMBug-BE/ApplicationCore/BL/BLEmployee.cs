@@ -24,9 +24,9 @@ namespace ApplicationCore.BL
       DLEmployee = dlEmployee;
     }
 
-    public IEnumerable<Employee> GetEmployeeNotInProject(long projectID)
+    public IEnumerable<Employee> GetEmployeeByProjectID(long projectID, bool isInProject)
     {
-      return DLEmployee.GetEmployeeNotInProject(projectID);
+      return DLEmployee.GetEmployeeByProjectID(projectID, isInProject);
     }
 
     protected override void BeforeSave(Employee entity)
@@ -36,6 +36,8 @@ namespace ApplicationCore.BL
       if (entity.EntityState == EntityState.Add)
       {
         entity.EmployeeID = (Guid.NewGuid()).ToString();
+        var employeeCode = this.DLEmployee.GenerateAutoNumber(nameof(Employee.EmployeeCode));
+        entity.EmployeeCode = employeeCode;
       }
       entity.FullName = $"{entity.FirstName} {entity.LastName}";
       base.BeforeSave(entity);

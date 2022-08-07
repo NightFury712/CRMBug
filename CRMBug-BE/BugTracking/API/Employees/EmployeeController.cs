@@ -25,12 +25,12 @@ namespace BugTracking.API.Employees
     #region API
     [HttpGet]
     [Authorize]
-    [Route("GetEmployeeNotInProject/{projectID}")]
-    public IActionResult GetEmployeeNotInProject(long projectID)
+    [Route("GetEmployeeByProjectID/{projectID}/{isInProject}")]
+    public IActionResult GetEmployeeNotInProject(long projectID, bool isInProject)
     {
       try
       {
-        var datas = BL.GetEmployeeNotInProject(projectID);
+        var datas = BL.GetEmployeeByProjectID(projectID, isInProject);
         if (datas != null && datas.Count() > 0)
         {
           _serviceResult.Data = datas;

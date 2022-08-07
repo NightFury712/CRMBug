@@ -14,7 +14,7 @@ export class RecentlyViewedComponent extends BaseComponent implements OnInit {
 
   tasks: Array<any> = [];
 
-  title: string = 'List task recently viewed'
+  title: string = 'List task recently viewed';
 
   constructor(
     private taskSV: TaskService,
@@ -34,10 +34,15 @@ export class RecentlyViewedComponent extends BaseComponent implements OnInit {
       this.taskSV.getDataRecentlyViewed(taskIDs)
         .pipe(takeUntil(this._onDestroySub))
         .subscribe((resp: AppServerResponse<any>) => {
-          if(resp?.Success) {
+          if(resp?.Success && resp.Data.length > 0) {
+            this.isHaveData = true;
             this.tasks = resp.Data;
+          } else {
+            this.isHaveData = false;
           }
         })
+    } else {
+      this.isHaveData = false;
     }
     
   }

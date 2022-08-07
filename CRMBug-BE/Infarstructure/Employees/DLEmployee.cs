@@ -22,10 +22,17 @@ namespace Infarstructure.Employees
     #endregion
 
     #region Methods
-    public IEnumerable<Employee> GetEmployeeNotInProject(long projectID)
+    public IEnumerable<Employee> GetEmployeeByProjectID(long projectID, bool isInProject)
     {
-      string sql = "SELECT e.ID,e.FullName,e.Email FROM employee e WHERE IsActived = true AND e.ID NOT IN ( SELECT epm.EmployeeID FROM employee_project_mapping epm WHERE epm.ProjectID = 4 );";
-      return _dbConnection.Query<Employee>(sql, new { ID = projectID }, commandType: CommandType.Text);
+      string sql = string.Empty;
+      if(isInProject)
+      {
+        sql = "SELECT e.*, r.RoleName AS RoleIDText FROM employee e JOIN employee_project_mapping epm ON e.ID = epm.EmployeeID JOIN role r ON r.ID = e.RoleID WHERE epm.ProjectID = @ProjectID";
+      } else
+      {
+        sql = $"SELECT e.ID,CONCAT(e.FullName, \' (\',e.EmployeeCode,\')\') AS FullName,e.Email FROM employee e WHERE IsActived = true AND e.ID NOT IN ( SELECT epm.EmployeeID FROM employee_project_mapping epm WHERE epm.ProjectID = @ProjectID );";
+      }
+      return _dbConnection.Query<Employee>(sql, new { ProjectID = projectID }, commandType: CommandType.Text);
     }
     #endregion
   }

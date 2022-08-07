@@ -57,11 +57,38 @@ namespace ApplicationCore.BL
           ProjectID = entity.ID,
           FromUserID = userID,
           ToUserID = userID,
-          Content = string.Format(Properties.Resources.WriteLog_Add, SessionData.FullName, $"project <b>{entity.ProjectName}</b>")
+          Content = string.Format(Properties.Resources.WriteLog_Add, SessionData.FullName, $"project \"{entity.ProjectName}\""),
+          EventName = "CREATE_TASK",
+          CreatedBy = SessionData.FullName,
+          ModifiedBy = SessionData.FullName
         };
         base.WriteLog(notification);
       }
       this.DLProject.InviteUser(entity.ID, userIDs);
+    }
+
+    protected override void AfterDeleteSuccess(long entityID)
+    {
+      base.AfterDeleteSuccess(entityID);
+
+      // Xóa những thành phần phụ thuộc dự án bị xóa
+      this.DLProject.DeleteDependance(entityID);
+    }
+
+    protected override string CustomJoinClause()
+    {
+      string join = " JOIN employee_project_mapping epm ON epm.ProjectID = T.ID";
+      return join;
+    }
+
+    protected override void CustomWhereClause(ref string oWhere, List<FilterField> filterFields)
+    {
+      base.CustomWhereClause(ref oWhere, filterFields);
+      var employeeID = filterFields.Where(x => x.FieldName == "EmployeeID")?.First()?.Value;
+      if(employeeID != null)
+      {
+        oWhere += $" AND epm.EmployeeID = {employeeID}";
+      }
     }
     #endregion
   }

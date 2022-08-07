@@ -42,6 +42,13 @@ namespace Infarstructure.Projects
         return false;
       }
     }
+
+    public bool DeleteDependance(long projectID)
+    {
+      string sql = "DELETE FROM task WHERE ProjectID = @ID;DELETE FROM employee_project_mapping WHERE ProjectID = @ID;DELETE FROM schedule WHERE ProjectID = @ID";
+
+      return _dbConnection.Execute(sql, new { ID = projectID }, commandType: CommandType.Text) > 0;
+    }
     #endregion
   }
 }

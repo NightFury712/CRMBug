@@ -58,38 +58,54 @@ namespace ApplicationCore.BL
         if (rowAffects >= 1)
         {
           serviceResult.Success = true;
-          serviceResult.Code = Code.Created;
-          serviceResult.Data = rowAffects;
+          if(entity.EntityState == EntityState.Add)
+          {
+            serviceResult.Code = Code.Created;
+          } else
+          {
+            serviceResult.Code = Code.Ok;
+          }
+          serviceResult.Data = entity;
           this.AfterSave(entity);
         }
         else
         {
           serviceResult.Code = Code.Exception;
-          serviceResult.Data = rowAffects;
+          serviceResult.Data = "Some error has occured when excute query!";
         }
       }
       else
       {
         serviceResult.Code = Code.NotValid;
-        serviceResult.Data = 0;
+        serviceResult.Data = false;
       }
       return serviceResult;
     }
-    public ServiceResult Delete(int entityID)
+    public ServiceResult Delete(long entityID)
     {
-      var rowAffects = DLBase.Delete(entityID);
-      if (rowAffects >= 1)
+      var success = DLBase.Delete(entityID);
+      if (success)
       {
-        serviceResult.Code = Code.Created;
-        serviceResult.Messenger = "Created Success";
-        serviceResult.Data = rowAffects;
+        this.AfterDeleteSuccess(entityID);
+
+        serviceResult.Code = Code.Ok;
+        serviceResult.Messenger = "Delete Success!";
+        serviceResult.Data = success;
+        serviceResult.Success = success;
       }
       else
       {
         serviceResult.Code = Code.Exception;
-        serviceResult.Data = rowAffects;
+        serviceResult.Messenger = "Some error has occurred!";
+        serviceResult.Data = success;
+        serviceResult.Success = success;
       }
       return serviceResult;
+    }
+
+    protected virtual void AfterDeleteSuccess(long entityID)
+    {
+      // TODO
     }
 
     public Dictionary<string, object> GetDictionaryByLayoutCode()
@@ -97,9 +113,21 @@ namespace ApplicationCore.BL
       return DLBase.GetDictionaryByLayoutCode();
     }
 
-    public Dictionary<string, object> Grid(string oWhere, string columns, string limit)
+    public Dictionary<string, object> Grid(string oWhere, string columns, string limit, List<FilterField> filterFields)
     {
-      return this.DLBase.Grid(oWhere, columns, limit);
+      this.CustomWhereClause(ref oWhere, filterFields);
+      string join = this.CustomJoinClause();
+      return this.DLBase.Grid(oWhere, columns, limit, join);
+    }
+
+    protected virtual void CustomWhereClause(ref string oWhere, List<FilterField> filterFields)
+    {
+      // TODO
+    }
+
+    protected virtual string CustomJoinClause()
+    {
+      return string.Empty;
     }
 
     public T GetDataByID(long id)
@@ -149,7 +177,7 @@ namespace ApplicationCore.BL
       return isValid;
     }
 
-    public bool ValidateCustom(BaseEntity entity)
+    public bool ValidateCustom(T entity)
     {
       return true;
     }
@@ -162,7 +190,7 @@ namespace ApplicationCore.BL
 
     protected virtual void AfterSave(T entity)
     {
-
+      // TODO
     }
 
     public bool WriteLog(Notification notification)
@@ -171,6 +199,14 @@ namespace ApplicationCore.BL
       var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name)?.ToList();
       notification.Query = this.CreateAddQuery(propertyNames, "notification");
       return this.DLBase.WriteLog(notification);
+    }
+
+    public bool InsertSchedule(Schedule schedule)
+    {
+      var properties = schedule.GetType().GetProperties();
+      var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name)?.ToList();
+      schedule.Query = this.CreateAddQuery(propertyNames, "schedule");
+      return this.DLBase.InsertSchedule(schedule);
     }
 
     public string CreateQuery(T entity)

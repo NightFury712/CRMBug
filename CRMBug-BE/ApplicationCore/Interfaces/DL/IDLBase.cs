@@ -14,7 +14,7 @@ namespace ApplicationCore.Interfaces.DL
 
     int Save(T entity);
 
-    int Delete(int entityID);
+    bool Delete(long entityID);
 
     Dictionary<string, object> GetDictionaryByLayoutCode();
 
@@ -22,10 +22,14 @@ namespace ApplicationCore.Interfaces.DL
 
     string GetTableName<BEntity>();
 
-    Dictionary<string, object> Grid(string oWhere, string columns, string limit);
+    Dictionary<string, object> Grid(string oWhere, string columns, string limit, string join = "");
 
     T GetDataByID(long id);
 
     bool WriteLog(Notification notification);
+
+    bool InsertSchedule(Schedule schedule);
+
+    string GenerateAutoNumber(string fieldName);
   }
 }

@@ -10,5 +10,7 @@ namespace ApplicationCore.Interfaces.DL
   public interface IDLProject : IDLBase<Project>
   {
     bool InviteUser(long projectID, List<long> userIDs);
+
+    bool DeleteDependance(long projectID);
   }
 }

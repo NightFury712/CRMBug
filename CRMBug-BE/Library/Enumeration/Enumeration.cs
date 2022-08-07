@@ -66,31 +66,11 @@ namespace Library.Enumeration
       Exception = 500,
     }
 
-    /// <summary>
-    /// Loại vấn đề
-    /// </summary>
-    public enum IssueType
-    {
-      Task = 0,
-      Bug = 1,
-      Request = 2,
-      Orther = 3
-    }
-
     public enum Priority
     {
-      Low = 0,
-      Normal = 1,
-      High = 2
-    }
-
-    public enum IssueStatus
-    {
-      New = 0,
-      Approved = 1,
-      Commited = 2,
-      Done = 3,
-      Removed = 4,
+      Low = 1,
+      Normal = 2,
+      High = 3
     }
 
     public enum RoleEmployee
@@ -103,13 +83,21 @@ namespace Library.Enumeration
     public enum Operator
     {
       Equal = 1,
-      Like = 2
+      Like = 2,
+      Between = 3,
     }
 
     public enum Addition
     {
       And = 1,
-      Or = 2
+      Or = 2,
+    }
+
+    public enum TaskStatus
+    {
+      Pending = 1,
+      Completed = 2,
+      CompletedLate = 3,
     }
   }
 }

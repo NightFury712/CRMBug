@@ -68,18 +68,13 @@ namespace BugTracking.API.Base
       try
       {
         _serviceResult = _baseService.Save(entity);
-        if (_serviceResult.Code == Code.Created && (int)_serviceResult.Data > 0)
+        if (_serviceResult.Code == Code.Created)
         {
           return Created("Create successfully! ", _serviceResult);
         }
-        else if (_serviceResult.Code == Code.NotValid)
+        else 
         {
           return Ok(_serviceResult);
-        }
-        else
-        {
-          _serviceResult.Code = Code.Exception;
-          return StatusCode(500, _serviceResult);
         }
       }
       catch (Exception ex)
@@ -90,7 +85,7 @@ namespace BugTracking.API.Base
 
     [HttpDelete("{entityID}")]
     [Authorize]
-    public IActionResult Delete(int entityID)
+    public IActionResult Delete(long entityID)
     {
       try
       {
@@ -133,10 +128,14 @@ namespace BugTracking.API.Base
       {
         var oWhere = BuildFilterClause.BuildFilter(paramGrid);
         var columns = Utils.Base64Decode(paramGrid.Columns);
-        var limit = $" LIMIT {paramGrid.PageIndex},{paramGrid.PageSize}";
+        string limit = string.Empty;
+        if(paramGrid.PageSize != 0)
+        {
+          limit = $" LIMIT {paramGrid.PageIndex},{paramGrid.PageSize}";
+        }
         _serviceResult.Success = true;
         _serviceResult.Code = Code.Ok;
-        _serviceResult.Data = _baseService.Grid(oWhere, columns, limit);
+        _serviceResult.Data = _baseService.Grid(oWhere, columns, limit, paramGrid.Filters);
 
         return Ok(_serviceResult);
         

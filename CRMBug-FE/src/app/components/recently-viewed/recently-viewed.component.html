@@ -7,7 +7,10 @@
       <i class="fa-solid fa-x" (click)="close()"></i>
     </div>
   </div>
-  <div class="list-task">
+  <div 
+    class="list-task" 
+    *ngIf="isHaveData"
+  >
     <div 
       class="task-container bt-flex"
       *ngFor="let item of tasks"
@@ -51,4 +54,9 @@
       </div>
     </div>
   </div>
+  <no-data 
+    *ngIf="!isHaveData"
+    [height]="'386px'"
+  >
+  </no-data>
 </div>

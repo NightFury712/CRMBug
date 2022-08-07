@@ -47,6 +47,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { RecentlyViewedComponent } from './recently-viewed/recently-viewed.component';
 import { NoDataComponent } from '../base/no-data/no-data.component';
 import { BaseProjectComponent } from '../base/base-project/base-project.component';
+import { PopupListProjectComponent } from './popup/popup-list-project/popup-list-project.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -77,7 +78,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		DaterangeComponent,
   	RecentlyViewedComponent,
 		NoDataComponent,
-		BaseProjectComponent
+		BaseProjectComponent,
+  	PopupListProjectComponent
 	],
 	imports: [
 		BrowserModule,

@@ -9,7 +9,7 @@ namespace Library
 {
   public static class ExtensionMethod
   {
-    public static List<Dictionary<string, object>> ToListDictionary(IDataReader dataReader)
+    public static List<Dictionary<string, object>> ToListDictionary(this IDataReader dataReader)
     {
       List<Dictionary<string, object>> listData = new List<Dictionary<string, object>>();
       while (dataReader.Read())
@@ -27,7 +27,7 @@ namespace Library
       return listData;
     }
 
-    public static List<T> ToListObject<T>(IDataReader dataReader)
+    public static List<T> ToListObject<T>(this IDataReader dataReader)
     {
       List<T> listData = new List<T>();
       var type = typeof(T);
@@ -48,6 +48,15 @@ namespace Library
         listData.Add(entity);
       }
       return listData;
+    }
+
+    public static bool ValueIsNotNull(this Dictionary<string, object> dicData, string key)
+    {
+      if(dicData.ContainsKey(key) && dicData[key] != null)
+      {
+        return true;
+      }
+      return false;
     }
   }
 }

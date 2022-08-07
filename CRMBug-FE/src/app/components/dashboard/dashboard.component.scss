@@ -82,8 +82,8 @@
             margin-left: 12px;
             border-radius: 50%;
             border: 1px solid $border-color;
-            width: 36px;
-            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
             background-color: $color-white;
             transition: 0.22s;
             cursor: pointer;
