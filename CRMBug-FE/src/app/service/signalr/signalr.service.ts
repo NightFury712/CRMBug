@@ -50,9 +50,7 @@ export class SignalrService {
   handleNotifyResponse(data: any) {
     switch(data.EventName) {
       case "REMIND_WORK":
-        const now = new Date();
-        const minuteLeft = new Date(data.DueDate).getMinutes() - now.getMinutes();
-        const msg = `The task ${data.TaskCode} assigned to you is due in ${minuteLeft} minutes!`
+        const msg = `The task ${data.TaskCode} assigned to you is due in ${data.MinuteLeft ?? 10} minutes!`
         this.toastSV.showWarning(msg, "Dealine task", {
           timeOut: 8000,
           progressBar: true,

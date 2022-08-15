@@ -47,6 +47,10 @@ namespace Library
                 tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} BETWEEN '{fromDate.ToString("yyyy-MM-dd HH:mm:ss")}' AND '{toDate.ToString("yyyy-MM-dd HH:mm:ss")}'";
                 break;
             }
+            //if(fieldFilter.IsAllowEmpty)
+            //{
+            //  tmpQuery = $"{tmpQuery} OR T.{fieldFilter.FieldName} IS NULL";
+            //}
             oWhere.Append(tmpQuery);
           }
         }

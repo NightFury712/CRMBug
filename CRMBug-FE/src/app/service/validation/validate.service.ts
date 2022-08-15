@@ -1,11 +1,33 @@
+import { Utils } from './../../../shared/Utils';
+import { takeUntil } from 'rxjs/operators';
+import { DataService } from 'src/app/service/data/data.service';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Permission } from 'src/app/enumeration/permission.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidateService {
+  public _onDestroySub: Subject<void> = new Subject<void>();
 
-  constructor() { }
+  user: any = {};
+  roles: any = [];
+
+  constructor(
+    private dataSV: DataService
+  ) {
+    this.dataSV.user
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((user) => {
+        this.user = user;
+      })
+    this.dataSV.roles
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((roles) => {
+        this.roles = roles;
+      })
+  }
 
   validateRequired(data: string): boolean {
     if(!data) {
@@ -38,5 +60,21 @@ export class ValidateService {
       default: 
         return true;
     }
+  }
+
+  hasPermission(layoutCode: string, permission: number): boolean {
+    const role = this.roles.find((x : any) => x.ID == this.user.RoleID && x.LayoutCode == layoutCode);
+    if(!role) {
+      return false;
+    }
+    const havePermission = Number(role.Permission) & permission;
+    if(havePermission == 0){
+      return false;
+    }
+    return true;
+  }
+
+  ngOnDestroy(): void {
+    Utils.unSubscribe(this._onDestroySub);
   }
 }

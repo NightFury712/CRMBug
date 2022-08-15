@@ -40,7 +40,7 @@ export class BaseService {
   }
 
   saveData(data: any):  Observable<any> {
-    return this.http.post<AppServerResponse<any>>(this.controller,data , {headers: this.headers});
+    return this.http.post<AppServerResponse<any>>(this.controller, data , {headers: this.headers});
   }
 
   getDictionary(): Observable<any> {

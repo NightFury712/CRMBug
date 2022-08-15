@@ -75,9 +75,9 @@ namespace Library.Enumeration
 
     public enum RoleEmployee
     {
-      Guest = 1,
+      Admin = 1,
       Member = 2,
-      Admin = 3,
+      Guest = 3,
     }
 
     public enum Operator

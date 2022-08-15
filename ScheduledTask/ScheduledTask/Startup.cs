@@ -100,7 +100,7 @@ namespace ScheduledTask
 
       services.AddSingleton<TaskJob>();
       List<Library.Entities.JobData> jobDatas = new List<Library.Entities.JobData>();
-      jobDatas.Add(new Library.Entities.JobData(Guid.NewGuid(), typeof(TaskJob), "Task job", "0/10 0/1 * 1/1 * ?")); // Mỗi 30s
+      jobDatas.Add(new Library.Entities.JobData(Guid.NewGuid(), typeof(TaskJob), "Task job", "0/20 0/1 * 1/1 * ?")); // Mỗi 20s
 
       services.AddSingleton(jobDatas);
     }

@@ -12,7 +12,7 @@ namespace ApplicationCore.Interfaces.DL
   {
     IEnumerable<T> GetEntities();
 
-    int Save(T entity);
+    long Save(T entity);
 
     bool Delete(long entityID);
 
@@ -22,7 +22,7 @@ namespace ApplicationCore.Interfaces.DL
 
     string GetTableName<BEntity>();
 
-    Dictionary<string, object> Grid(string oWhere, string columns, string limit, string join = "");
+    Dictionary<string, object> Grid(string oWhere, string columns, string limit, string join = "", string customColumns = "");
 
     T GetDataByID(long id);
 

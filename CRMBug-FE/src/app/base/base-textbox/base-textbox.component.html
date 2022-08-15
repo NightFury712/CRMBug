@@ -24,6 +24,7 @@
         (input)="onInput()"
         [required]="required"
         [maxlength]="maxLength"
+        (keyup.enter)="search()"
       />
     </div>
   </ng-container>

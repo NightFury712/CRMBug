@@ -40,7 +40,14 @@ namespace Library
     {
       get
       {
-        return httpContext.User.FindFirst("FullName")?.Value;
+        string name = "admin";
+        var fullName = httpContext.User.FindFirst("FullName")?.Value;
+        var employeeCode = httpContext.User.FindFirst("EmployeeCode")?.Value;
+        if(fullName != null && employeeCode != null)
+        {
+          name = $"{fullName} ({employeeCode})";
+        }
+        return name;
       }
     }
     public static string Email

@@ -1,3 +1,7 @@
+import { ValidateService } from './../../service/validation/validate.service';
+import { PermissionMessage } from './../../constants/constant.enum';
+import { ToastService } from './../../service/toast/toast.service';
+import { Permission } from './../../enumeration/permission.enum';
 import { BaseComponent } from 'src/app/shared/base-component';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
@@ -46,7 +50,7 @@ export class BaseProjectComponent extends BaseComponent implements OnInit {
     ],
     PageIndex: 0,
     Formula: '({0} OR {1})',
-    PageSize: 20,
+    PageSize: 0,
     Columns: btoa(
       'ID,ProjectName, ProjectCode,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
     ),
@@ -57,25 +61,33 @@ export class BaseProjectComponent extends BaseComponent implements OnInit {
 
   @Output()
   openProjectEvent = new EventEmitter();
-  
+
   constructor(
     private dialog: MatDialog,
     private projectSV: ProjectService,
     private router: Router,
     private dataSV: DataService,
+    private toastSV: ToastService,
+    private validateSV: ValidateService
   ) { 
     super();
   }
 
   ngOnInit(): void {
+    
+    this.initData();
+    this.getDatas();
+  }
+
+  initData() {
     this.dataSV.user
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((user) => {
+        console.log(user);
         if(user) {
-          this.configPaging.Filters[0].Value = user.id;
+          this.configPaging.Filters[0].Value = user.ID;
         }
-      })
-    this.getDatas();
+      });
   }
 
   getDatas() {
@@ -95,7 +107,6 @@ export class BaseProjectComponent extends BaseComponent implements OnInit {
     this.openProjectEvent.emit();
     this.router.navigate([`/project/home/${project.ID}`]);
     this.dataSV.project.next(project);
-    this
   }
 
   openProjectSettings(project: any) {
@@ -113,6 +124,10 @@ export class BaseProjectComponent extends BaseComponent implements OnInit {
   }
 
   deleteProject(project: any) {
+    if(!this.validateSV.hasPermission("Project", Permission.Delete)) {
+      this.toastSV.showWarning(PermissionMessage.DeleteProject);
+      return;
+    }
     const config = new ConfigDialog('600px');
     config.data = {
       title: "Delete project",

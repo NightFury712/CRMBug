@@ -17,9 +17,9 @@ namespace Library.Entities
     [TableColumn]
     public long ProjectID { get; set; }
     [TableColumn]
-    public long FromUserID { get; set; }
+    public long? FromUserID { get; set; }
     [TableColumn]
-    public long ToUserID { get; set; }
+    public long? ToUserID { get; set; }
     [TableColumn]
     public string LayoutCode { get; set; }
     [TableColumn]

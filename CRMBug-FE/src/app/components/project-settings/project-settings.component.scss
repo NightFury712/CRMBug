@@ -3,6 +3,58 @@
 @import "../../../font.scss";
 @import "../../../icon.scss";
 
+
+::ng-deep {
+  .cdk-overlay-container {
+    .cdk-overlay-pane {
+      .mat-menu-panel {
+        background-color: $color-white;
+        .mat-menu-content {
+          .btn-secondary {
+            cursor: pointer;
+            transition: 0.22s;
+            .text {
+              color: $color-black;
+              margin-left: 4px;
+            }
+            .icon {
+              color: $color-black;
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            &:hover {
+              background-color: $color-grey-05;
+            }
+          }
+          .btn-delete {
+            cursor: pointer;
+            transition: 0.22s;
+            .text {
+              color: $status-color-4;
+              margin-left: 4px;
+            }
+            .icon {
+              color: $status-color-4;
+              width: 24px;
+              height: 24px;
+              font-size: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            &:hover {
+              background-color: $color-grey-05;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 :host {
   .project-settings {
     .action {
@@ -101,13 +153,48 @@
               border-bottom: 1px solid $fds-gray-30;
               padding: 4px 12px;
               min-height: 50px;
-              height: 32px;
+              height: 40px;
             }
             td {
               cursor: pointer;
             }
             tr:nth-child(even) {
               background-color: $fds-gray-05;
+            }
+            tbody {
+              tr {
+                position: relative;
+                .action-table {
+                  position: absolute;
+                  right: 12px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  cursor: pointer;
+                  .more {
+                    display: none;
+                    background-color: $color-white;
+                    width: 30px;
+                    height: 24px;
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 0 10px $fds-gray-25;
+                  }
+                  &:hover {
+                    .more {
+                      background-color: $fds-gray-05;
+                    }
+                  }
+                }
+                &:hover {
+                  background-color: $dataviz-primary-2 !important;
+                  .action-table { 
+                    .more {
+                      display: flex;
+                    }
+                  }
+                }
+              }
             }
           }
         }

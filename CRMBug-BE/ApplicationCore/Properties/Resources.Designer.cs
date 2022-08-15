@@ -79,7 +79,7 @@ namespace ApplicationCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} added a new {1}.
+        ///   Looks up a localized string similar to {0} added a new  {1}.
         /// </summary>
         internal static string WriteLog_Add {
             get {
@@ -88,7 +88,7 @@ namespace ApplicationCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} invite {1} to ptoject {2}.
+        ///   Looks up a localized string similar to &lt;span class=\&quot;bold\&quot;&gt;{0}&lt;\span&gt; invite &lt;span class=\&quot;bold\&quot;&gt;{1}&lt;/span&gt; to ptoject &lt;span class=\&quot;bold\&quot;&gt;{2}&lt;/span&gt;.
         /// </summary>
         internal static string WriteLog_InviteMember {
             get {

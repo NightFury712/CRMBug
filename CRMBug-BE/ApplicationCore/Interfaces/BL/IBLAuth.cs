@@ -11,5 +11,7 @@ namespace ApplicationCore.Interfaces.BL
   public interface IBLAuth : IBLBase<Employee>
   {
     ServiceResult Authenticate(Employee user);
+
+    ServiceResult SaveData(Employee user);
   }
 }

@@ -54,6 +54,9 @@ namespace Library.Entities
     public string PriorityColor { get; set; }
     [TableColumn]
     public string StatusColor { get; set; }
+
+    [TableColumn]
+    public DateTime? CompletedDate { get; set; }
     #endregion
   }
 }

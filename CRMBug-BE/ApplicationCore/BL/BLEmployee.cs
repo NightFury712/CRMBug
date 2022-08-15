@@ -23,18 +23,26 @@ namespace ApplicationCore.BL
     {
       DLEmployee = dlEmployee;
     }
+    #endregion
 
+    #region Methods
     public IEnumerable<Employee> GetEmployeeByProjectID(long projectID, bool isInProject)
     {
       return DLEmployee.GetEmployeeByProjectID(projectID, isInProject);
     }
+    public List<Dictionary<string, object>> GetAllRole()
+    {
+      return this.DLEmployee.GetAllRole();
+    }
+    #endregion
 
+    #region Overrides
     protected override void BeforeSave(Employee entity)
     {
-      var passwordDecode = Utils.Base64Decode(entity.Password);
-      entity.Password = Hasher.BcryptHash(passwordDecode);
       if (entity.EntityState == EntityState.Add)
       {
+        var passwordDecode = Utils.Base64Decode(entity.Password);
+        entity.Password = Hasher.BcryptHash(passwordDecode);
         entity.EmployeeID = (Guid.NewGuid()).ToString();
         var employeeCode = this.DLEmployee.GenerateAutoNumber(nameof(Employee.EmployeeCode));
         entity.EmployeeCode = employeeCode;
@@ -48,7 +56,6 @@ namespace ApplicationCore.BL
       propertyNames.Add("PassWord");
       return base.CreateAddQuery(propertyNames, tableName);
     }
-
     #endregion
   }
 }

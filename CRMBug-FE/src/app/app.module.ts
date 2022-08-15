@@ -26,6 +26,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { QRCodeModule } from 'angularx-qrcode';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -56,6 +57,7 @@ FullCalendarModule.registerPlugins([
     MatMenuModule,
     NgxSliderModule,
     HighchartsChartModule,
+    QRCodeModule,
     NgxDaterangepickerMd.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,

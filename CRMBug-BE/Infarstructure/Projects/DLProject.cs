@@ -23,7 +23,7 @@ namespace Infarstructure.Projects
     #endregion
 
     #region Methods
-    public bool InviteUser(long projectID, List<long> userIDs)
+    public bool InviteMember(long projectID, List<long> userIDs)
     {
       if (userIDs.Any())
       {
@@ -38,6 +38,19 @@ namespace Infarstructure.Projects
         query = $"{query} {string.Join(",", inserts.Select(x => x))};";
         return _dbConnection.Execute(query, commandType: CommandType.Text) > 0;
       } else
+      {
+        return false;
+      }
+    }
+    public bool RemoveMember(long projectID, List<long> userIDs)
+    {
+      if (userIDs.Any())
+      {
+        string query = $"DELETE FROM employee_project_mapping WHERE ProjectID = @ProjectID AND EmployeeID IN ({string.Join(",", userIDs)})";
+        
+        return _dbConnection.Execute(query, new { ProjectID = projectID }, commandType: CommandType.Text) > 0;
+      }
+      else
       {
         return false;
       }

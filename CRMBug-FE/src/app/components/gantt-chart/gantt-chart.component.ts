@@ -1,3 +1,4 @@
+import { ProjectService } from './../../service/project/project.service';
 import { DataService } from 'src/app/service/data/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { AppServerResponse } from './../../service/base/base.service';
@@ -94,7 +95,7 @@ export class GanttChartComponent extends BaseComponent implements OnInit {
     Formula: '',
     PageSize: 0,
     Columns: btoa(
-      'ID,TaskCode,Subject,CompletedProgress,Description,AssignedUserID,AssignedUserIDText,DueDate,PriorityColor,StatusColor,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
+      'ID,TaskCode,Subject,CompletedProgress,Description,AssignedUserID,AssignedUserIDText,DueDate,StatusID,StatusIDText,PriorityID,PriorityIDText,PriorityColor,StatusColor,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
     ),
   };
 
@@ -119,7 +120,8 @@ export class GanttChartComponent extends BaseComponent implements OnInit {
     private taskSV: TaskService,
     private activeRoute: ActivatedRoute,
     private dataSV: DataService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private projectSV: ProjectService
   ) {
     super();
   }
@@ -131,7 +133,17 @@ export class GanttChartComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((project) => {
         if(project) {
+          this.projectID = project.ID
           this.projectName = `${project.ProjectName} (${project.ProjectCode})`
+        } else {
+          var projectID = this.activeRoute.snapshot.params.projectID;
+          this.projectSV.getDataByID(projectID)
+            .pipe(takeUntil(this._onDestroySub))
+            .subscribe((resp: AppServerResponse<any>) => {
+              if(resp?.Success && resp?.Data) {
+                this.dataSV.project.next(resp.Data);
+              }
+            })
         }
       })
     this.getData();
@@ -182,9 +194,9 @@ export class GanttChartComponent extends BaseComponent implements OnInit {
                 })
               }
             ]
+            console.log(resp.Data.Result);
             break;
         }
-        
         this.initConfig(series);
       } else {
         this.isHaveData = false;

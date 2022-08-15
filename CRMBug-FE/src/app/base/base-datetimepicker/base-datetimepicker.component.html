@@ -4,7 +4,7 @@
   >
     {{label}}
   </div>  
-  <mat-form-field [ngStyle]="{'width': width}" (click)="picker.open()">
+  <mat-form-field [ngStyle]="{'width': width}" (click)="picker.open()" [ngClass]="{'color-disabled': disabled}">
     <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [formControl]="dateControl"
       [min]="minDate" [max]="maxDate" [disabled]="disabled" [(ngModel)]="value">
     <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>

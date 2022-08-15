@@ -1,3 +1,4 @@
+import { ProjectService } from './../../service/project/project.service';
 import { DataService } from './../../service/data/data.service';
 import { TaskService } from 'src/app/service/task/task.service';
 import { ActivatedRoute } from '@angular/router';
@@ -5,17 +6,45 @@ import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from 'src/app/shared/base-component';
 import { NotificationService } from './../../service/notification/notification.service';
 import { Component, OnInit } from '@angular/core';
+import { AppServerResponse } from 'src/app/service/base/base.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent extends BaseComponent implements OnInit {
+
+  colorEnum: any = {
+    Completed: "#01B075",
+    CompletedLate: "#fa383e",
+    Pending: "#bbbbbb",
+    Low: "#bbbbbb",
+    Normal:"#01B075",
+    High: "#fa383e",
+  };
 
   notifications: Array<any> = [];
 
   projectID: string = '';
+
+  titleStatus: string = 'Summary status data for task';
+
+  seriesStatus: Array<any> = [{
+    type: 'pie',
+    name: 'Status',
+    data: []
+  }]
+
+
+  titlePriority: string = 'Summary priority data for task';
+
+  seriesPriority: Array<any> = [{
+    type: 'pie',
+    name: 'Priority',
+    data: []
+  }]
 
   summaryData = {
     Completed: 0,
@@ -30,10 +59,15 @@ export class HomeComponent extends BaseComponent implements OnInit {
     Pending: 0,
   }
 
+  totalRecord: number = 0;
+
+  userID: number = 0;
+
   constructor(
     private activeRoute: ActivatedRoute,
     private taskSV: TaskService,
-    private dataSV: DataService
+    private dataSV: DataService,
+    private projectSV: ProjectService
   ) { 
     super();
   }
@@ -44,6 +78,22 @@ export class HomeComponent extends BaseComponent implements OnInit {
         if(project) {
           this.projectID = project.ID
           this.getDatas()
+        } else {
+          var projectID = this.activeRoute.snapshot.params.projectID;
+          this.projectSV.getDataByID(projectID)
+            .pipe(takeUntil(this._onDestroySub))
+            .subscribe((resp: AppServerResponse<any>) => {
+              if(resp?.Success && resp?.Data) {
+                this.dataSV.project.next(resp.Data);
+              }
+            })
+        }
+      })
+    this.dataSV.user
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((user) => {
+        if(user) {
+          this.userID = Number(user.ID);
         }
       })
   }
@@ -52,17 +102,39 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.taskSV.getSummaryData(Number(this.projectID))
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((resp) => {
-        if(resp?.Success) {
-          this.summaryData = resp.Data[0];
-          this.calculateSummaryStyle();
+        console.log(resp);
+        if(resp?.Success && resp?.Data) {
+          this.seriesStatus = [{
+            type: 'pie',
+            name: 'Status',
+            data: Object.keys(resp.Data.Status).map(x => {
+              if(x == "CompletedLate") {
+                return {
+                  name: 'Completed late', 
+                  y: Number(resp.Data.Status[x]),
+                  color: this.colorEnum[x]
+                };
+              }
+              return {
+                name: x, 
+                y: Number(resp.Data.Status[x]),
+                color: this.colorEnum[x]
+              };
+            })
+          }]
+          this.seriesPriority = [{
+            type: 'pie',
+            name: 'Priority',
+            data: Object.keys(resp.Data.Priority).map(x => {
+              return {
+                name: x, 
+                y: Number(resp.Data.Priority[x]),
+                color: this.colorEnum[x]
+              };
+            })
+          }];
+          this.totalRecord = resp.Data.TotalRecord
         }
       })
-  }
-
-  calculateSummaryStyle() {
-    const totalRecord = this.summaryData.TotalRecord;
-    this.summaryStyle.Completed += this.summaryData.Completed / totalRecord * 100 ;
-    this.summaryStyle.CompletedLate += this.summaryData.CompletedLate / totalRecord * 100 ;
-    this.summaryStyle.Pending += this.summaryData.Pending / totalRecord * 100 ;
   }
 }

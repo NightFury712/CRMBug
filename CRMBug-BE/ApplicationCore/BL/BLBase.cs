@@ -53,19 +53,24 @@ namespace ApplicationCore.BL
       }
       if (isValid)
       {
+        // Xử lý dữ liệu trước khi lưu
         this.BeforeSave(entity);
+        // Lưu dữ liệu
         var rowAffects = DLBase.Save(entity);
-        if (rowAffects >= 1)
+        if (rowAffects > 0)
         {
           serviceResult.Success = true;
           if(entity.EntityState == EntityState.Add)
           {
+            var propInfo = entity.GetType().GetProperty("ID");
+            propInfo.SetValue(entity, rowAffects);
             serviceResult.Code = Code.Created;
           } else
           {
             serviceResult.Code = Code.Ok;
           }
           serviceResult.Data = entity;
+          // Xử lý dữ liệu sau khi lưu thành công
           this.AfterSave(entity);
         }
         else
@@ -81,6 +86,8 @@ namespace ApplicationCore.BL
       }
       return serviceResult;
     }
+
+
     public ServiceResult Delete(long entityID)
     {
       var success = DLBase.Delete(entityID);
@@ -90,14 +97,14 @@ namespace ApplicationCore.BL
 
         serviceResult.Code = Code.Ok;
         serviceResult.Messenger = "Delete Success!";
-        serviceResult.Data = success;
+        serviceResult.Data = entityID;
         serviceResult.Success = success;
       }
       else
       {
         serviceResult.Code = Code.Exception;
         serviceResult.Messenger = "Some error has occurred!";
-        serviceResult.Data = success;
+        serviceResult.Data = entityID;
         serviceResult.Success = success;
       }
       return serviceResult;
@@ -117,7 +124,8 @@ namespace ApplicationCore.BL
     {
       this.CustomWhereClause(ref oWhere, filterFields);
       string join = this.CustomJoinClause();
-      return this.DLBase.Grid(oWhere, columns, limit, join);
+      string customColumns = this.CustomColumns();
+      return this.DLBase.Grid(oWhere, columns, limit, join, customColumns);
     }
 
     protected virtual void CustomWhereClause(ref string oWhere, List<FilterField> filterFields)
@@ -126,6 +134,11 @@ namespace ApplicationCore.BL
     }
 
     protected virtual string CustomJoinClause()
+    {
+      return string.Empty;
+    }
+
+    protected virtual string CustomColumns()
     {
       return string.Empty;
     }
@@ -161,7 +174,7 @@ namespace ApplicationCore.BL
             isValid = false;
           }
         }
-        if(entity.EntityState == EntityState.Add && prop.IsDefined(typeof(Unique), false))
+        if(prop.IsDefined(typeof(Unique), false))
         {
           // Check duy nhất:
           var data = this.DLBase.GetEntityByProperty(entity, prop, "ID");
@@ -185,7 +198,9 @@ namespace ApplicationCore.BL
     protected virtual void BeforeSave(T entity)
     {
       // Build câu truy vấn
-      entity.Query = this.CreateQuery(entity);
+      //entity.Query = this.CreateQuery(entity);
+
+      entity.SetQuery(this.CreateQuery(entity));
     }
 
     protected virtual void AfterSave(T entity)
@@ -197,7 +212,8 @@ namespace ApplicationCore.BL
     {
       var properties = notification.GetType().GetProperties();
       var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name)?.ToList();
-      notification.Query = this.CreateAddQuery(propertyNames, "notification");
+      //notification.Query = this.CreateAddQuery(propertyNames, "notification");
+      notification.SetQuery(this.CreateAddQuery(propertyNames, "notification"));
       return this.DLBase.WriteLog(notification);
     }
 
@@ -205,7 +221,8 @@ namespace ApplicationCore.BL
     {
       var properties = schedule.GetType().GetProperties();
       var propertyNames = properties.Where(item => item.IsDefined(typeof(TableColumn), false)).Select(item => item.Name)?.ToList();
-      schedule.Query = this.CreateAddQuery(propertyNames, "schedule");
+      //schedule.Query = this.CreateAddQuery(propertyNames, "schedule");
+      schedule.SetQuery(this.CreateAddQuery(propertyNames, "schedule"));
       return this.DLBase.InsertSchedule(schedule);
     }
 
@@ -239,7 +256,7 @@ namespace ApplicationCore.BL
       value.Append(string.Join(",", propertyNames.Select(item => $"@{item}")));
       field.Append(", CreatedDate, CreatedBy, ModifiedDate, ModifiedBy");
       value.Append($", NOW(), @CreatedBy, NOW(), @ModifiedBy");
-      query = $"INSERT INTO {tableName} ({field}) VALUE ({value})";
+      query = $"INSERT INTO {tableName} ({field}) VALUE ({value});SELECT LAST_INSERT_ID();";
       return query;
     }
 

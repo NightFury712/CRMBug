@@ -18,7 +18,6 @@ import { BaseComboboxComponent } from '../base-combobox/base-combobox.component'
 export class BaseDatetimepickerComponent implements OnInit {
 
   public date: moment.Moment = moment();
-  public disabled = false;
   public showSpinners = true;
   public showSeconds = true;
   public touchUi = false;
@@ -51,6 +50,9 @@ export class BaseDatetimepickerComponent implements OnInit {
 
   @Input()
   fieldName: string = '';
+
+  @Input()
+  disabled: boolean = false;
 
   @Output()
   valueChange = new EventEmitter();

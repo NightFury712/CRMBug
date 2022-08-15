@@ -36,30 +36,32 @@ export class PopupAddProjectComponent extends BaseComponent implements OnInit {
   }
   
   saveData() {
-    let isValid = true;
-    isValid = this.validateSV.validateRequired(this.data.ProjectName);
-    isValid = this.validateSV.validateRequired(this.data.ProjectCode);
-    if(isValid) {
-      this.toastSV.loading();
-      this.projectSV.saveData(this.data)
-        .pipe(takeUntil(this._onDestroySub))
-        .subscribe((resp) => {
-          if(resp?.Success) {
-            this.toastSV.showSuccess(SuccessMessage.AddProject);
-          } else if(resp?.ValidateInfo && resp?.ValidateInfo.length > 0) {
-            this.toastSV.showError(resp?.ValidateInfo[0]);
-          } else {
-            this.toastSV.showError(ErrorMessage.Exception);
-          }
-          this.dialogRef.close(true);
-        },
-        error => {
-          console.log(error);
-          this.toastSV.showError(ErrorMessage.Exception);
-        });
-    } else {
-      alert("Field not valid");
+    if(this.data.ProjectName.trim() == '') {
+      this.toastSV.showWarning("Project Name can not be empty!")
+      return;
     }
+    if(this.data.ProjectCode.trim() == '') {
+      this.toastSV.showWarning("Project Code can not be empty!")
+      return;
+    }
+    this.toastSV.loading();
+    this.projectSV.saveData(this.data)
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((resp) => {
+        if(resp?.Success) {
+          this.toastSV.showSuccess(SuccessMessage.AddProject);
+          this.dialogRef.close(true);
+        } else if(resp?.ValidateInfo && resp?.ValidateInfo.length > 0) {
+          this.toastSV.showError(resp?.ValidateInfo[0]);
+        } else {
+          this.toastSV.showError(ErrorMessage.Exception);
+        }
+      },
+      error => {
+        console.log(error);
+        this.toastSV.showError(ErrorMessage.Exception);
+      });
+    
   }
   /**
    * Thực hiện lưu và thêm

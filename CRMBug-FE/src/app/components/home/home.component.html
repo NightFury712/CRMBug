@@ -12,48 +12,40 @@
     <base-notification
       [height]="'calc(100vh - 156px)'"
       [projectID]="projectID"
+      [userID]="userID"
     >
     </base-notification>
   </div>
   <div class="sub-summary w-2/5">
     <div class="title">
-      Status
+      Summary
     </div>
-    <div class="status-container w-full">
-      <div class="graphbar-number w-full bt-flex bt-align-items-center">
-        <div class="total-record" *ngIf="summaryData.TotalRecord != 0">
-          {{ summaryData.TotalRecord }}
-        </div>
-        <div class="line status-1" [ngStyle]="{'width.%': summaryStyle.Pending}" *ngIf="summaryData.Pending != 0"></div>
-        <div class="line status-2" [ngStyle]="{'width.%': summaryStyle.Completed}" *ngIf="summaryData.Completed != 0"></div>
-        <div class="line status-3" [ngStyle]="{'width.%': summaryStyle.CompletedLate}" *ngIf="summaryData.CompletedLate != 0"></div>
+    <div *ngIf="totalRecord > 0" class="status-container w-full">
+      <div class="total-record">
+        Total: {{totalRecord}}
       </div>
-      <div class="graphbar-info bt-flex bt-justify-content-between">
-        <div class="wrapper">
-          <div class="name">
-            Pending
-          </div>
-          <div class="number status-1">
-            {{ summaryData.Pending }}
-          </div>
-        </div>
-        <div class="wrapper">
-          <div class="name">
-            Completed
-          </div>
-          <div class="number status-2">
-            {{ summaryData.Completed }}
-          </div>
-        </div>
-        <div class="wrapper">
-          <div class="name">
-            Completed late
-          </div>
-          <div class="number status-3">
-            {{ summaryData.CompletedLate }}
-          </div>
-        </div>
+      <pie-chart
+        [series]="seriesStatus"
+        [title]="titleStatus"
+        
+      >
+      </pie-chart>
+    </div> 
+    <div *ngIf="totalRecord > 0" class="status-container">
+      <div class="total-record">
+        Total: {{totalRecord}}
       </div>
-    </div>
+      <pie-chart
+        [series]="seriesPriority"
+        [title]="titlePriority"
+      >
+      </pie-chart>
+    </div> 
+    <no-data
+      *ngIf="totalRecord == 0"
+      [height]="'calc(100vh - 400px)'"
+    >
+
+    </no-data>
   </div>
 </div>

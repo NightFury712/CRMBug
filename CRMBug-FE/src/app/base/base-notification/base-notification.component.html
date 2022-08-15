@@ -9,15 +9,14 @@
       </div>
       <div class="main-content w-full">
         <div class="title bt-flex bt-align-items-center w-full">
-          <span class="text bt-flex bt-align-items-center w-3/4">
-            {{item.Content}}
+          <span class="text w-3/4" [innerHTML]="item.Content">
+            <!-- {{item.Content}} -->
           </span>
           <span class="created-date w-1/4">{{item.CreatedDate | date: 'dd/MM/yyyy'}}</span>
         </div>
-        <!-- <div class="project-info">
-          <div class="icon"></div>
-          <div class="name">Project test (12334556)</div>
-        </div> -->
+        <div class="sub-title">
+          <span style="font-weight: 500;">{{item.ProjectName}}</span> - <span>{{item.ProjectCode}}</span>
+        </div>
       </div>
     </div>
   </div>

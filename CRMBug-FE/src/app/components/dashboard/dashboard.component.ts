@@ -26,48 +26,26 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
   projects: any;
 
-  configPaging: ParamGrid = {
-    Filters: [
-      {
-        FieldName: 'EmployeeID',
-        Value: null,
-        Addition: Addition.None,
-        IsFormula: false,
-        Operator: Operator.None,
-      },
-      {
-        FieldName: 'ProjectCode',
-        Value: null,
-        Addition: Addition.And,
-        IsFormula: true,
-        Operator: Operator.Like,
-      },
-      {
-        FieldName: 'ProjectName',
-        Value: null,
-        Addition: Addition.And,
-        IsFormula: true,
-        Operator: Operator.Like,
-      },
-    ],
-    PageIndex: 0,
-    Formula: '({0} OR {1})',
-    PageSize: 20,
-    Columns: btoa(
-      'ID,ProjectName, ProjectCode,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
-    ),
-  };
-
   @ViewChild("projectComponent", {static: true, read: BaseProjectComponent})
-  projectComponent?: BaseProjectComponent
+  projectComponent?: BaseProjectComponent;
+
+  userID: number = 0;
 
   constructor(
     private dialog: MatDialog,
+    private dataSV: DataService
   ) { 
     super();
   }
 
   ngOnInit(): void {
+    this.dataSV.user
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((user) => {
+        if(user) {
+          this.userID = Number(user.ID);
+        }
+      })
   }
 
   addProject() {

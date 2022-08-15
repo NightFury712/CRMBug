@@ -50,8 +50,10 @@ namespace ScheduledTask.Jobs
         };
         if (data != null && data.Any())
         {
+          // Thực hiện lưu thông báo vào database
           this.SaveNotifyToDB(data);
 
+          // Thực hiện gửi thông báo tới client
           this.SendNotifyClients(data);
         }
         return Task.CompletedTask;
@@ -63,7 +65,6 @@ namespace ScheduledTask.Jobs
       }
       
     }
-
 
     private void SaveNotifyToDB(List<Dictionary<string, object>> data)
     {
@@ -82,15 +83,15 @@ namespace ScheduledTask.Jobs
         }
         if (item.ValueIsNotNull("AssignedUserID") && item.ValueIsNotNull("ProjectID"))
         {
-          tmpSQL = $"(null, '{item["AssignedUserID"]}', 'Task', 'REMIND_WORK', '', '{content}', NOW(), 'Schedule Worker', NOW(), 'Schedule Worker', '{item["ProjectID"]}')";
+          tmpSQL = $"(null, '{item["AssignedUserID"]}', 'RemindTask', 'REMIND_WORK', '', '{content}', NOW(), 'Schedule Worker', NOW(), 'Schedule Worker', '{item["ProjectID"]}')";
         }
         dataInsert.Add(tmpSQL);
       }
       insertSQL.Append(string.Join(",", dataInsert.Select(x => x)));
       insertSQL.Append($";DELETE FROM schedule WHERE ID IN ({ids});");
 
-      var deleteSql = insertSQL;
-      // _ = _dbConnection.Execute(deleteSql, commandType: CommandType.Text);
+      var deleteSql = insertSQL.ToString();
+      _ = _dbConnection.Execute(deleteSql, commandType: CommandType.Text);
     }
 
 
@@ -99,23 +100,39 @@ namespace ScheduledTask.Jobs
       var template = Properties.Resources.Schedule_TemplateNotify;
       foreach (var item in data)
       {
+        DateTime dueDate = new DateTime();
+        decimal minuteLeft = 0;
+        if (item.ValueIsNotNull("DueDate"))
+        {
+          dueDate = Convert.ToDateTime(item["DueDate"]);
+          minuteLeft = Math.Round((decimal)dueDate.Subtract(DateTime.Now).Minutes, 0);
+        }
         if (item.ValueIsNotNull("AssignedUserID") && long.TryParse(item["AssignedUserID"].ToString(), out long id))
         {
           var client = SessionData.Clients.Find(x => x.ID == id);
           if (client != null)
           {
             item["EventName"] = "REMIND_WORK";
+            item["MinuteLeft"] = minuteLeft;
             this._hub.Clients.Client(client.ConectionID).SendAsync("notify", item);
           }
         }
         
         if(item.ValueIsNotNull("Email") && item.ValueIsNotNull("DueDate"))
         {
-          var dueDate = Convert.ToDateTime(item["DueDate"]);
-          var minuteLeft = dueDate.Minute - DateTime.Now.Minute;
+          StringBuilder content = new StringBuilder();
+          content.Append(string.Format(template, item["TaskCode"]?.ToString(), minuteLeft));
+          content.Append("<br>");
+          content.Append(
+            $"<ul>" +
+            $"<li>Task Code: {item["TaskCode"]?.ToString()}</li>" +
+            $"<li>Subject: {item["Subject"]?.ToString()}</li>" +
+            $"<li>Priority: {item["PriorityIDText"]?.ToString()}</li>" +
+            $"<li>Due Date: {dueDate.ToString("dd/MM/yyyy hh:mm:ss")}</li>" +
+            $"</ul>");
           var message = new Message(
             new string[] { item["Email"].ToString() },
-            "Remind work from task management!", string.Format(template, item["TaskCode"]?.ToString(), minuteLeft)
+            "Remind work from task management system!", content.ToString()
           );
           _emailSender.SendEmail(message);
         }

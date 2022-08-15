@@ -5,12 +5,13 @@ import jwtDecode from "jwt-decode";
  */
 export class User {
     constructor(
-        public email: string,
-        public id: string,
-        public employeeId: string,
-        public avatar: string,
-        private _accessToken: string,
-        public fullName: string
+        public Email: string,
+        public ID: string,
+        public EmployeeID: string,
+        public EmployeeCode: string,
+        public FullName: string,
+        public PhoneNumber: string,
+        public RoleID: string
         // private _accessTokenExpDate: Date,
         // private _refreshToken: string,
         // private _refreshTokenExpDate: Date
@@ -39,10 +40,4 @@ export class User {
     // get refreshTokenExpDate() {
     //     return this._refreshTokenExpDate;
     // }
-
-    get role() {
-        //Lấy role bằng cách decode token
-        let decodedToken: any = jwtDecode(this._accessToken);
-        return decodedToken['role'];
-    }
 }

@@ -10,15 +10,14 @@ namespace Library.Entities
 {
   public class BaseEntity
   {
+
+    private string _query;
+
     #region Properties
     /// <summary>
     /// Trạng thái bản ghi (thêm, xóa, sửa)
     /// </summary>
     public EntityState EntityState { get; set; } = EntityState.Add;
-    /// <summary>
-    /// Truy vấn
-    /// </summary>
-    public string Query { get; set; }
     /// <summary>
     /// Thời gian tạo
     /// </summary>
@@ -35,6 +34,16 @@ namespace Library.Entities
     /// Người thay đổi
     /// </summary>
     public string ModifiedBy { get; set; }
+
+    public string GetQuery()
+    {
+      return this._query;
+    }
+
+    public void SetQuery(string query)
+    {
+      this._query = query;
+    }
     #endregion
   }
 }

@@ -106,7 +106,7 @@ namespace ApplicationCore.BL
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    public List<Dictionary<string, object>> GetSummaryData(long projectID)
+    public Dictionary<string, object> GetSummaryData(long projectID)
     {
       return this.DLTask.GetSummaryData(projectID);
     }
@@ -135,6 +135,11 @@ namespace ApplicationCore.BL
       if (task.CompletedProgress == 100)
       {
         this.UpdateStatus(task);
+
+        if(task.CompletedDate == null)
+        {
+          task.CompletedDate = DateTime.Now;
+        }
       }
 
       this.UpdatePriorityColor(task);
@@ -153,8 +158,8 @@ namespace ApplicationCore.BL
           LayoutCode = "Task",
           ProjectID = entity.ProjectID,
           FromUserID = long.Parse(SessionData.UserID),
-          ToUserID = entity.AssignedUserID,
-          Content = string.Format(Properties.Resources.WriteLog_Add, SessionData.FullName, $"task \"{entity.TaskCode}\""),
+          ToUserID = null,
+          Content = string.Format(Properties.Resources.WriteLog_Add, $"<b>{SessionData.FullName}</b>", $"task <b>{entity.TaskCode}</b>"),
           EventName = "CREATE_TASK",
           CreatedBy = SessionData.FullName,
           ModifiedBy = SessionData.FullName,

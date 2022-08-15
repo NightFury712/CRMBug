@@ -2,6 +2,22 @@
 @import "../../../font.scss";
 
 :host {
+  ::ng-deep {
+    .status-container {
+      .pie-chart {
+        width: 100% !important;
+        height: 100% !important;
+        .highcharts-container {
+          width: 100% !important;
+          height: 100% !important;
+          svg {
+            width: 100% !important;
+            height: 100% !important;
+          }
+        }
+      }
+    }
+  }
   .home-container {
     padding: 24px 24px 0 24px;
     .project-notification {
@@ -70,71 +86,24 @@
         padding-bottom: 12px;
       }
       .status-container {
+        position: relative;
         padding: 16px;
         background-color: $color-white;
-        height: 150px;
+        height: 340px;
         border-radius: 4px;
         border: 1px solid $color-grey-20;
         min-width: 412px;
-        .graphbar-number {
-          height: 40px;
-          position: relative;
-          .total-record {
-            position: absolute;
-            color: $color-white;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-          }
-          .line {
-            height: 20px;
-            // &:nth-child(1) {
-            //   border-radius: 20px 0 0 20px;
-            // }
-            // &:nth-last-child(1) {
-            //   border-radius: 0 20px 20px 0;
-            // }
-          }
-        }
-        .graphbar-info {
-          padding-bottom: 8px;
-          overflow: auto;
-          .wrapper {
-            min-width: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 4px;
-            .name {
-              height: 32px;
-              display: flex;
-              align-items: center;
-            }
-            .number {
-              height: 24px;
-              border-radius: 20px;
-              width: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: white;
-            }
-          }
-        }
-        .status-1 {
-          background-color: $status-color-1;
-        }
-        .status-2 {
-          background-color: $status-color-2;
-        }
-        .status-3 {
-          background-color: $status-color-3;
-        }
-        .status-4 {
-          background-color: $status-color-4;
-        }
-        .status-5 {
-          background-color: $status-color-5;
+        margin-bottom: 16px;
+        .total-record {
+          position: absolute;
+          top: 60px;
+          z-index: 1;
+          font-size: $font-medium;
+          color: $color-black;
+          display: flex;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
         }
       }
     }

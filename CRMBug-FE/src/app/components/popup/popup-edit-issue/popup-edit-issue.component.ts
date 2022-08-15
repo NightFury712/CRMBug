@@ -77,10 +77,10 @@ export class PopupEditIssueComponent extends BaseComponent implements OnInit, On
         .subscribe(
           (user) => {
             if(user) {
-              this.dataSave["AssignedUserID"] = Number(user.id);
-              this.dataSave["AssignedUserIDText"] = user.fullName;
-              this.dataSave["RelatedUserID"] = Number(user.id);
-              this.dataSave["RelatedUserIDText"] = user.fullName;
+              this.dataSave['AssignedUserID'] = Number(user.ID);
+              this.dataSave['AssignedUserIDText'] = user.FullName;
+              this.dataSave['RelatedUserID'] = Number(user.ID);
+              this.dataSave['RelatedUserIDText'] = user.FullName;
             }
           }
         );

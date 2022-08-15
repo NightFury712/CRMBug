@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import jwtDecode from "jwt-decode";
-import { BehaviorSubject, throwError } from "rxjs";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { catchError, tap } from 'rxjs/operators';
 import { APIConfig } from "src/app/api/config";
 import { User } from "../../models/user/user.model";
@@ -39,6 +39,14 @@ export class AuthService {
         private dataSV: DataService
     ) { 
         this.url = `${APIConfig.development}/api/v1/Auth`
+        var user = localStorage.getItem("UserData");
+        if(user) {
+            this.dataSV.user.next(JSON.parse(user));
+        }
+    }
+
+    register(data: any):  Observable<any> {
+        return this.http.post<any>(`${this.url}/register`,data);
     }
 
     /**
@@ -77,7 +85,7 @@ export class AuthService {
      */
     autoLogin() {
         //Lấy userData từ local storage
-        const data = localStorage.getItem('userData');
+        const data = localStorage.getItem('UserData');
         let userData = null;
         if(data != null) {
           userData = JSON.parse(data);
@@ -218,8 +226,9 @@ export class AuthService {
         this.dataSV.user.next(null);
 
         //Xóa khỏi localStorage
-        localStorage.removeItem('userData');
+        localStorage.removeItem('UserData');
         localStorage.removeItem('AccessToken');
+        localStorage.removeItem('RolePermission');
         //Clear timer
         if (this.tokenExperationTimer) {
             clearTimeout(this.tokenExperationTimer);
@@ -257,25 +266,11 @@ export class AuthService {
         const accessTokenExpDate = new Date(accessExpiresTime)
 
         // const refreshTokenExpDate = new Date(refreshExpiresTime)
-
-        //Tạo user mới dựa trên thông tin ở trên
-        const user = new User(
-            userInfo.Email, 
-            userInfo.ID,
-            userInfo.EmployeeID,
-            'avatar', 
-            accessToken, 
-            userInfo.FullName
-            // accessTokenExpDate, 
-            // refreshToken, 
-            // refreshTokenExpDate
-        );
-
         //Set người dùng mới
-        this.dataSV.user.next(user);
+        this.dataSV.user.next(userInfo);
 
         //Lưu vào localStorage
-        localStorage.setItem('userData', JSON.stringify(user));
+        localStorage.setItem('UserData', JSON.stringify(userInfo));
         localStorage.setItem('AccessToken', accessToken);
         //Set thời gian tự động refresh token
         this.autoRefresh(accessExpiresTime - new Date().getTime());

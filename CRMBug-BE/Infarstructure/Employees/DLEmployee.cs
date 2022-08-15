@@ -9,6 +9,8 @@ using Infarstructure.Base;
 using Microsoft.Extensions.Configuration;
 using Dapper;
 using System.Data;
+using Library.Constant;
+using Library;
 
 namespace Infarstructure.Employees
 {
@@ -22,6 +24,20 @@ namespace Infarstructure.Employees
     #endregion
 
     #region Methods
+
+    public List<Dictionary<string, object>> GetAllRole()
+    {
+      List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
+      string sql = Constant.DLEmployee_GetRoleEmployee;
+      using (var rd = _dbConnection.ExecuteReader(sql, commandType: CommandType.Text))
+      {
+        if (rd != null)
+        {
+          data = rd.ToListDictionary();
+        }
+      }
+      return data;
+    }
     public IEnumerable<Employee> GetEmployeeByProjectID(long projectID, bool isInProject)
     {
       string sql = string.Empty;

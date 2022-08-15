@@ -63,7 +63,7 @@ export class PopupInviteMemberComponent extends BaseComponent implements OnInit,
     if(this.param.UserIDs?.length > 0) {
       this.toastSV.loading();
       this.projectSV
-      .inviteUser(this.param)
+      .inviteMember(this.param)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((resp) => {
         if(resp?.Success) {

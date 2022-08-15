@@ -15,7 +15,7 @@ namespace ApplicationCore.Interfaces.DL
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    List<Dictionary<string, object>> GetSummaryData(long projectID);
+    Dictionary<string, object> GetSummaryData(long projectID);
 
     bool DeleteDependance(long taskID);
 

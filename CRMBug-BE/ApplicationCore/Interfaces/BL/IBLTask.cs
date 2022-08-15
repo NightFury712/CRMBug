@@ -15,7 +15,7 @@ namespace ApplicationCore.Interfaces.BL
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    List<Dictionary<string, object>> GetSummaryData(long projectID);
+    Dictionary<string, object> GetSummaryData(long projectID);
 
     /// <summary>
     /// Phương thức lấy thông tin các công việc được xem gần đây

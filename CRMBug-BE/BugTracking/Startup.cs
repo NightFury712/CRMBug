@@ -11,6 +11,7 @@ using ApplicationCore.Interfaces.BL;
 using ApplicationCore.Interfaces.DL;
 using BugTracking.Middlewares;
 using Infarstructure.Base;
+using Infarstructure.Comments;
 using Infarstructure.Employees;
 using Infarstructure.Notifications;
 using Infarstructure.Projects;
@@ -80,7 +81,6 @@ namespace BugTracking
       {
         jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
         jsonOptions.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-
       });
       services.AddSwaggerGen(c =>
       {
@@ -110,6 +110,10 @@ namespace BugTracking
       // Thực hiện DI cho notification
       services.AddScoped<IBLNotification, BLNotification>();
       services.AddScoped<IDLNotification, DLNotification>();
+
+      // Thực hiện DI cho comment
+      services.AddScoped<IBLComment, BLComment>();
+      services.AddScoped<IDLComment, DLComment>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,12 +149,12 @@ namespace BugTracking
   {
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-      return DateTime.SpecifyKind(DateTime.Parse(reader.GetString()), DateTimeKind.Utc);
+      return DateTime.SpecifyKind(DateTime.Parse(reader.GetString()), DateTimeKind.Local);
     }
 
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
     {
-      writer.WriteStringValue(DateTime.SpecifyKind(value, DateTimeKind.Utc));
+      writer.WriteStringValue(DateTime.SpecifyKind(value, DateTimeKind.Local));
     }
   }
 }

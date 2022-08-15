@@ -58,5 +58,9 @@ namespace ApplicationCore.BL
       serviceResult.Code = Code.Ok;
       return serviceResult;
     }
+    public ServiceResult SaveData(Employee entity)
+    {
+      return base.Save(entity);
+    }
   }
 }

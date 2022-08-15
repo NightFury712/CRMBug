@@ -1,3 +1,6 @@
+import { ToastService } from './../../service/toast/toast.service';
+import { ValidateService } from './../../service/validation/validate.service';
+import { ProjectService } from './../../service/project/project.service';
 import { BaseComponent } from 'src/app/shared/base-component';
 import { TaskPriority } from './../../enumeration/task.enum';
 import { PopupAddTaskComponent } from './../popup/popup-add-task/popup-add-task.component';
@@ -19,6 +22,9 @@ import { TaskView } from 'src/app/enumeration/task.enum';
 import { ParamGrid } from 'src/app/models/param-grid.model';
 import { AppServerResponse } from 'src/app/service/base/base.service';
 import { PopupConfirmComponent } from '../popup/popup-confirm/popup-confirm.component';
+import * as moment from 'moment';
+import { Permission } from 'src/app/enumeration/permission.enum';
+import { PermissionMessage } from 'src/app/constants/constant.enum';
 
 @Component({
   selector: 'app-view-task',
@@ -77,13 +83,18 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
       typeControl: TypeControl.List,
     },
     {
-      fieldName: 'CreatedDate',
-      displayText: 'Created date',
+      fieldName: 'DueDate',
+      displayText: 'Deadline',
       typeControl: TypeControl.DateTime,
     },
     {
-      fieldName: 'DueDate',
-      displayText: 'Deadline',
+      fieldName: 'CompletedDate',
+      displayText: 'Completed date',
+      typeControl: TypeControl.DateTime,
+    },
+    {
+      fieldName: 'CreatedDate',
+      displayText: 'Created date',
       typeControl: TypeControl.DateTime,
     },
   ];
@@ -111,7 +122,11 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
 
   assignedUserCbx: Array<any> = [];
 
+  relatedUserCbx: Array<any> = [];
+
   assignedUserID: number = -1;
+
+  relatedUserID: number = -1;
 
   currentPage = 1;
 
@@ -163,7 +178,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
     Formula: '({0} OR {1} OR {2} OR {3})',
     PageSize: 20,
     Columns: btoa(
-      'ID,TaskCode,Subject,PriorityID,PriorityIDText,StatusID,StatusIDText,CompletedProgress,Description,AssignedUserID,AssignedUserIDText,RelatedUserID,RelatedUserIDText,ProjectID,DueDate,PriorityColor,StatusColor,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
+      'ID,TaskCode,Subject,PriorityID,PriorityIDText,StatusID,StatusIDText,CompletedProgress,Description,AssignedUserID,AssignedUserIDText,RelatedUserID,RelatedUserIDText,ProjectID,DueDate,PriorityColor,StatusColor,CompletedDate,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate'
     ),
   };
 
@@ -184,8 +199,9 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
     private dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private dataSV: DataService,
-    private toastSV: ToastrService,
-    private cdf: ChangeDetectorRef
+    private toastSV: ToastService,
+    private projectSV: ProjectService,
+    private validateSV: ValidateService
   ) {
     super();
   }
@@ -199,10 +215,17 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           me.projectID = project.ID;
           me.configPaging.Filters[0].Value = `${project.ID}`;
           me.getDataPaging();
+        } else {
+          var projectID = this.activeRoute.snapshot.params.projectID;
+          this.projectSV.getDataByID(projectID)
+            .pipe(takeUntil(this._onDestroySub))
+            .subscribe((resp: AppServerResponse<any>) => {
+              if(resp?.Success && resp?.Data) {
+                this.dataSV.project.next(resp.Data);
+              }
+            })
         }
       })
-    // this.projectID = this.activeRoute.snapshot.params.projectID;
-    
     this.initconfig();
   }
 
@@ -222,11 +245,21 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           this.assignedUserCbx = [
             {
               Value: -1,
-              Text: "All task"
+              Text: "All member"
             },
             {
-              Value: user.id,
-              Text: "Assigned to me"
+              Value: user.ID,
+              Text: "Me"
+            }
+          ]
+          this.relatedUserCbx = [
+            {
+              Value: -1,
+              Text: "All member"
+            },
+            {
+              Value: user.ID,
+              Text: "Me"
             }
           ]
         }
@@ -248,7 +281,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
               return {
                 ...x,
                 title: x.Subject,
-                date: x.CreatedDate,
+                date: new Date(x.CreatedDate),
                 color: x.StatusColor
               };
             });
@@ -305,6 +338,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
       ProjectID: this.projectID,
       TaskID: task.ID,
     };
+    config.delayFocusTrap = false;
     const dialogRef = this.dialog.open(PopupAddTaskComponent, config);
     dialogRef.afterClosed().subscribe((resp) => {
       if (resp) {
@@ -314,6 +348,10 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
   }
 
   deleteTask(task: any) {
+    if(!this.validateSV.hasPermission("Task", Permission.Delete)) {
+      this.toastSV.showWarning(PermissionMessage.DeleteTask);
+      return;
+    }
     const config = new ConfigDialog('600px');
     config.data = {
       title: "Delete task",
@@ -347,6 +385,19 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           } else {
             this.configPaging.Filters.push({
               FieldName: 'AssignedUserID',
+              Value: e.Value,
+              Addition: Addition.And,
+              IsFormula: false,
+              Operator: Operator.Equal,
+            });
+          }
+          break;
+        case 'RelatedUserID':
+          if(e.Value == -1) {
+            this.configPaging.Filters = this.configPaging.Filters.filter((x:any) => x.FieldName != 'RelatedUserID')
+          } else {
+            this.configPaging.Filters.push({
+              FieldName: 'RelatedUserID',
               Value: e.Value,
               Addition: Addition.And,
               IsFormula: false,

@@ -50,9 +50,10 @@ namespace ApplicationCore.Authentication.JWT.Generators
       var claims = new[] {
                     new Claim(JwtRegisteredClaimNames.Sub, (userInfo?.Username)??""),
                     new Claim("ID", (userInfo?.ID.ToString())??""),
-                    new Claim("EmployeeId", userInfo?.EmployeeID.ToString()??""),
+                    new Claim("EmployeeID", userInfo?.EmployeeID.ToString()??""),
+                    new Claim("EmployeeCode", userInfo?.EmployeeCode.ToString()??""),
                     new Claim(ClaimTypes.Role, userInfo?.RoleID.ToString()),
-                    new Claim("Role", userInfo?.RoleID.ToString()),
+                    new Claim("RoleID", userInfo?.RoleID.ToString()),
                     new Claim("Date", DateTime.Now.ToString()),
                     new Claim("Email", userInfo?.Email ?? ""),
                     new Claim("PhoneNumber", userInfo?.PhoneNumber ?? ""),

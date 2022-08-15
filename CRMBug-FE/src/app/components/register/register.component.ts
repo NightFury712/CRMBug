@@ -1,3 +1,4 @@
+import { AuthService } from './../../service/auth/auth.service';
 import { SuccessMessage } from './../../constants/constant.enum';
 import { ToastService } from './../../service/toast/toast.service';
 import { DataService } from './../../service/data/data.service';
@@ -47,7 +48,8 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     private router: Router,
     private validateSV : ValidateService,
     private employeeSV: EmployeeService,
-    private toastSV: ToastService
+    private toastSV: ToastService,
+    private authSV: AuthService
   ) {
     super();
   }
@@ -70,7 +72,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     const dataSave = JSON.parse(JSON.stringify(this.dataSave));
     dataSave.Password = btoa(dataSave.Password);
     this.toastSV.loading();
-    this.employeeSV
+    this.authSV
       .register(dataSave)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((resp) => {

@@ -81,7 +81,6 @@
             <th *ngFor="let field of fieldDisplay;">
               {{ field.displayText }}
             </th>
-            <th>Remove</th>
           </thead>
           <tbody>
             <tr *ngFor="let item of projectMember;">
@@ -95,14 +94,48 @@
                   </span>
                 </ng-container>
               </td>
-              <td>
-                x
-              </td>
+              <div class="action-table">
+                <div 
+                  class="more" 
+                  [matMenuTriggerFor]="menuOptions"
+                  [matMenuTriggerData]="{member: item}"
+                >
+                  <i class="fa-solid fa-ellipsis"></i>
+                </div>
+              </div>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  
 </div>
+
+<mat-menu #menuOptions="matMenu" xPosition="before">
+  <ng-template matMenuContent let-member="member">
+    <button mat-menu-item class="btn-secondary bt-flex bt-align-items-center" (click)="scanToCall(member)">
+      <div class="icon">
+        <i class="fa-solid fa-phone"></i>
+      </div>
+      <div class="text">
+        Call
+      </div>
+    </button>
+    <button mat-menu-item class="btn-secondary bt-flex bt-align-items-center" (click)="scanToSaveContact(member)">
+      <div class="icon">
+        <i class="fa-solid fa-qrcode"></i>
+      </div>
+      <div class="text">
+        QR Code
+      </div>
+    </button>
+    <button mat-menu-item class="btn-delete bt-flex bt-align-items-center" (click)="removeMember(member)">
+      <div class="icon">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <div class="text">
+        Remove
+      </div>
+    </button>
+  </ng-template>
+</mat-menu>

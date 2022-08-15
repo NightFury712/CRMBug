@@ -14,6 +14,12 @@ body {
   overflow: hidden;
 }
 
+::ng-deep {
+  .bold {
+    font-weight: $font-weight-bold;
+  }
+}
+
 .bt-dialog {
   .mat-dialog-container {
     background-color: $color-white;

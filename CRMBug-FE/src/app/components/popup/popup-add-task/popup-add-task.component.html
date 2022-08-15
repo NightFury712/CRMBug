@@ -1,10 +1,13 @@
-<div class="add-issue-container">
+<div class="add-task-container" id="add-task-container">
   <div class="header bt-flex">
     <div class="title">
       {{ title }}
     </div>
     <div class="close bt-flex bt-justify-self-end">
       <i class="fa-solid fa-x" (click)="close()"></i>
+    </div>
+    <div class="header-line">
+
     </div>
   </div>
   <div class="content-container">
@@ -58,7 +61,7 @@
           <textarea
             name="name"
             id="textarea"
-            class="w-full"
+            class="textarea w-full"
             cols="30"
             rows="10"
             [(ngModel)]="dataSave.Description"
@@ -77,6 +80,7 @@
               labelText="Assigned to"
               (valueChange)="valueChangeCombo($event)"
               fieldName="AssignedUserID"
+              [disabled]="isDisabled"
             ></base-combobox>
           </div>
           <div class="field-right w-1/2">
@@ -103,6 +107,7 @@
               [label]="'Due Date'"
               [fieldName]="'DueDate'"
               (valueChange)="valueChangeCombo($event)"
+              [disabled]="isDisabled"
             >
             </base-datetimepicker>
           </div>
@@ -119,17 +124,91 @@
       </div>
     </div>
   </div>
+  <div *ngIf="dataSave.EntityState == entityState.Edit" class="comment-container">
+    <div class="groupbox-item">
+      <div class="groupbox-title">
+        <i class="fa-solid fa-comments"></i>
+        Comment
+      </div>
+    </div>
+    <div class="comment-content">
+      <div class="add-comment bt-flex w-full">
+        <base-textbox
+          [isLabel]="false"
+          [type]="typeControl.Textbox"
+          placeholder=""
+          [isHorizontal]="false"
+          [maxLength]="2000"
+          [(value)]="commentValue"
+          (searchEvent)="addComment($event)"
+        >
+        </base-textbox>
+        <div class="submit-comment" (click)="addComment(commentValue)">
+          <i class="fa-solid fa-paper-plane"></i>
+        </div>
+      </div>
+      <div class="comment-item" *ngFor="let item of comments">
+        <div class="bt-flex w-full">
+          <div class="avatar">
+            <div class="text bt-flex bt-align-items-center bt-justify-content-center">
+              {{ item.FirstCharacter }}
+            </div>
+          </div>
+          <div class="wrap-content w-full">
+            <div *ngIf="item.EntityState == entityState.View" class="main-content">
+              <div class="name">
+               {{ item.FullName }}
+              </div>
+              <div class="content">
+                {{item.Content}}
+              </div>
+            </div>
+            <div *ngIf="item.EntityState == entityState.Edit" class="edit-comment bt-flex w-full">
+              <base-textbox
+                [isLabel]="false"
+                [type]="typeControl.Textbox"
+                placeholder=""
+                [isHorizontal]="false"
+                [maxLength]="2000"
+                [(value)]="item.Content"
+                (searchEvent)="editComment($event)"
+              >
+              </base-textbox>
+              <div class="action-edit save" (click)="editComment($event)">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <div class="action-edit cancel" (click)="changeCommentMode(entityState.View, item)">
+                <i class="fa-solid fa-xmark"></i>
+              </div>
+            </div>
+            <div class="footer bt-flex">
+              <div class="action">
+                <div class="action-item edit" (click)="changeCommentMode(entityState.Edit, item)">Edit</div>
+                <div class="action-item delete" (click)="deleteComment(item)">Delete</div>
+              </div>
+              <div class="date">
+                {{ item.CreatedDate | date: 'dd/MM/yyyy hh:mm:ss' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!isHaveComment" class="no-comment">
+        No comment to display!
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="feature bt-flex bt-flex-row w-full bt-justify-content-end">
   <div class="button-first">
-    <base-button
+    <!-- <base-button
       typeButton="secondary"
       text="Save and Add"
       [width]="120"
       (btnClick)="saveAndAddData()"
     >
-    </base-button>
+    </base-button> -->
   </div>
   <div class="button-seconds">
     <base-button typeButton="primary" text="Save" (btnClick)="saveData()">

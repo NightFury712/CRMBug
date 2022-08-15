@@ -10,6 +10,8 @@ namespace ApplicationCore.Interfaces.BL
 {
   public interface IBLProject : IBLBase<Project>
   {
-    bool InviteUser(ParamInviteUser param);
+    bool InviteMember(ParamInviteUser param);
+    bool RemoveMember(ParamInviteUser param);
+
   }
 }

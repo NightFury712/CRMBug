@@ -55,5 +55,29 @@ namespace BugTracking.API.Authentication
         return Ok(_serviceResult);
       }
     }
+
+    /// <summary>
+    /// Đăng ký tài khoản
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public IActionResult Post(Employee entity)
+    {
+      try
+      {
+        //Gọi service xác thực tài khoản
+        _serviceResult = BLAuth.SaveData(entity);
+
+        return Ok(_serviceResult);
+      }
+      catch (Exception ex)
+      {
+        _serviceResult.Success = false;
+        _serviceResult.Data = ex;
+        return Ok(_serviceResult);
+      }
+    }
   }
 }

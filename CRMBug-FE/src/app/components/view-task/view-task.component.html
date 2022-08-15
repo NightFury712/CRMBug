@@ -17,10 +17,10 @@
   </div>
   <div class="tasks-container bt-flex bt-flex-column">
     <div class="toolbar bt-flex">
-      <div class="left w-1/2 bt-flex bt-align-item-center">
+      <div class="left w-3/4 bt-flex bt-align-item-center">
         <div class="left-item">
           <base-textbox
-            [placeholder]="'Search task'"
+            [placeholder]="'Search task by task code, subject ...'"
             [type]="typeControl.Search"
             (searchEvent)="searchTask($event)"
           >
@@ -31,14 +31,27 @@
             [datas]="assignedUserCbx"
             [value]="assignedUserID"
             (valueChange)="valueChangeCombo($event)"
-            [isShowLabel]="false"
-            [width]="'150px'"
+            [isShowLabel]="true"
             [fieldName]="'AssignedUserID'"
+            [labelWidth]="100"
+            [labelText]="'Assigned to'"
+          >
+          </base-combobox>
+        </div>
+        <div class="left-item">
+          <base-combobox
+            [datas]="relatedUserCbx"
+            [value]="relatedUserID"
+            (valueChange)="valueChangeCombo($event)"
+            [isShowLabel]="true"
+            [fieldName]="'RelatedUserID'"
+            [labelWidth]="100"
+            [labelText]="'Related to'"
           >
           </base-combobox>
         </div>
       </div>
-      <div class="right w-1/2 bt-flex bt-align-items-center bt-justify-content-end">
+      <div class="right w-1/4 bt-flex bt-align-items-center bt-justify-content-end">
         <div class="right-item" *ngIf="currentView == taskView.Calendar">
           <div class="switch-type bt-flex bt-align-items-center bt-justify-content-center">
             <button 
@@ -88,7 +101,7 @@
         </div>
       </div>
     </div>
-    <div class="content">
+    <div *ngIf="totalRecord > 0" class="content">
       <app-calendar
         *ngIf="currentView == taskView.Calendar"
         [type]="currCalendarType"
@@ -139,6 +152,12 @@
         </tbody>
       </table>
     </div>
+    <no-data
+      *ngIf="totalRecord == 0"
+      [height]="'calc(100vh - 288px)'"
+    >
+
+    </no-data>
   </div>
   <div class="pagination bt-flex">
     <div class="total-record bt-flex bt-align-items-center w-1/2">

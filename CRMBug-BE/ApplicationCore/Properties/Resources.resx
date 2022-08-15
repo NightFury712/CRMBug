@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -124,9 +124,9 @@
     <value>{0} is unique!</value>
   </data>
   <data name="WriteLog_Add" xml:space="preserve">
-    <value>{0} added a new {1}</value>
+    <value>{0} added a new  {1}</value>
   </data>
   <data name="WriteLog_InviteMember" xml:space="preserve">
-    <value>{0} invite {1} to ptoject {2}</value>
+    <value>&lt;span class=\"bold\"&gt;{0}&lt;\span&gt; invite &lt;span class=\"bold\"&gt;{1}&lt;/span&gt; to ptoject &lt;span class=\"bold\"&gt;{2}&lt;/span&gt;</value>
   </data>
 </root>

@@ -12,7 +12,9 @@ export class AuthGuard implements CanActivate {
         private authService: AuthService, 
         private router: Router,
         private dataSV: DataService
-    ) { }
+    ) { 
+        
+    }
 
     canActivate(
         route: ActivatedRouteSnapshot,
@@ -22,7 +24,7 @@ export class AuthGuard implements CanActivate {
             take(1),
             map(user => {
                 if (user) {
-                    console.log(user.role)
+                    console.log(user.RoleID)
 
                     //Kiểm tra role có nằm trong danh sách cho phép truy cập không
                     // if (!(route.data.role && route.data.role.indexOf(user.role) === -1)) {

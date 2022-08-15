@@ -1,3 +1,4 @@
+import { PieChartComponent } from './../base/pie-chart/pie-chart.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MonthlyCalendarComponent } from './../base/calendar/monthly-calendar/monthly-calendar.component';
 import { WeeklyCalendarComponent } from './../base/calendar/weekly-calendar/weekly-calendar.component';
@@ -48,6 +49,8 @@ import { RecentlyViewedComponent } from './recently-viewed/recently-viewed.compo
 import { NoDataComponent } from '../base/no-data/no-data.component';
 import { BaseProjectComponent } from '../base/base-project/base-project.component';
 import { PopupListProjectComponent } from './popup/popup-list-project/popup-list-project.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { PopupContactComponent } from './popup/popup-contact/popup-contact.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -79,7 +82,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   	RecentlyViewedComponent,
 		NoDataComponent,
 		BaseProjectComponent,
-  	PopupListProjectComponent
+  	PopupListProjectComponent,
+		PieChartComponent,
+  	PopupContactComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -104,6 +109,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		PerfectScrollbarModule,
 		HighchartsChartModule,
 		MatMenuModule,
+		QRCodeModule,
 		NgxDaterangepickerMd.forRoot()
 	],
 	exports: [
@@ -119,7 +125,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		MonthlyCalendarComponent,
 		DaterangeComponent,
 		NoDataComponent,
-		BaseProjectComponent
+		BaseProjectComponent,
+		PieChartComponent
 	],
 	providers: [
     {

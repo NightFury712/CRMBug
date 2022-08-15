@@ -30,9 +30,16 @@ namespace ApplicationCore.BL
     #endregion
 
     #region Methods
-    public bool InviteUser(ParamInviteUser param)
+    public bool InviteMember(ParamInviteUser param)
     {
-      return this.DLProject.InviteUser(param.ProjectID, param.UserIDs);
+      var rs =  this.DLProject.InviteMember(param.ProjectID, param.UserIDs);
+      return rs;
+    }
+
+    public bool RemoveMember(ParamInviteUser param)
+    {
+      var rs = this.DLProject.RemoveMember(param.ProjectID, param.UserIDs);
+      return rs;
     }
 
     #endregion
@@ -56,15 +63,15 @@ namespace ApplicationCore.BL
           LayoutCode = "Project",
           ProjectID = entity.ID,
           FromUserID = userID,
-          ToUserID = userID,
-          Content = string.Format(Properties.Resources.WriteLog_Add, SessionData.FullName, $"project \"{entity.ProjectName}\""),
-          EventName = "CREATE_TASK",
+          ToUserID = null,
+          Content = string.Format(Properties.Resources.WriteLog_Add, $"<b>{SessionData.FullName}</b>", $"project <b>{entity.ProjectName}</b>"),
+          EventName = "CREATE_PROJECT",
           CreatedBy = SessionData.FullName,
           ModifiedBy = SessionData.FullName
         };
         base.WriteLog(notification);
+        this.DLProject.InviteMember(entity.ID, userIDs);
       }
-      this.DLProject.InviteUser(entity.ID, userIDs);
     }
 
     protected override void AfterDeleteSuccess(long entityID)

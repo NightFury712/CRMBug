@@ -10,5 +10,7 @@ namespace ApplicationCore.Interfaces.BL
   public interface IBLEmployee : IBLBase<Employee>
   {
     IEnumerable<Employee> GetEmployeeByProjectID(long projectID, bool isInProject);
+
+    List<Dictionary<string, object>> GetAllRole();
   }
 }

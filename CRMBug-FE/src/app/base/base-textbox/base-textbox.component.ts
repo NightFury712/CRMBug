@@ -23,7 +23,7 @@ export class BaseTextboxComponent implements OnInit, ControlValueAccessor  {
   placeholder:string = 'Search an issue';
 
   @Input()
-  text: string = 'Subject';
+  text: string = '';
 
   @Input() 
   value: string = "";

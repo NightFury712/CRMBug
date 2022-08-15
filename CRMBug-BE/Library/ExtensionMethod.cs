@@ -27,6 +27,22 @@ namespace Library
       return listData;
     }
 
+    public static Dictionary<string, object> ToDictionary(this IDataReader dataReader)
+    {
+      Dictionary<string, object> data = new Dictionary<string, object>();
+      while (dataReader.Read())
+      {
+        int fieldCount = dataReader.FieldCount;
+        for (int i = 0; i < fieldCount; i++)
+        {
+          string name = dataReader.GetName(i);
+          var value = dataReader[name];
+          data.Add(name, value.ToString());
+        }
+      }
+      return data;
+    }
+
     public static List<T> ToListObject<T>(this IDataReader dataReader)
     {
       List<T> listData = new List<T>();

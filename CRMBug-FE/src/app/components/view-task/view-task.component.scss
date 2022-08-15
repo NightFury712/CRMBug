@@ -56,6 +56,13 @@
         .left {
           .left-item {
             margin-right: 12px;
+            base-combobox {
+              .mat-form-field {
+                .mat-form-field-wrapper {
+                  width: 150px;
+                }
+              }
+            }
           }
         }
         .right {

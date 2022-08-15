@@ -34,15 +34,26 @@ namespace Infarstructure.Tasks
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    public List<Dictionary<string, object>> GetSummaryData(long projectID)
+    public Dictionary<string, object> GetSummaryData(long projectID)
     {
       var sql = Constant.DLTask_GetSumaryData;
-      List<Dictionary<string, object>> datas = new List<Dictionary<string, object>>();
+      Dictionary<string, object> datas = new Dictionary<string, object>();
       using (var rd = _dbConnection.ExecuteReader(sql, new { ProjectID = projectID }, commandType: CommandType.Text))
       {
         if(rd != null)
         {
-          datas = rd.ToListDictionary();
+          datas["Status"] = rd.ToDictionary();
+          if (rd.NextResult())
+          {
+            datas["Priority"] = rd.ToDictionary();
+            if(rd.NextResult())
+            {
+              if(rd.Read())
+              {
+                datas["TotalRecord"] = rd.GetInt64(0);
+              }
+            }
+          }
         } 
       }
       return datas;

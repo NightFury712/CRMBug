@@ -59,9 +59,14 @@ namespace Infarstructure.Base
         return null;
       }
     }
-    public Dictionary<string, object> Grid(string oWhere, string columns, string limit, string join = "")
+    public Dictionary<string, object> Grid(string oWhere, string columns, string limit, string join = "", string customColumns = "")
     {
       Dictionary<string, object> data = new Dictionary<string, object>();
+      var viewName = GetViewName<T>();
+      if(!string.IsNullOrEmpty(viewName))
+      {
+        _tableName = viewName;
+      }
       if(string.IsNullOrEmpty(columns))
       {
         columns = "T.*";
@@ -70,14 +75,18 @@ namespace Infarstructure.Base
         var column = columns.Split(",");
         columns = string.Join(",", column.Select(x => $"T.{x}"));
       }
+      if(!string.IsNullOrEmpty(customColumns))
+      {
+        columns += $",{customColumns}";
+      }
       string order = "ORDER BY CreatedDate DESC";
       string query = $"SELECT {columns} FROM {_tableName} T {join} WHERE {oWhere} {order} {limit} ;SELECT COUNT(*) AS TotalRecord FROM {_tableName} T {join} WHERE {oWhere};";
       //var entities = _dbConnection.Query<T>(query, commandType: CommandType.Text);
-      using (var rd = _dbConnection.ExecuteReader(query, new { v_LayoutCode = _tableName }, commandType: CommandType.Text))
+      using (var rd = _dbConnection.ExecuteReader(query, commandType: CommandType.Text))
       {
         if(rd != null)
         {
-          data["Result"] = rd.ToListObject<T>();
+          data["Result"] = rd.ToListDictionary();
           if(rd.NextResult())
           {
             while(rd.Read())
@@ -95,14 +104,31 @@ namespace Infarstructure.Base
     /// <param name="entity">Thông tin bản ghi</param>
     /// <returns>Số cột bị ảnh hưởng</returns>
     /// Author: HHDang 23.2.2022
-    public int Save(T entity)
+    public long Save(T entity)
     {
-      var rowAffects = 0;
+      long rowAffects = 0;
       _dbConnection.Open();
       // Xử lý các kiểu dữ liệu (mapping dataType):
       var parameters = this.MappingDbtype(entity);
       // Thực thi commandText
-      rowAffects = _dbConnection.Execute(entity.Query, parameters, commandType: CommandType.Text);
+      switch(entity.EntityState)
+      {
+        case EntityState.Edit:
+          rowAffects = _dbConnection.Execute(entity.GetQuery(), parameters, commandType: CommandType.Text);
+          break;
+        case EntityState.Add:
+          using (var rd = _dbConnection.ExecuteReader(entity.GetQuery(), parameters, commandType: CommandType.Text))
+          {
+            if (rd != null && rd.Read())
+            {
+              rowAffects = rd.GetInt64(0);
+            }
+          }
+          break;
+        default:
+          break;
+      }
+      //rowAffects = _dbConnection.Execute(entity.GetQuery(), parameters, commandType: CommandType.Text);
       // Trả về kết quả (Số bản ghi thêm mới được)
       return rowAffects;
     }
@@ -163,12 +189,12 @@ namespace Infarstructure.Base
 
     public bool WriteLog(Notification notification)
     {
-      return _dbConnection.Execute(notification.Query, notification, commandType: CommandType.Text) > 0;
+      return _dbConnection.Execute(notification.GetQuery(), notification, commandType: CommandType.Text) > 0;
     }
 
     public bool InsertSchedule(Schedule schedule)
     {
-      return _dbConnection.Execute(schedule.Query, schedule, commandType: CommandType.Text) > 0;
+      return _dbConnection.Execute(schedule.GetQuery(), schedule, commandType: CommandType.Text) > 0;
     }
 
     public T GetDataByID(long id)
@@ -187,6 +213,16 @@ namespace Infarstructure.Base
       if (tableName != null)
       {
         return tableName.Name;
+      }
+      return "";
+    }
+
+    public string GetViewName<BEntity>()
+    {
+      var viewName = typeof(BEntity).GetCustomAttributes(typeof(ViewNameAttribute), true).FirstOrDefault() as ViewNameAttribute;
+      if (viewName != null)
+      {
+        return viewName.Name;
       }
       return "";
     }

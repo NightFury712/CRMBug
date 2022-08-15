@@ -25,6 +25,25 @@ namespace Library.Entities
       Name = name;
     }
   }
+
+  /// <summary>
+  /// Attribute quy định tên bảng
+  /// </summary>
+  [AttributeUsage(AttributeTargets.Class)]
+  public class ViewNameAttribute : Attribute
+  {
+    public string Name;
+
+    public ViewNameAttribute()
+    {
+      Name = string.Empty;
+    }
+
+    public ViewNameAttribute(string name)
+    {
+      Name = name;
+    }
+  }
   /// <summary>
   /// Attribute xác định các cột trong bảng của database
   /// </summary>

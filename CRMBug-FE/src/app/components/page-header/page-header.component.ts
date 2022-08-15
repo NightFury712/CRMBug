@@ -1,3 +1,5 @@
+import { AppServerResponse } from './../../service/base/base.service';
+import { EmployeeService } from 'src/app/service/employee/employee.service';
 import { PopupListProjectComponent } from './../popup/popup-list-project/popup-list-project.component';
 import { RecentlyViewedComponent } from './../recently-viewed/recently-viewed.component';
 import { SignalrService } from './../../service/signalr/signalr.service';
@@ -28,14 +30,19 @@ export class PageHeaderComponent extends BaseComponent implements OnInit {
     private dataSV: DataService,
     private router: Router,
     private signalr: SignalrService,
+    private employeeSV: EmployeeService
   ) { 
     super();
-    this.dataSV.user.pipe(takeUntil(this._onDestroySub)).subscribe((user) => {
-      if(user) {
-        this.fullName = user.fullName;
-        this.firstCharacter = user.fullName.charAt(0);
-      }
-    });
+    this.dataSV.user
+      .pipe(takeUntil(this._onDestroySub))
+      .subscribe((user) => {
+        console.log(user);
+        if(user) {
+          this.fullName = user.FullName;
+          this.firstCharacter = user.LastName.charAt(0).toUpperCase();
+        }
+      });
+    this.initData();
   }
 
   ngOnInit(): void {
@@ -46,6 +53,22 @@ export class PageHeaderComponent extends BaseComponent implements OnInit {
   ngOnDestroy(): void {
     this.signalr.disconnect();
     super.ngOnDestroy();
+  }
+
+  initData() {
+    var roles = localStorage.getItem("RolePermission");
+    if(roles) {
+      this.dataSV.roles.next(JSON.parse(roles));
+    } else {
+      this.employeeSV.getAllRole()
+        .pipe(takeUntil(this._onDestroySub))
+        .subscribe((resp: AppServerResponse<any>) => {
+          if(resp?.Success && resp?.Data) {
+            localStorage.setItem("RolePermission", JSON.stringify(resp.Data));
+            this.dataSV.roles.next(resp.Data);
+          }
+        })
+    }
   }
   
   updateUserSetting() {
@@ -78,7 +101,8 @@ export class PageHeaderComponent extends BaseComponent implements OnInit {
           this.dataSV.project.next({
             ID: resp.ProjectID,
             ProjectName: resp.ProjectName,
-            ProjectCode: resp.ProjectCode
+            ProjectCode: resp.ProjectCode,
+            OwnerID: resp.OwnerID
           })
           this.router.navigate([`/project/view-task/${resp.ProjectID}`])
         }

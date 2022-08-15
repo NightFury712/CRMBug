@@ -16,9 +16,16 @@ export const SuccessMessage = {
   RemoveMember: "Remove member success!",
   UpdateProject: "Update project success!",
   UpdateTask: "Update task success!",
-  Register: "Register success!"
+  Register: "Register success!",
+  UpdateEmployee: "Update employee success!"
 }
 
 export const ErrorMessage = {
   Exception: "Error has occurred!",
+}
+
+export const PermissionMessage = {
+  DeleteProject: "You don't have permission to delete project",
+  DeleteTask: "You don't have permission to delete task",
+  RemoveMember: "You don't have permission to remove member",
 }

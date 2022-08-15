@@ -19,7 +19,7 @@ export class EmployeeService extends BaseService {
     return this.http.get<any>(`${this.controller}/GetEmployeeByProjectID/${projectID}/${isInProject}`, {headers: this.headers});
   }
 
-  register(data: any):  Observable<any> {
-    return this.http.post<any>(`${this.controller}/register`,data , {headers: this.headers});
+  getAllRole(): Observable<any> {
+    return this.http.get<any>(`${this.controller}/GetAllRole`, {headers: this.headers});
   }
 }

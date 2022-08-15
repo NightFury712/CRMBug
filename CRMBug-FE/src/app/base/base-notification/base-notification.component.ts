@@ -21,7 +21,7 @@ export class BaseNotificationComponent extends BaseComponent implements OnInit {
   projectID: string = '';
 
   @Input()
-  userID: string = '';
+  userID: number = 0;
 
   currentPage: number = 0;
 
@@ -41,8 +41,9 @@ export class BaseNotificationComponent extends BaseComponent implements OnInit {
       {
         FieldName: 'ToUserID',
         Value: '',
-        Addition: Addition.Or,
-        IsFormula: false,
+        Addition: Addition.And,
+        IsFormula: true,
+        IsAllowEmpty: true,
         Operator: Operator.Equal,
       },
     ],
@@ -71,32 +72,30 @@ export class BaseNotificationComponent extends BaseComponent implements OnInit {
     if(changes.userID) {
       this.configPaging.Filters[1].Value = changes.userID.currentValue; 
     }
-    this.reloadData();
+    this.getData(true);
   }
 
   scollReachEnd() {
     if(this.currentPage < Math.floor(this.totalRecord / this.configPaging.PageSize) && !this.isFirstLoad) {
       this.currentPage++;
-      this.getData();
+      this.getData(false);
     }
     this.isFirstLoad = false;
   }
 
-  getData() {
+  getData(isFirstLoad: boolean = false) {
     this.configPaging.PageIndex = this.currentPage * this.configPaging.PageSize;
     this.notificationSV.grid(this.configPaging)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe(resp => {
+        if(isFirstLoad) {
+          this.data = [];
+        }
         if(resp?.Success) {
           this.data = this.data.concat(resp.Data.Result);
           this.cdf.detectChanges();
           this.totalRecord = resp.Data.TotalRecord;
         }
       })
-  }
-
-  reloadData() {
-    this.data = [];
-    this.getData();
   }
 }

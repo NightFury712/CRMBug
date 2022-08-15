@@ -29,6 +29,7 @@
     "@fullcalendar/interaction": "^5.11.0",
     "@fullcalendar/timegrid": "^5.11.0",
     "@microsoft/signalr": "^6.0.7",
+    "angularx-qrcode": "^12.0.3",
     "font-awesome": "^4.7.0",
     "highcharts": "^10.2.0",
     "highcharts-angular": "^3.0.0",

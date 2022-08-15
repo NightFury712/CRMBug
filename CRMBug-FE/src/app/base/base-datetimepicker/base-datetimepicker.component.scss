@@ -8,6 +8,13 @@
     .mat-form-field {
       display: block;
       width: 100%;
+      &.color-disabled {
+        .mat-form-field-wrapper {
+          .mat-form-field-flex {
+            background-color: $color-grey-15;
+          }
+        }
+      }
       .mat-form-field-wrapper {
         padding: 0;
         .mat-form-field-flex {
@@ -58,6 +65,12 @@
 }
 
 ::ng-deep {
+  .mat-icon-button.mat-button-disabled.mat-button-disabled {
+    color: $color-black;
+  }
+  .mat-input-element:disabled {
+    color: $color-black;
+  }
   .mat-datepicker-content {
     background-color: $color-white;
     .mat-calendar {

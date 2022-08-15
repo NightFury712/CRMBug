@@ -31,14 +31,9 @@ namespace BugTracking.API.Employees
       try
       {
         var datas = BL.GetEmployeeByProjectID(projectID, isInProject);
-        if (datas != null && datas.Count() > 0)
-        {
-          _serviceResult.Data = datas;
-          _serviceResult.Success = true;
-          return Ok(_serviceResult);
-
-        }
-        return NoContent();
+        _serviceResult.Data = datas;
+        _serviceResult.Success = true;
+        return Ok(_serviceResult);
       }
       catch (Exception ex)
       {
@@ -46,27 +41,21 @@ namespace BugTracking.API.Employees
       }
     }
 
-    /// <summary>
-    /// Đăng ký tài khoản
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPost("register")]
-    public override IActionResult Post(Employee entity)
+    [HttpGet]
+    [Authorize]
+    [Route("GetAllRole")]
+    public IActionResult GetAllRole()
     {
       try
       {
-        //Gọi service xác thực tài khoản
-        _serviceResult = BL.Save(entity);
-
+        var datas = this.BL.GetAllRole();
+        _serviceResult.Data = datas;
+        _serviceResult.Success = true;
         return Ok(_serviceResult);
       }
       catch (Exception ex)
       {
-        _serviceResult.Success = false;
-        _serviceResult.Data = ex;
-        return Ok(_serviceResult);
+        return GetExceptionResult(ex);
       }
     }
     #endregion

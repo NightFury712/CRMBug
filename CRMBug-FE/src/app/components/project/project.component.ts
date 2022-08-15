@@ -29,13 +29,16 @@ export class ProjectComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.router.snapshot.params.projectID);
     this.dataSV.project.pipe(takeUntil(this._onDestroySub)).subscribe((project: any) => {
-      this.projectName = project.ProjectName;
-      this.projectCode = project.ProjectCode
+      if(project) {
+        this.projectName = project.ProjectName;
+        this.projectCode = project.ProjectCode
+      }
     })
   }
 
-  inviteUser(e: any) {
+  inviteMember(e: any) {
     const config = new ConfigDialog('600px');
     config.position = {
       top: '100px'

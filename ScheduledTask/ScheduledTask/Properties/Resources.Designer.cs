@@ -61,7 +61,7 @@ namespace ScheduledTask.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have a task &lt;span style=\&quot;font-weight: 700;\&quot;&gt;{0}&lt;/span&gt; need to be done in {1} minutes!.
+        ///   Looks up a localized string similar to You have a task &lt;b&gt;{0}&lt;/b&gt; need to be done in {1} minutes!.
         /// </summary>
         internal static string Schedule_TemplateNotify {
             get {
