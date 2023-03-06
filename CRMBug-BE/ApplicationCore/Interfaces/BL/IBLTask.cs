@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Library.Entities;
+using Library.Entities.param;
 
 namespace ApplicationCore.Interfaces.BL
 {
@@ -15,7 +16,7 @@ namespace ApplicationCore.Interfaces.BL
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    Dictionary<string, object> GetSummaryData(long projectID);
+    Dictionary<string, object> GetSummaryData(ParamReport param);
 
     /// <summary>
     /// Phương thức lấy thông tin các công việc được xem gần đây

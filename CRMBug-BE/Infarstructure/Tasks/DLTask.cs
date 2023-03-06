@@ -9,6 +9,7 @@ using Infarstructure.Base;
 using Library;
 using Library.Constant;
 using Library.Entities;
+using Library.Entities.param;
 using Microsoft.Extensions.Configuration;
 
 namespace Infarstructure.Tasks
@@ -34,11 +35,17 @@ namespace Infarstructure.Tasks
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    public Dictionary<string, object> GetSummaryData(long projectID)
+    public Dictionary<string, object> GetSummaryData(ParamReport param)
     {
       var sql = Constant.DLTask_GetSumaryData;
+      var parameter = new
+      {
+        ProjectID = param.ProjectID,
+        FromDate = param.FromDate,
+        ToDate = param.ToDate
+      };
       Dictionary<string, object> datas = new Dictionary<string, object>();
-      using (var rd = _dbConnection.ExecuteReader(sql, new { ProjectID = projectID }, commandType: CommandType.Text))
+      using (var rd = _dbConnection.ExecuteReader(sql, parameter, commandType: CommandType.Text))
       {
         if(rd != null)
         {

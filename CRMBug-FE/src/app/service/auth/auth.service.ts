@@ -143,6 +143,7 @@ export class AuthService {
           userData = JSON.parse(data);
         }
 
+
         const rToken = userData['_refreshToken'];
 
         //Gọi api lấy access token mới
@@ -267,6 +268,7 @@ export class AuthService {
 
         // const refreshTokenExpDate = new Date(refreshExpiresTime)
         //Set người dùng mới
+        userInfo.DisplayName = `${userInfo.FullName} (${userInfo.EmployeeCode})`
         this.dataSV.user.next(userInfo);
 
         //Lưu vào localStorage

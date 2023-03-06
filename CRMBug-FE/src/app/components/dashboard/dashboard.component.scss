@@ -59,7 +59,23 @@
     .header {
       padding-top: 30px;
       height: 70px;
+      .icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-self: center;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: $font-title;
+        border-radius: 50%;
+        color: $color-grey-35;
+        background-color: $color-white;
+        box-shadow: 0 0 2px $color-grey-25;
+      }
       .title {
+        display: flex;
+        align-items: center;
         font-size: $font-largetitle;
         font-weight: $font-weight-medium;
       }

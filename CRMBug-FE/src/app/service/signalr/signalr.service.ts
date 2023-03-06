@@ -41,7 +41,11 @@ export class SignalrService {
   }
 
   askServer(data: any) {
-    this.hubConnection.invoke("AskServer", data)
+    var param = {
+      AssignedUserID: data.AssignedUserID,
+      TaskCode: data.TaskCode
+    }
+    this.hubConnection.invoke("AskServer", param)
       .catch(err => {
         console.log(err);
       });

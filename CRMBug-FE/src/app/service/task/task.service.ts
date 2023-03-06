@@ -17,8 +17,8 @@ export class TaskService extends BaseService {
     return this.http.get<AppServerResponse<any>>(`${this.controller}/FormData/${projectID}/${masterID}/${formModeState}`, {headers: this.headers});
   }
 
-  getSummaryData(projectID: number): Observable<any> {
-    return this.http.get<AppServerResponse<any>>(`${this.controller}/GetSummaryData/${projectID}`, {headers: this.headers});
+  getSummaryData(param: any): Observable<any> {
+    return this.http.post<AppServerResponse<any>>(`${this.controller}/GetSummaryData`,param, {headers: this.headers});
   }
 
   getDataRecentlyViewed(taskIDs: Array<any>): Observable<any> {

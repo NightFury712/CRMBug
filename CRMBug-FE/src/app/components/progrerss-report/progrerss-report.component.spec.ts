@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChartComponent } from './chart.component';
+import { ProgrerssReportComponent } from './progrerss-report.component';
 
-describe('ChartComponent', () => {
-  let component: ChartComponent;
-  let fixture: ComponentFixture<ChartComponent>;
+describe('ProgrerssReportComponent', () => {
+  let component: ProgrerssReportComponent;
+  let fixture: ComponentFixture<ProgrerssReportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChartComponent ]
+      declarations: [ ProgrerssReportComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChartComponent);
+    fixture = TestBed.createComponent(ProgrerssReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

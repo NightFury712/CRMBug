@@ -7,6 +7,7 @@ using ApplicationCore.Interfaces.DL;
 using Library;
 using Library.Constant;
 using Library.Entities;
+using Library.Entities.param;
 using static Library.Enumeration.Enumeration;
 
 namespace ApplicationCore.BL
@@ -106,9 +107,9 @@ namespace ApplicationCore.BL
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    public Dictionary<string, object> GetSummaryData(long projectID)
+    public Dictionary<string, object> GetSummaryData(ParamReport param)
     {
-      return this.DLTask.GetSummaryData(projectID);
+      return this.DLTask.GetSummaryData(param);
     }
 
 

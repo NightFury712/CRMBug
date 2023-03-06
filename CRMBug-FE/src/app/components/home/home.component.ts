@@ -7,6 +7,7 @@ import { BaseComponent } from 'src/app/shared/base-component';
 import { NotificationService } from './../../service/notification/notification.service';
 import { Component, OnInit } from '@angular/core';
 import { AppServerResponse } from 'src/app/service/base/base.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -61,6 +62,12 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
   totalRecord: number = 0;
 
+  configPaging: any = {
+    ProjectID: 0,
+    FromDate: moment().startOf("year").subtract(10, "year"),
+    ToDate: moment().endOf("year")
+  }
+
   userID: number = 0;
 
   constructor(
@@ -76,7 +83,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.dataSV.project.pipe(takeUntil(this._onDestroySub))
       .subscribe(project => {
         if(project) {
-          this.projectID = project.ID
+          this.projectID = project.ID;
+          this.configPaging.ProjectID = this.projectID;
           this.getDatas()
         } else {
           var projectID = this.activeRoute.snapshot.params.projectID;
@@ -99,7 +107,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   }
 
   getDatas() {
-    this.taskSV.getSummaryData(Number(this.projectID))
+    this.taskSV.getSummaryData(this.configPaging)
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((resp) => {
         console.log(resp);
@@ -136,5 +144,20 @@ export class HomeComponent extends BaseComponent implements OnInit {
           this.totalRecord = resp.Data.TotalRecord
         }
       })
+  }
+
+  valueChangeCombo(data: any) {
+    if(data) {
+      switch(data.FieldName) {
+        case 'DateRange':
+          const date = data.Value;
+          if(date?.startDate &&  date?.endDate) {
+            this.configPaging.FromDate = date.startDate.toDate();
+            this.configPaging.ToDate = date.endDate.toDate();
+            this.getDatas();
+          }
+        break;
+      }
+    }
   }
 }

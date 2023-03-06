@@ -42,6 +42,21 @@ namespace ApplicationCore.BL
       return rs;
     }
 
+    public Dictionary<string, object> GetReport(ParamReport param)
+    {
+      return this.DLProject.GetReport(param);
+    }
+
+    public List<Dictionary<string, object>> GetProgressReport(ParamReport param)
+    {
+      return this.DLProject.GetProgressReport(param);
+    }
+
+    public Dictionary<string, object> GetAssignedReport(ParamReport param)
+    {
+      return this.DLProject.GetAssignedReport(param);
+    }
+
     #endregion
 
     #region Methods Override

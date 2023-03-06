@@ -58,6 +58,67 @@ namespace BugTracking.API.Projects
         return GetExceptionResult(ex);
       }
     }
+
+    [HttpPost]
+    [Authorize]
+    [Route("GetReport")]
+    public IActionResult GetReport(ParamReport param)
+    {
+      try
+      {
+        var data = this.BL.GetReport(param);
+        _serviceResult.Success = true;
+        _serviceResult.Data = data["Data"];
+        if(long.TryParse(data["TotalRecord"]?.ToString(), out long totalRecord))
+        {
+          _serviceResult.TotalRecord = totalRecord;
+        }
+        return Ok(_serviceResult);
+      }
+      catch (Exception ex)
+      {
+        return GetExceptionResult(ex);
+      }
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("GetProgressReport")]
+    public IActionResult GetProgressReport(ParamReport param)
+    {
+      try
+      {
+        _serviceResult.Success = true;
+        _serviceResult.Data = this.BL.GetProgressReport(param);
+        return Ok(_serviceResult);
+      }
+      catch (Exception ex)
+      {
+        return GetExceptionResult(ex);
+      }
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("GetAssignedReport")]
+    public IActionResult GetAssignedReport(ParamReport param)
+    {
+      try
+      {
+        var data = this.BL.GetAssignedReport(param);
+        _serviceResult.Success = true;
+        _serviceResult.Data = data["Data"];
+        if (long.TryParse(data["TotalRecord"]?.ToString(), out long totalRecord))
+        {
+          _serviceResult.TotalRecord = totalRecord;
+        }
+        return Ok(_serviceResult);
+      }
+      catch (Exception ex)
+      {
+        return GetExceptionResult(ex);
+      }
+    }
     #endregion
   }
 }

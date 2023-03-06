@@ -127,14 +127,13 @@ export class GanttChartComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.projectID = this.activeRoute.snapshot.params.projectID;
-    this.configPaging.Filters[1].Value = this.projectID;
     this.dataSV.project
       .pipe(takeUntil(this._onDestroySub))
       .subscribe((project) => {
         if(project) {
           this.projectID = project.ID
           this.projectName = `${project.ProjectName} (${project.ProjectCode})`
+          this.configPaging.Filters[1].Value = this.projectID;
         } else {
           var projectID = this.activeRoute.snapshot.params.projectID;
           this.projectSV.getDataByID(projectID)

@@ -46,6 +46,9 @@ namespace Library
                 var toDate = Convert.ToDateTime(fieldFilter.Value2.ToString());
                 tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} BETWEEN '{fromDate.ToString("yyyy-MM-dd HH:mm:ss")}' AND '{toDate.ToString("yyyy-MM-dd HH:mm:ss")}'";
                 break;
+              case Operator.In:
+                tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} IN ({fieldFilter.Value.ToString()}) ";
+                break;
             }
             //if(fieldFilter.IsAllowEmpty)
             //{
@@ -68,6 +71,9 @@ namespace Library
               break;
             case Operator.Like:
               tmpQuery = $"T.{fieldFilter.FieldName} LIKE N'%{fieldFilter.Value}%' ";
+              break;
+            case Operator.In:
+              tmpQuery = $"{tmpQuery} T.{fieldFilter.FieldName} IN ({fieldFilter.Value.ToString()}) ";
               break;
           }
           formulaQuery.Add(tmpQuery);

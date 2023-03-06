@@ -105,7 +105,7 @@ namespace ScheduledTask.Jobs
         if (item.ValueIsNotNull("DueDate"))
         {
           dueDate = Convert.ToDateTime(item["DueDate"]);
-          minuteLeft = Math.Round((decimal)dueDate.Subtract(DateTime.Now).Minutes, 0);
+          minuteLeft = Math.Round((decimal)dueDate.Subtract(DateTime.Now).Minutes, 0) + 1;
         }
         if (item.ValueIsNotNull("AssignedUserID") && long.TryParse(item["AssignedUserID"].ToString(), out long id))
         {

@@ -51,6 +51,9 @@ import { BaseProjectComponent } from '../base/base-project/base-project.componen
 import { PopupListProjectComponent } from './popup/popup-list-project/popup-list-project.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PopupContactComponent } from './popup/popup-contact/popup-contact.component';
+import { ReportComponent } from './report/report.component';
+import { ProgrerssReportComponent } from './progrerss-report/progrerss-report.component';
+import { AssignedReportComponent } from './assigned-report/assigned-report.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -85,6 +88,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   	PopupListProjectComponent,
 		PieChartComponent,
   	PopupContactComponent,
+   ReportComponent,
+   ProgrerssReportComponent,
+   AssignedReportComponent,
 	],
 	imports: [
 		BrowserModule,

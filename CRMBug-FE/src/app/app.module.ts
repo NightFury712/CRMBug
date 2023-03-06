@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
-import { ChartComponent } from './components/chart/chart.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -44,8 +43,7 @@ FullCalendarModule.registerPlugins([
     CustomerComponent,
     ProjectComponent,
     SidebarComponent,
-    AddIssueComponent,
-    ChartComponent
+    AddIssueComponent
   ],
   imports: [
     BrowserModule,

@@ -29,24 +29,26 @@
         <div class="left-item">
           <base-combobox
             [datas]="assignedUserCbx"
-            [value]="assignedUserID"
+            [value]="assignedUserIDs"
             (valueChange)="valueChangeCombo($event)"
             [isShowLabel]="true"
             [fieldName]="'AssignedUserID'"
             [labelWidth]="100"
             [labelText]="'Assigned to'"
+            [isMultiple]="true"
           >
           </base-combobox>
         </div>
         <div class="left-item">
           <base-combobox
             [datas]="relatedUserCbx"
-            [value]="relatedUserID"
+            [value]="relatedUserIDs"
             (valueChange)="valueChangeCombo($event)"
             [isShowLabel]="true"
             [fieldName]="'RelatedUserID'"
             [labelWidth]="100"
             [labelText]="'Related to'"
+            [isMultiple]="true"
           >
           </base-combobox>
         </div>
@@ -125,7 +127,7 @@
             <td *ngFor="let field of fieldDisplay;">
               <ng-container [ngSwitch]="field.typeControl">
                 <div *ngSwitchCase="typeControl.DateTime">
-                  <span>{{ item[field.fieldName] | date: 'dd/MM/yyyy'}}</span>
+                  <span>{{ item[field.fieldName] | date: 'dd/MM/yyyy hh:mm'}}</span>
                 </div>
                 <div *ngSwitchCase="typeControl.List" class="task-status">
                   

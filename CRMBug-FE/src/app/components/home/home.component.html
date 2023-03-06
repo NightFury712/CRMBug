@@ -20,32 +20,33 @@
     <div class="title">
       Summary
     </div>
-    <div *ngIf="totalRecord > 0" class="status-container w-full">
+    <div  class="status-container w-full">
+      <app-daterange
+        (valueChanged)="valueChangeCombo($event)"
+        [ngStyle]="{'padding-right': '16px'}"
+      >
+      </app-daterange>
       <div class="total-record">
         Total: {{totalRecord}}
       </div>
       <pie-chart
         [series]="seriesStatus"
         [title]="titleStatus"
-        
+        [hidden]="(totalRecord == 0)"
       >
       </pie-chart>
-    </div> 
-    <div *ngIf="totalRecord > 0" class="status-container">
-      <div class="total-record">
-        Total: {{totalRecord}}
-      </div>
       <pie-chart
         [series]="seriesPriority"
         [title]="titlePriority"
+        [hidden]="(totalRecord == 0)"
       >
       </pie-chart>
-    </div> 
-    <no-data
-      *ngIf="totalRecord == 0"
-      [height]="'calc(100vh - 400px)'"
-    >
+      <no-data
+        [hidden]="!(totalRecord == 0)"
+        [height]="'calc(100vh - 400px)'"
+      >
 
-    </no-data>
+      </no-data>
+    </div> 
   </div>
 </div>

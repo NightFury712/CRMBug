@@ -74,6 +74,12 @@
             background-color: $color-green-primary !important;
             color: $color-white;
           }
+          .mat-pseudo-checkbox-checked {
+            background: $default-color-green;
+            &::after {
+              color: $color-white;
+            }
+          }
           color: $color-black;
         }
       }

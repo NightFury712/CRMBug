@@ -23,5 +23,6 @@ namespace Library.Entities
     public Code Code { get; set; }
     public bool Success { get; set; }
     public List<string> ValidateInfo { get; set; }
+    public long TotalRecord { get; set; }
   }
 }

@@ -37,4 +37,16 @@ export class ProjectService extends BaseService {
   removeMember(param: any): Observable<any> {
     return this.http.post<any>(`${this.controller}/RemoveMember`, param, {headers: this.headers});
   }
+
+  getReport(param: any): Observable<any> {
+    return this.http.post<any>(`${this.controller}/GetReport`, param, {headers: this.headers});
+  }
+
+  getProgressReport(param: any): Observable<any> {
+    return this.http.post<any>(`${this.controller}/GetProgressReport`, param, {headers: this.headers});
+  }
+
+  getAssignedReport(param: any): Observable<any> {
+    return this.http.post<any>(`${this.controller}/GetAssignedReport`, param, {headers: this.headers});
+  }
 }

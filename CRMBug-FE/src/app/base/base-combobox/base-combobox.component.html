@@ -8,8 +8,8 @@
   >
     {{labelText}}
   </div>
-  <mat-form-field appearance="fill" [ngClass]="{'color-disabled': disabled}">
-    <mat-select [(value)]="value" (valueChange)="onChange()" [disabled]="disabled">
+  <mat-form-field appearance="fill" [ngClass]="{'color-disabled': disabled}" [class]="fieldName">
+    <mat-select [(value)]="value" (valueChange)="onChange()" [disabled]="disabled" [multiple]="isMultiple">
       <mat-option
         *ngFor="let item of datas" [value]="item.Value"
       >

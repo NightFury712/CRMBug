@@ -7,7 +7,8 @@ export interface AppServerResponse<T> {
   Success: boolean,
   Data: T,
   Messenger: string,
-  ValidateInfo: Array<any>
+  ValidateInfo: Array<any>,
+  TotalRecord: number
 }
 
 @Injectable({

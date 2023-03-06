@@ -85,6 +85,7 @@ namespace Library.Enumeration
       Equal = 1,
       Like = 2,
       Between = 3,
+      In = 4
     }
 
     public enum Addition
@@ -98,6 +99,12 @@ namespace Library.Enumeration
       Pending = 1,
       Completed = 2,
       CompletedLate = 3,
+    }
+
+    public enum ViewReportType
+    {
+      Priority = 1,
+      Status = 2
     }
   }
 }

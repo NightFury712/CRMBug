@@ -1,5 +1,4 @@
-
-<div class="gantt-chart">
+<div class="progress-report">
   <div class="toolbar bt-flex">
     <app-daterange
       (valueChanged)="valueChangeCombo($event)"
@@ -7,27 +6,26 @@
     >
     </app-daterange>
     <base-combobox
-      [datas]="ganttTypeCbx"
+      [datas]="employeeCbx"
       [isShowLabel]="true"
-      labelText="Choose gantt type:"
-      fieldName="GanttViewType"
+      labelText="Choose member:"
+      fieldName="EmployeeIDs"
       [isHorizontal]="true"
-      [value]="currGanttView"
+      [value]="param.IDs"
       (valueChange)="valueChangeCombo($event)"
-      [width]="'250px'"
-      [labelWidth]="150"
+      [labelWidth]="120"
+      [isMultiple]="true"
     >
     </base-combobox>
   </div>
-  <div 
-    [hidden]="!isHaveData"
-    class="gantt-chart-container" 
-    id="gantt-chart-container"
-  >
+  <div [hidden]="!isHaveData" class="progress-report-container" [id]="container">
+
   </div>
+
   <no-data
     [hidden]="isHaveData"
     [height]="'600px'"
   >
   </no-data>
 </div>
+

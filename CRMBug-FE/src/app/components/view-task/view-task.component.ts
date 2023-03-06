@@ -1,3 +1,4 @@
+import { EmployeeService } from './../../service/employee/employee.service';
 import { ToastService } from './../../service/toast/toast.service';
 import { ValidateService } from './../../service/validation/validate.service';
 import { ProjectService } from './../../service/project/project.service';
@@ -124,9 +125,9 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
 
   relatedUserCbx: Array<any> = [];
 
-  assignedUserID: number = -1;
+  assignedUserIDs: Array<any> = [];
 
-  relatedUserID: number = -1;
+  relatedUserIDs: Array<any> = [];
 
   currentPage = 1;
 
@@ -201,7 +202,8 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
     private dataSV: DataService,
     private toastSV: ToastService,
     private projectSV: ProjectService,
-    private validateSV: ValidateService
+    private validateSV: ValidateService,
+    private employeeSV: EmployeeService
   ) {
     super();
   }
@@ -215,6 +217,7 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           me.projectID = project.ID;
           me.configPaging.Filters[0].Value = `${project.ID}`;
           me.getDataPaging();
+          this.initConfig();
         } else {
           var projectID = this.activeRoute.snapshot.params.projectID;
           this.projectSV.getDataByID(projectID)
@@ -226,10 +229,33 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
             })
         }
       })
-    this.initconfig();
+    this.initData();
   }
 
-  initconfig() {
+  initConfig() {
+    this.employeeSV.getEmployeeByProjectID(this.projectID, true)
+    .pipe(takeUntil(this._onDestroySub))
+    .subscribe((resp: AppServerResponse<any>) => {
+      if(resp?.Success && resp?.Data) {
+        this.assignedUserCbx = resp.Data.map((x: any) => {
+          return {
+            Value: x.ID,
+            Text: `${x.FullName} (${x.EmployeeCode})`
+          }
+        })
+        this.relatedUserCbx = resp.Data.map((x: any) => {
+          return {
+            Value: x.ID,
+            Text: `${x.FullName} (${x.EmployeeCode})`
+          }
+        })
+        this.assignedUserIDs = resp.Data.map((x: any) => x.ID);
+        this.relatedUserIDs = resp.Data.map((x: any) => x.ID);
+      }
+    })
+  }
+
+  initData() {
     this.dataSV.task
     .pipe(takeUntil(this._onDestroySub))
       .subscribe(task => {
@@ -238,36 +264,10 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           this.dataSV.task.next(null)
         }
       })
-    this.dataSV.user
-      .pipe(takeUntil(this._onDestroySub))
-      .subscribe((user) => {
-        if(user) {
-          this.assignedUserCbx = [
-            {
-              Value: -1,
-              Text: "All member"
-            },
-            {
-              Value: user.ID,
-              Text: "Me"
-            }
-          ]
-          this.relatedUserCbx = [
-            {
-              Value: -1,
-              Text: "All member"
-            },
-            {
-              Value: user.ID,
-              Text: "Me"
-            }
-          ]
-        }
-    })
+    
   }
 
   getDataPaging() {
-    // this.dataSV.loading.next(true);
     this.configPaging.PageIndex =
       (this.currentPage - 1) * this.configPaging.PageSize;
     this.taskSV
@@ -380,30 +380,32 @@ export class ViewTaskComponent extends BaseComponent implements OnInit {
           this.configPaging.PageSize = e.Value;
           break;
         case 'AssignedUserID': 
-          if(e.Value == -1) {
-            this.configPaging.Filters = this.configPaging.Filters.filter((x:any) => x.FieldName != 'AssignedUserID')
-          } else {
-            this.configPaging.Filters.push({
-              FieldName: 'AssignedUserID',
-              Value: e.Value,
-              Addition: Addition.And,
-              IsFormula: false,
-              Operator: Operator.Equal,
-            });
-          }
+            const assignedFilter = this.configPaging.Filters.find(x => x.FieldName ==  'AssignedUserID');
+            if(assignedFilter) {
+              assignedFilter.Value = e.Value.join(","); 
+            } else {
+              this.configPaging.Filters.push({
+                FieldName: 'AssignedUserID',
+                Value: e.Value.join(","),
+                Addition: Addition.And,
+                IsFormula: false,
+                Operator: Operator.In,
+              });
+            }
           break;
         case 'RelatedUserID':
-          if(e.Value == -1) {
-            this.configPaging.Filters = this.configPaging.Filters.filter((x:any) => x.FieldName != 'RelatedUserID')
-          } else {
-            this.configPaging.Filters.push({
-              FieldName: 'RelatedUserID',
-              Value: e.Value,
-              Addition: Addition.And,
-              IsFormula: false,
-              Operator: Operator.Equal,
-            });
-          }
+            const relatedFilter = this.configPaging.Filters.find(x => x.FieldName ==  'RelatedUserID');
+            if(relatedFilter) {
+              relatedFilter.Value = e.Value.join(","); 
+            } else {
+              this.configPaging.Filters.push({
+                FieldName: 'RelatedUserID',
+                Value: e.Value.join(","),
+                Addition: Addition.And,
+                IsFormula: false,
+                Operator: Operator.In,
+              });
+            }
           break;
       }
     }

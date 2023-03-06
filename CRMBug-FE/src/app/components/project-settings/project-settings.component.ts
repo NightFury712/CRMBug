@@ -231,7 +231,8 @@ export class ProjectSettingsComponent extends BaseComponent implements OnInit {
       width: "150",
       email: member.Email,
       phoneNumber: member.PhoneNumber,
-      lastName: member.LastName
+      lastName: member.LastName,
+      fullName: name,
     }
     
     this.dialog.open(PopupContactComponent, config);

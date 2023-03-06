@@ -6,7 +6,8 @@
     .status-container {
       .pie-chart {
         width: 100% !important;
-        height: 100% !important;
+        height: 310px !important;
+        margin-top: 12px;
         .highcharts-container {
           width: 100% !important;
           height: 100% !important;
@@ -89,7 +90,7 @@
         position: relative;
         padding: 16px;
         background-color: $color-white;
-        height: 340px;
+        height: 720px;
         border-radius: 4px;
         border: 1px solid $color-grey-20;
         min-width: 412px;

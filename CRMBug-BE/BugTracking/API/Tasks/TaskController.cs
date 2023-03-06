@@ -4,6 +4,7 @@ using System.Linq;
 using ApplicationCore.Interfaces.BL;
 using BugTracking.API.Base;
 using Library.Entities;
+using Library.Entities.param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Library.Enumeration.Enumeration;
@@ -48,16 +49,16 @@ namespace BugTracking.API.Tasks
     /// </summary>
     /// <param name="projectID">ID dự án</param>
     /// <returns></returns>
-    [HttpGet]
-    [Route("GetSummaryData/{projectID}")]
+    [HttpPost]
+    [Route("GetSummaryData")]
     [Authorize]
-    public IActionResult GetSummaryData(long projectID)
+    public IActionResult GetSummaryData(ParamReport param)
     {
       try
       {
         _serviceResult.Success = true;
         _serviceResult.Code = Code.Ok;
-        _serviceResult.Data = BL.GetSummaryData(projectID);
+        _serviceResult.Data = BL.GetSummaryData(param);
 
         return Ok(_serviceResult);
 

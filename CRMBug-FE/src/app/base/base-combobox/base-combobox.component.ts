@@ -41,6 +41,9 @@ export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
   @Input()
   isHorizontal: boolean = true;
 
+  @Input()
+  isMultiple: boolean = false;
+
   @Output()
   valueChange = new EventEmitter();
   change = (data: any) => {};
@@ -65,13 +68,22 @@ export class BaseComboboxComponent implements OnInit, ControlValueAccessor {
 
   onChange() {
     const me = this;
-    const data = me.datas.filter(x => x.Value == me.value )[0];
-    if(data) {
+    if(this.isMultiple) {
+      let texts = me.datas.filter((x: any) => me.value.includes(x.Value)).map((text:any) => text.Text)
       me.valueChange.emit({
-        Value: data.Value,
-        Text: data.Text,
+        Value: me.value,
+        Text: texts,
         FieldName: me.fieldName
       });
+    } else {
+      const data = me.datas.filter(x => x.Value == me.value )[0];
+      if(data) {
+        me.valueChange.emit({
+          Value: data.Value,
+          Text: data.Text,
+          FieldName: me.fieldName
+        });
+      }
     }
   }
 }
