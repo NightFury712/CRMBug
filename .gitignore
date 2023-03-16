@@ -51,16 +51,12 @@ Thumbs.db
 *.nuget
 *.csproj
 *.suo
-*.dll
-*.json
 *.razor.json
 *.dtbcache.v2
 *.runtimeconfig
 
 ### DotnetCore ###
 *.cache
-*.dll
-*.exe
 *.pdb
 
 CRMBug-BE/ApplicationCore/obj/
@@ -75,5 +71,4 @@ CRMBug-BE/Infarstructure/bin/
 *.vs/
 *bin/
 *obj/
-*.json
 

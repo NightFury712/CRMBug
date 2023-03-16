@@ -5,9 +5,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS runtime
+FROM base AS runtime
 ENV TZ="Asia/Ho_Chi_Minh"
 RUN date
 WORKDIR /app
 COPY . .
-ENTRYPOINT ["dotnet", "MISA.AppApi.dll"]
+ENTRYPOINT ["dotnet", "MISA.BugTracking.dll"]
