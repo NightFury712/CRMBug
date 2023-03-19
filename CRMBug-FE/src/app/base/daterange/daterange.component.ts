@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
-import * as $ from 'jquery';
+
+
 @Component({
   selector: 'app-daterange',
   templateUrl: './daterange.component.html',
@@ -18,8 +19,8 @@ export class DaterangeComponent implements OnInit {
     displayFormat: "DD/MM/YYYY"
   }
 
-  minDate = moment().startOf("year").subtract(10, "year");
-  maxDate = moment().endOf("year");
+  minDate = moment().startOf("year").subtract(10, "year").toDate();
+  maxDate = moment().endOf("year").toDate();
 
   dateRangeValue: any = {
     startDate: this.minDate,
