@@ -58,6 +58,8 @@ Thumbs.db
 ### DotnetCore ###
 *.cache
 *.pdb
+*.dll
+*.json
 
 CRMBug-BE/ApplicationCore/obj/
 CRMBug-BE/ApplicationCore/bin/
