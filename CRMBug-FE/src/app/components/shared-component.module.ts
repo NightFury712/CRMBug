@@ -43,7 +43,7 @@ import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
 import { HighchartsChartModule } from "highcharts-angular";
 import { PopupConfirmComponent } from './popup/popup-confirm/popup-confirm.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { DaterangeComponent } from '../base/daterange/daterange.component';
+// import { DaterangeComponent } from '../base/daterange/daterange.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { RecentlyViewedComponent } from './recently-viewed/recently-viewed.component';
 import { NoDataComponent } from '../base/no-data/no-data.component';
@@ -81,7 +81,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		PopupAddTaskComponent,
 		GanttChartComponent,
 		PopupConfirmComponent,
-		DaterangeComponent,
+		// DaterangeComponent,
   	RecentlyViewedComponent,
 		NoDataComponent,
 		BaseProjectComponent,
@@ -129,7 +129,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		CalendarComponent,
 		WeeklyCalendarComponent,
 		MonthlyCalendarComponent,
-		DaterangeComponent,
+		// DaterangeComponent,
 		NoDataComponent,
 		BaseProjectComponent,
 		PieChartComponent

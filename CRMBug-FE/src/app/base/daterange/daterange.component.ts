@@ -19,8 +19,8 @@ export class DaterangeComponent implements OnInit {
     displayFormat: "DD/MM/YYYY"
   }
 
-  minDate = moment().startOf("year").subtract(10, "year").toDate();
-  maxDate = moment().endOf("year").toDate();
+  minDate = moment().startOf("year").subtract(10, "year");
+  maxDate = moment().endOf("year");
 
   dateRangeValue: any = {
     startDate: this.minDate,
