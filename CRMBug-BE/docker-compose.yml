@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  bugtracking:
+    image: bugtracking
+    build:
+      context: .
+      dockerfile: BugTracking\Dockerfile
