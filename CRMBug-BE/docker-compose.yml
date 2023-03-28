@@ -11,7 +11,7 @@ services:
   bugtrackingui:
     image: bugtrackingui
     build:
-      context: ../CRMBug-FE/.
-      dockerfile: ../CRMBug-FE/DockerFile
+      context: ..
+      dockerfile: CRMBug-FE/DockerFile
     ports:
       - "9090:3000"
