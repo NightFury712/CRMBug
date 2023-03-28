@@ -1,10 +1,17 @@
 version: '3.4'
 
 services:
-  bugtracking:
-    image: bugtracking
+  bugtrackingapi:
+    image: bugtrackingapi
     build:
       context: .
       dockerfile: BugTracking/Dockerfile
     ports:
       - "8080:80" 
+  bugtrackingui:
+    image: bugtrackingui
+    build:
+      context: ../CRMBug-FE/.
+      dockerfile: ../CRMBug-FE/DockerFile
+    ports:
+      - "9090:3000"
