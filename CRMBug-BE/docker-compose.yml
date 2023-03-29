@@ -15,3 +15,12 @@ services:
       dockerfile: DockerFile
     ports:
       - "9090:3000"
+  databasemysql:
+    image: mysqldb
+    build:
+      context: ../DataBase
+      dockerfile: DockerFile
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678@Abc
