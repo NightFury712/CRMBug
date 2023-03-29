@@ -24,3 +24,9 @@ services:
       MYSQL_HOST: localhost
       MYSQL_USER: root
       MYSQL_PASSWORD: 12345678@Abc
+    ports:
+      - "3306:3306"
+networks:
+  my-ingress:
+    attachable: true
+    external: true
