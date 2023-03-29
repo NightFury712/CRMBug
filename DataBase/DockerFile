@@ -1,5 +1,5 @@
 # Base image
 FROM mysql:latest
 # Copy changelog
-COPY ./changelog.mysql /docker-entrypoint-initdb.d/
+COPY ./changelog.sql /docker-entrypoint-initdb.d/
 
