@@ -7,7 +7,9 @@ services:
       context: .
       dockerfile: BugTracking/Dockerfile
     ports:
-      - "8080:80" 
+      - "8080:80"
+    networks:
+      - my-ingress
   bugtrackingui:
     image: bugtrackingui
     build:
@@ -15,6 +17,8 @@ services:
       dockerfile: DockerFile
     ports:
       - "9090:3000"
+    networks:
+      - my-ingress
   databasemysql:
     image: mysqldb
     build:
@@ -26,7 +30,10 @@ services:
       MYSQL_PASSWORD: 12345678@Abc
     ports:
       - "3306:3306"
+    networks:
+      - my-ingress
 networks:
   my-ingress:
+    name: my-ingress
     attachable: true
     external: true
