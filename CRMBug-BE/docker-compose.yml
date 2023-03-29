@@ -34,6 +34,5 @@ services:
       - my-ingress
 networks:
   my-ingress:
-    name: my-ingress
     attachable: true
     external: true
