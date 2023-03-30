@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: BugTracking/Dockerfile
     ports:
-      - "8080:80"
+      - "44378:80"
     networks:
       - my-ingress
   bugtrackingui:
