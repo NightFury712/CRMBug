@@ -29,7 +29,7 @@ services:
       context: ../DataBase
       dockerfile: DockerFile
     volumes:
-      - mysqlvolume:/var/lib/mysql
+      - mysqldata:/var/lib/mysql
     environment:
       MYSQL_HOST: localhost
       MYSQL_USER: admin
@@ -44,4 +44,4 @@ services:
 #    attachable: true
 #    external: true
 volumes:
-  mysqlvolume:
+  mysqldata:
