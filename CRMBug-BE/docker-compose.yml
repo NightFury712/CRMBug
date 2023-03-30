@@ -17,6 +17,8 @@ services:
     build:
       context: .
       dockerfile: BugTracking/Dockerfile
+    volumes:
+      - ./server-config/appsettings.json:/app/appsettings.json 
     ports:
       - "44378:80"
     command: --link bugtrackingserver:mysqlserver
@@ -35,6 +37,7 @@ services:
       MYSQL_USER: admin
       MYSQL_PASSWORD: 12345678@Abc
       MYSQL_ROOT_PASSWORD: 12345678@Abc
+      MYSQL_DATABASE: task_management
     ports:
       - "3306:3306"
 #    networks:
