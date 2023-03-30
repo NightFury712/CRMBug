@@ -3,6 +3,7 @@ version: '3.4'
 services:
   bugtrackingapi:
     image: bugtrackingapi
+    container_name: bugtrackingapi
     build:
       context: .
       dockerfile: BugTracking/Dockerfile
@@ -12,15 +13,17 @@ services:
       - my-ingress
   bugtrackingui:
     image: bugtrackingui
+    container_name: bugtrackingui
     build:
       context: ../CRMBug-FE
       dockerfile: DockerFile
     ports:
-      - "9090:3000"
+      - "9090:80"
     networks:
       - my-ingress
   databasemysql:
     image: mysqldb
+    container_name: mysqldb
     build:
       context: ../DataBase
       dockerfile: DockerFile
