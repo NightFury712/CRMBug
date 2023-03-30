@@ -130,7 +130,7 @@ namespace BugTracking
 
       app.UseRouting();
 
-      app.UseCors("ApiCorsPolicy");
+      app.UseCors("MyPolicy");
 
       app.UseSession();
 
